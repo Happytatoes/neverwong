@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Identity | Happytatoes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="icon" href="../images/favicon.png" type="image/png" />
+  </head>
+  <body>
+    <nav>
+      <div class="nav-left">
+        <a href="/" class="nav-btn">← home</a>
+      </div>
+
+      <button id="themeToggle" aria-label="Toggle theme">
+        <span id="themeIcon">☾</span>
+      </button>
+    </nav>
+
+    <main class="article">
+      <h1>Identity</h1>
+
+	  <h2>Introduction</h2>
+
+      <p>
+        Someone just asked you, “who are you?”
+      </p>
+
+      <p>
+        What’s your answer?
+      </p>
+
+      <p>
+        Now, take that answer and strip away your name, your occupation, your
+        gender, your hometown, your ethnicity, and every word that could put
+        you into a subset of humanity. What is left?
+      </p>
+
+      <p>
+        Humans are intelligent. This does not set us apart.
+      </p>
+      <p>
+        Humans can solve hard technical problems. This does not set us apart.
+      </p>
+      <p>
+        The human brain is a network of neurons. This does not set us apart.
+      </p>
+
+      <p>
+        It is not our strength or speed that makes us human. Animals and
+        machines outmatch us on that front. So what makes us human?
+      </p>
+
+      <h2>Intelligence</h2>
+
+      <p>
+        Is it our intelligence? AI has logical reasoning, but so does a
+        traditional computer program. What makes AI different is its
+        intuition. It may not have reasons for its predictions, but after
+        training itself millions of times, softening its flaws, it is often
+        accurate.
+      </p>
+
+      <p>
+        If we identify with our intelligence, learning machines and
+        “Artificial Intelligence” blur the lines of our identity.
+      </p>
+
+      <h2>Hard work</h2>
+
+      <p>
+        What about hard work? Many people will proudly tell you that they
+        identify as a hard worker. We often determine whether someone deserves
+        success by whether they are a hard worker.
+      </p>
+
+      <p>
+        The problem is, AI can dedicate endless energy to solving a problem. It
+        doesn’t get distracted, it doesn’t get tired, and it never complains.
+      </p>
+
+      <p>
+        Intelligence and Hard Work are traits that many people have and wish to
+        have, but they are not what makes us fundamentally human. In the AI
+        age, marketing yourself as intelligent and hardworking may start to
+        feel generic.
+      </p>
+
+      <p>
+        So what makes us human?
+      </p>
+
+      <h2>Creativity</h2>
+
+      <p>
+        Humans create at the frontiers. We push the boundaries of knowledge and
+        art. True novel innovation comes from humans who are willing to trust
+        their gut and take risks.
+      </p>
+
+      <p>
+        AI stays in the middle of the boundaries and sticks to what’s safe. AI
+        art is usually a softened average of human art. It doesn't like to go
+        out of bounds.
+      </p>
+
+      <h2>Curiosity</h2>
+
+      <p>
+        Humans ask the right questions. We are interested in the knowledge that
+        we don’t have. We have invented every system of thought that exists in
+        response to confusion.
+      </p>
+
+      <p>
+        That confusion resulted from our curiosity in the world around us. AI
+        doesn’t ask the questions, it’s an answer machine, and the inquiries
+        that we approach using AI come from us.
+      </p>
+
+      <h2>Care</h2>
+
+      <p>
+        We care about each other. We notice the small things about each other,
+        and that can mean everything to us.
+      </p>
+
+      <p>
+        Most of what we do is for other humans: trying to provide for your
+        children, make your parents proud, or uplift humans you’ve never seen
+        before.
+      </p>
+
+      <p>
+        Care isn’t wired into AI the way it is wired into us. AI’s objective is
+        technically to generate the response which minimizes the loss
+        function. Our goal is to love each other.
+      </p>
+
+      <p>
+        Intelligence and hard work may set you apart from other humans, but
+        curiosity, creativity, and care are traits that we all share.
+      </p>
+
+      <p>
+        When you strip away your name, your occupation, your gender, your
+        hometown, your ethnicity, you cannot be put into a subset of humanity.
+      </p>
+
+      <p>
+        There is nothing left to say but “I am a human being. I am you.”
+      </p>
+
+      <p>
+        I think that in the age of Artificial Intelligence, we should move away
+        from identifying with intelligence and hard work. I think it’s time to
+        start leaning into our humanity.
+      </p>
+    </main>
+
+    <script>
+      const body = document.body;
+      const toggle = document.getElementById("themeToggle");
+      const icon = document.getElementById("themeIcon");
+
+      if (localStorage.getItem("theme") === "light") {
+        body.classList.add("light");
+        icon.textContent = "☀︎";
+      }
+
+      toggle.addEventListener("click", () => {
+        body.classList.toggle("light");
+        const isLight = body.classList.contains("light");
+        icon.textContent = isLight ? "☀︎" : "☾";
+        localStorage.setItem("theme", isLight ? "light" : "dark");
+      });
+    </script>
+  </body>
+</html>

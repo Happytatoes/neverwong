@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Article Name | Happytatoes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" href="../images/favicon.png" type="image/png">
+</head>
+<body>
+  <nav>
+    <div class="nav-left">
+      <a href="/" class="nav-btn">← home</a>
+    </div>
+
+    <button id="themeToggle" aria-label="Toggle theme">
+      <span id="themeIcon">☾</span>
+    </button>
+  </nav>
+
+  <main class="article">
+    <h1>Article Name</h1>
+    <p class="meta">Author Name · Month Year</p>
+
+    <h2>Introduction</h2>
+    <p>Your writing here.</p>
+
+    <h2>The Challenge</h2>
+    <p>More writing.</p>
+
+    <h2>Conclusion</h2>
+    <p>Final thoughts.</p>
+  </main>
+
+  <script>
+    const body = document.body;
+    const toggle = document.getElementById("themeToggle");
+    const icon = document.getElementById("themeIcon");
+
+    if (localStorage.getItem("theme") === "light") {
+      body.classList.add("light");
+      icon.textContent = "☀︎";
+    }
+
+    toggle.addEventListener("click", () => {
+      body.classList.toggle("light");
+      const isLight = body.classList.contains("light");
+      icon.textContent = isLight ? "☀︎" : "☾";
+      localStorage.setItem("theme", isLight ? "light" : "dark");
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happytatoes</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="icon" href="images/favicon.png" type="image/png">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav>
+    <div class="nav-left">
+      <button class="nav-btn active" data-page="home">Home</button>
+      <button class="nav-btn" data-page="writings">Writing</button>
+      <button class="nav-btn" data-page="projects">Projects</button>
+      <button class="nav-btn" data-page="connect">Connect</button>
+    </div>
+
+    <button id="themeToggle" aria-label="Toggle theme">
+      <span id="themeIcon">☾</span>
+    </button>
+  </nav>
+
+  <main>
+    <section id="home" class="page active">
+      <p class="meta">press space to change theme</p>
+
+      <h1 class="jumbled jumbled-large">
+        <span style="--r:-6deg; --y:-2px;">H</span>
+        <span style="--r:4deg; --y:1px;" id="orange">A</span>
+        <span style="--r:-3deg; --y:0px;">P</span>
+        <span style="--r:6deg; --y:-1px;" id="orange">P</span>
+        <span style="--r:-5deg; --y:2px;">Y</span>
+        <span style="--r:3deg; --y:-1px;">T</span>
+        <span style="--r:-4deg; --y:1px;">A</span>
+        <span style="--r:5deg; --y:-2px;">T</span>
+        <span style="--r:-2deg; --y:0px;">O</span>
+        <span style="--r:4deg; --y:1px;" id="orange">E</span>
+        <span style="--r:-6deg; --y:-1px;">S</span>
+      </h1>
+      <p>is a combination of "happy" and "potatoes."</p>
+      <p>
+         unfortunately for potato-lovers, this website has very little to do with potatoes and much more to do with 
+         the writing and projects of 
+      </p>
+      <h2 class="jumbled jumbled-name">
+        <span class="highlight">n</span><span style="--r:-3deg;">o</span><span style="--r:2deg;">a</span><span style="--r:-2deg;">h</span>
+        <span>&nbsp;</span>
+        <span class="highlight">e</span><span class="highlight" style="--r:3deg;">v</span><span class="highlight" style="--r:-2deg;">e</span><span class="highlight" style="--r:2deg;">r</span><span style="--r:-3deg;">e</span><span style="--r:2deg;">s</span><span style="--r:-2deg;">t</span>
+        <span>&nbsp;</span>
+        <span class="highlight">w</span><span class="highlight" style="--r:3deg;">o</span><span class="highlight" style="--r:-2deg;">n</span><span class="highlight" style="--r:2deg;">g</span>
+      </h2>
+      <p>
+         (that's me!)
+      </p>
+      <img
+          class="small"
+          src="../images/homepage/beach.png"
+          alt="beach.png"
+        />
+        <p></p>
+        <p>
+          so who am I?
+       </p>
+       <p>
+          1. A Freshman at the <span id="orange">University of Texas at Austin</span> studying <span id="orange">Computer Science</span>.<br>
+          2. A Regional SOC Analyst in Training and a Developer Fellow at LHD. <br>
+          3. A Huge Nerd who's diving into <span id="orange">Systems, Security, and ML</span> right now. <br>
+          4. A Guy with a Nifty Website.<br>
+       </p>
+        <p>
+          feel free to dive into my projects and writing, and thanks for checking out my website!
+        </p>
+        <p>
+          peace out, </br>
+          <a href="https://linkedin.com/in/neverwong" target="_blank"><span id="orange"><u>noah</u></span></a>
+        </p>
+    </section>
+
+    <section id="writings" class="page">
+      <h2>Writing</h2>
+
+      <article>
+        <h3>Identity</h3>
+        <p>
+          January 31, 2026 • What makes us human?
+        </p>
+        <a href="/writings/identity.html" class="read-button">read</a>
+      </article>
+
+      <article>
+        <h3>It Doesn’t Matter How You Say It</h3>
+        <p>
+          January 23, 2026 • Does tone make LLMs more dangerous?
+        </p>
+        <a href="/writings/it-doesnt-matter-how-you-say-it.html" class="read-button">read</a>
+      </article>
+    </section>
+
+    <section id="projects" class="page">
+      <h2>Projects</h2>
+
+      <article>
+        <h3>Penny</h3>
+        <p>
+          Penny makes financial advice cuter than ever! Penny uses Gemini API to analyze
+          financial data and generate financial tips
+          based on the specifics of the data. Built for
+          HackTX with Heather Kim, Avery Allen, and Isaac Fleitas.
+        </p>
+        <a target="_blank" href="https://github.com/Happytatoes/Pixel_Pirates" class="read-button">see code</a>
+        <p></p>
+        <img
+          src="../images/homepage/penny.png"
+          alt="penny.png"
+        />
+      </article>
+
+      <article>
+        <h3>Echoes</h3>
+        <p>
+          The Ephemeral Social Media Site. This full-stack project was designed with Supabase,
+          SQL, Google Auth, and vanilla JS. It includes a multi-layered hate speech filter and
+          auto-deletion function. Over 1200 posts and 40 users!
+        </p>
+        <a href="https://echoes-blond.vercel.app/" class="read-button">try it out!</a>
+        <p></p>
+        <img
+          src="../images/homepage/echoes.png"
+          alt="echoes.png"
+        />
+      </article>
+
+      <article>
+        <h3>Babble</h3>
+        <p>
+          Custom language models. Experimental LLM project based on a tutorial by
+          Andrej Karpathy. I built a language model from scratch and implemented
+          self-attention using his tutorial. Users input custom datasets and get custom
+          language models based on their writing styles.
+        </p>
+        <p></p>
+        <img
+          src="../images/homepage/babble.png"
+          alt="babble.png"
+        />
+      </article>
+
+      <article>
+        <h3>Eco Empire</h3>
+        <p>
+          Eco Empire challenges players to
+          manage a virtual power plant, balancing economic growth and environmental
+          sustainability.
+        </p>
+        <a href="https://happytatoes.github.io/eco-empire/" target="_blank" class="read-button">try it out!</a>
+        <a href="https://github.com/Happytatoes/eco-empire" target="_blank" class="read-button">see code</a>
+        <p></p>
+        <img
+          src="../images/homepage/eco.png"
+          alt="eco.png"
+        />
+      </article>
+
+      <article>
+        <h3>Brainrot Button</h3>
+        <p>
+          Take control of your brainrot. Tired of getting dopamine hits from infinite
+          scroll apps? Use the brainrot button: a fun app built with Node, Express, and
+          Node.
+        </p>
+        <a href="https://happytatoes.github.io/brainrot-button/" target="_blank" class="read-button">try it out!</a>
+        <a href="https://github.com/Happytatoes/brainrot-button-backend" target="_blank" class="read-button">see code</a>
+        <p></p>
+        <img
+          src="../images/homepage/brainrot.png"
+          alt="brainrot.png"
+        />
+      </article>
+
+      <article>
+        <h3>To-do List</h3>
+        <p>
+          Organize your life. Simple frontend to-do list built with HTML, CSS, and
+          Vanilla JavaScript. Includes add, edit, and delete functions.
+        </p>
+        <a href="https://happytatoes.github.io/frontend-todo-list/" target="_blank" class="read-button">try it out!</a>
+        <a href="https://github.com/Happytatoes/frontend-todo-list" target="_blank" class="read-button">see code</a>
+        <p></p>
+        <img
+          src="../images/homepage/todo.png"
+          alt="todo.png"
+        />
+      </article>
+
+      <article>
+        <h3>Lucky App</h3>
+        <p>
+          What are the chances? With this application, flip a coin, roll some dice, or
+          access the weather via an API. This application was my first experience using
+          Android Studio, Java, and XML to design and create an Android application.
+        </p>
+        <img
+          src="../images/homepage/lucky.png"
+          alt="lucky.png"
+        />
+      </article>
+
+      <article>
+        <h3>Dino App</h3>
+        <p>
+          Prehistoric information, modern interface. This was my first experiment with
+          Swift and iOS application development. With help from tutorial by Sean Allen,
+          I set up Xcode and built the framework of my application. After that, I added
+          a prehistoric twist and some relevant dino info.
+        </p>
+        <img
+          src="../images/homepage/dino.png"
+          alt="dino.png"
+        />
+      </article>
+
+      <article>
+        <h3>Rock Paper Scissors</h3>
+        <p>
+          Simple project with JavaScript logic and
+          website development. Play against a “bot” that uses a random number generator.
+        </p>
+        <a href="https://happytatoes.github.io/rock-paper-scissors/" target="_blank" class="read-button">try it out!</a>
+        <a href="https://github.com/Happytatoes/rock-paper-scissors" target="_blank" class="read-button">see code</a>
+        <p></p>
+        <img
+          src="../images/homepage/rps.png"
+          alt="rps.png"
+        />
+      </article>
+
+      <article>
+        <h3>Font Tester</h3>
+        <p>
+          Simple website that taught me JavaScript basics. Only works with HTML font
+          families such as Helvetica and Times New Roman.
+        </p>
+        <a href="https://happytatoes.github.io/font-tester/" target="_blank" class="read-button">try it out!</a>
+        <a href="https://github.com/Happytatoes/font-tester" target="_blank" class="read-button">see code</a>
+        <p></p>
+        <img
+          src="../images/homepage/font.png"
+          alt="font.png"
+        />
+      </article>
+      
+    </section>
+
+    <section id="connect" class="page">
+      <h2>Connect</h2>
+      <p>
+        <a id="link" href="mailto:noah@example.com" target="_blank"><span id="orange">noaheverestwong</span> [at] gmail [dot] com</a>
+      </p>
+      <p>
+        <a id="link" href="https://github.com/happytatoes" target="_blank">github.com/<span id="orange">happytatoes</span></a>
+      </p>
+      <p>
+        <a id="link" href="https://linkedin.com/in/neverwong" target="_blank">linkedin.com/in/<span id="orange">neverwong</span></a>
+      </p>
+      <p>
+        <a id="link" href="https://instagram.com/nichenoah_" target="_blank">instagram.com/<span id="orange">nichenoah_</span></a>
+      </p>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
