@@ -327,6 +327,7 @@ body {
     font-size: 1.02rem;
   }
 
+  #small,
   img,
   iframe {
     max-width: 60%;
@@ -357,17 +358,15 @@ body {
   a {
     font-size: 13px;
   }
-
-  img {
-    max-width: 200px;
-  }
-
-  #small {
-    max-width: 250px;
-  }
   
   .jumbled-large {
-    font-size: 35px;
+    font-size: 32px;
+  }
+
+  #small,
+  img,
+  iframe {
+    max-width: 60%;
   }
 
 }
