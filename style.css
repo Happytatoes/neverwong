@@ -329,7 +329,7 @@ body {
 
   img,
   iframe {
-    max-width: 100%;
+    max-width: 60%;
   }
 }
 
@@ -352,4 +352,22 @@ body {
   .article h2::before {
     width: 1.5rem;
   }
+
+  p,
+  a {
+    font-size: 13px;
+  }
+
+  img {
+    max-width: 200px;
+  }
+
+  #small {
+    max-width: 250px;
+  }
+  
+  .jumbled-large {
+    font-size: 35px;
+  }
+
 }
