@@ -311,6 +311,10 @@ body {
     padding: 6.5rem 1.25rem 3.5rem;
   }
 
+  h1 {
+    font-size: 40px;
+  }
+
   .jumbled-large {
     font-size: 3.2rem;
   }
@@ -346,6 +350,10 @@ body {
 }
 
 @media (max-width: 640px) {
+  h1 {
+    font-size: 32px;
+  }
+  
   .article h2 {
     margin-top: 2.5rem;
   }
