@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>The Full Adder: A Logical Deep Dive | Happytatoes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" href="../images/favicon.png" type="image/png">
+</head>
+<body>
+  <nav>
+    <div class="nav-left">
+      <a href="/" class="nav-btn">← home</a>
+    </div>
+
+    <button id="themeToggle" aria-label="Toggle theme">
+      <span id="themeIcon">☾</span>
+    </button>
+  </nav>
+
+  <main class="article">
+    <h1>Why the Full Adder Works</h1>
+    <p class="meta">Noah Wong · February 9, 2026</p>
+
+    <h2>Introduction</h2>
+    <p>Computers need to add numbers, and since they can only work with bits, computer scientists constructed hardware to add bits.</p>
+	<p> The most rudimentary of these is the half-adder, which takes in two values, a and b. The output is a sum and a carry. The results can be summarized in these output tables.</p>
+    
+    <img
+        src="../images/why-the-full-adder-works/one.png"
+        alt="one.png"
+      />
+
+    <p>These are the results for adding two bits in binary. The least significant bit is considered the sum while the most significant bit is considered the carry.</p>
+
+    <img
+        src="../images/why-the-full-adder-works/two.png"
+        alt="two.png"
+      />
+
+    <p>As you may have noticed, the operation for sum is XOR, since if the bits are the same the sum is zero while if the bits are different, the sum is one. The carry bit is also AND, since it is only true if both bits are one.</p>
+
+    <h2>The Challenge</h2>
+    <p>Now, the problem with this is that in large additions, we will often need three inputs, since we are carrying bits from previous additions.</p>
+
+	<img
+        src="../images/why-the-full-adder-works/three.png"
+        alt="three.png"
+      />
+
+	<p> As shown here, the second addition (0 plus 1 with a 1 being carried in) the answer is a sum of zero and a carry of one.</p>
+	<p> To do this, the full adder was created out of two half adders and an XOR.</p>
+
+	<img
+        src="../images/why-the-full-adder-works/four.png"
+        alt="four.png"
+      />
+
+    <p class="meta">Image source: GeeksforGeeks</p>
+
+    <p>When I was taught this in Computer Architecture class, I was made aware that this worked, but I was curious as to why it worked.</p><p> So, I dove into the theory behind the two results and tried to explain why each of them was logical.</p>
+
+    <p>The sum bit is xor(C, xor (A, B))</p>
+
+    <p>Take a second to think about why: it’s the sum output (meaning XOR) of the second half adder, and those two inputs are C (the carry bit) and the sum output (meaning XOR) of the first half adder, which takes A and B as inputs.</p>
+	<p> Converting this to an equation, the sum is equal to (A ^ B) ^ C.</p>
+
+    <p>Let’s think about this again in terms of outputs.</p>
+
+    <img
+        src="../images/why-the-full-adder-works/five.png"
+        alt="five.png"
+      />
+
+    <p>If there are an odd number of 1 bits overall, (either 1 or 3), the resulting answer is either 01 or 11, meaning the sum is 1. If there are an even number of 1 bits (either 0 or 2), the answer is either 00 or 10, meaning the sum is zero.</p>
+
+    <p>Looking at the XOR values means that</p>
+	<p>SCENARIO ONE: If A and B are the same</p>
+	<p>...and C is 1, there are an odd number of 1 bits.</p>
+	<p>...and C is 0, there is an even number of 1 bits.</p>
+    <p>SCENARIO TWO: If A and B are different</p>
+	<p>...and C is 1, there are an even number of 1 bits.</p>
+    <p>...and C is 0, there are an odd number of 1 bits.</p>
+    <p>But what about the carry?</p>
+
+    <p>Tracing through the steps of the full adder, the carry is xor(and(xor(A, B), C), and(A, B)). </p>
+	<p>Expanding that,</p>
+	<p> ((A ^ B) & C) ^ (A & B).</p>
+
+    <p>Let’s break this down into two scenarios in which we have a carry bit:</p>
+
+    <p>First, (A & B) or the right side of the equation. There is a carry if both A and B are one, since the final result is now either 10 or 11 depending on C.</p>
+
+    <p>Second, ((A ^ B) & C). What this means is that there will be a carry if C is 1 and either A or B is 1. This breaks down into the two scenarios A & C and B & C, and you can see that if either one of those are true, we need a carry bit.</p>
+
+    <h2>Conclusion</h2>
+    <p>So there you have it, a way to intuitively make sense of not just how the full adder works, but in theory why it should work based on bitwise operations. </p>
+	<p>Thank you for reading, and if you have any ideas as to how to break this down better, let me know. I’m always trying to learn more.</p>
+  </main>
+
+  <script>
+    const body = document.body;
+    const toggle = document.getElementById("themeToggle");
+    const icon = document.getElementById("themeIcon");
+
+    if (localStorage.getItem("theme") === "light") {
+      body.classList.add("light");
+      icon.textContent = "☀︎";
+    }
+
+    toggle.addEventListener("click", () => {
+      body.classList.toggle("light");
+      const isLight = body.classList.contains("light");
+      icon.textContent = isLight ? "☀︎" : "☾";
+      localStorage.setItem("theme", isLight ? "light" : "dark");
+    });
+  </script>
+</body>
+</html>
