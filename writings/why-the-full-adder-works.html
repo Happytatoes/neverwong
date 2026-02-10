@@ -76,12 +76,11 @@
     <p>If there are an odd number of 1 bits overall, (either 1 or 3), the resulting answer is either 01 or 11, meaning the sum is 1. If there are an even number of 1 bits (either 0 or 2), the answer is either 00 or 10, meaning the sum is zero.</p>
 
     <p>Looking at the XOR values means that</p>
-	<p>SCENARIO ONE: If A and B are the same</p>
-	<p>...and C is 1, there are an odd number of 1 bits.</p>
-	<p>...and C is 0, there is an even number of 1 bits.</p>
-    <p>SCENARIO TWO: If A and B are different</p>
-	<p>...and C is 1, there are an even number of 1 bits.</p>
-    <p>...and C is 0, there are an odd number of 1 bits.</p>
+	  <p>1. If A and B are the same and C is 1, there are an odd number of 1 bits.</p>
+	  <p>2. If A and B are the same and C is 0, there is an even number of 1 bits.</p>
+    <p>3. If A and B are different and C is 1, there are an even number of 1 bits.</p>
+	  <p>4. If A and B are different and C is 1, there are an odd number of 1 bits.</p>
+    
     <p>But what about the carry?</p>
 
     <p>Tracing through the steps of the full adder, the carry is xor(and(xor(A, B), C), and(A, B)). </p>
