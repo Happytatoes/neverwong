@@ -148,6 +148,15 @@ a {
   text-decoration: none;
 }
 
+.read-button.disabled {
+  background: var(--muted);
+  border-color: var(--muted);
+  color: var(--bg);
+  cursor: not-allowed;
+  pointer-events: none; /* Prevents clicking and hover states */
+  opacity: 0.6;
+}
+
 #link{
   text-decoration: none;
 }
