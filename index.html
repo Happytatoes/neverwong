@@ -29,61 +29,72 @@
   </nav>
 
   <main>
-    <section id="home" class="page active">
-      <p class="meta">press space to change theme</p>
 
-      <h1 class="jumbled jumbled-large">
-        <span style="--r:-6deg; --y:-2px;">H</span>
-        <span style="--r:4deg; --y:1px;" id="orange">A</span>
-        <span style="--r:-3deg; --y:0px;">P</span>
-        <span style="--r:6deg; --y:-1px;" id="orange">P</span>
-        <span style="--r:-5deg; --y:2px;">Y</span>
-        <span style="--r:3deg; --y:-1px;">T</span>
-        <span style="--r:-4deg; --y:1px;">A</span>
-        <span style="--r:5deg; --y:-2px;">T</span>
-        <span style="--r:-2deg; --y:0px;">O</span>
-        <span style="--r:4deg; --y:1px;" id="orange">E</span>
-        <span style="--r:-6deg; --y:-1px;">S</span>
-      </h1>
-      <p>is a combination of "happy" and "potatoes."</p>
-      <p>
-         unfortunately for potato-lovers, this website has very little to do with potatoes and much more to do with 
-         the writing and projects of...
-      </p>
-      <h2 class="jumbled jumbled-name">
-        <span class="highlight">n</span><span style="--r:-3deg;">o</span><span style="--r:2deg;">a</span><span style="--r:-2deg;">h</span>
-        <span>&nbsp;</span>
-        <span class="highlight">e</span><span class="highlight" style="--r:3deg;">v</span><span class="highlight" style="--r:-2deg;">e</span><span class="highlight" style="--r:2deg;">r</span><span style="--r:-3deg;">e</span><span style="--r:2deg;">s</span><span style="--r:-2deg;">t</span>
-        <span>&nbsp;</span>
-        <span class="highlight">w</span><span class="highlight" style="--r:3deg;">o</span><span class="highlight" style="--r:-2deg;">n</span><span class="highlight" style="--r:2deg;">g</span>
-      </h2>
-      <p>
-         (that's me!)
-      </p>
-      
-      <img
-          class="small"
-          src="../images/homepage/beach.png"
-          alt="beach.png"
-        />
-        <p></p>
-        <p>
-          so who am I?
-       </p>
-       <p>
-          - Freshman at the <span id="orange">University of Texas at Austin</span> studying <span id="orange">Computer Science</span>.<br>
-          - Regional SOC Analyst in Training and Developer Fellow at LHD. <br>
-          - Huge nerd who's diving into <span id="orange">systems, security, and ML</span> right now. <br>
-          - Guy with a nifty website.<br>
-       </p>
-        <p>
-          feel free to dive into my projects and writing to learn more, and thanks for checking out my website!
+   <section id="home" class="page active">
+
+  <!-- ── 1. HERO ─────────────────────────────────────────────── -->
+
+    <div class="hero">
+      <div class="hero-text">
+        <p class="meta" id="press">press space to change theme</p>
+        <h1 class="jumbled jumbled-large" aria-label="NOAH EVEREST WONG">
+          <span style="--r:-6deg; --y:-2px;">N</span>
+          <span style="--r:4deg;  --y:1px;" id="orange">O</span>
+          <span style="--r:-3deg; --y:0px;">A</span>
+          <span style="--r:6deg;  --y:-1px;">H</span>
+          <span>&nbsp;</span>
+          <span style="--r:-5deg; --y:2px;" >W</span>
+          <span style="--r:3deg;  --y:-1px;">O</span>
+          <span style="--r:-4deg; --y:1px;"  id="orange">N</span>
+          <span style="--r:5deg;  --y:-2px;">G</span>
+        </h1>
+        <p class="hero-tagline">
+          CS @ UT Austin | security, systems, AI/ML
         </p>
-        <p>
-          peace, </br>
-          <a href="https://linkedin.com/in/neverwong" target="_blank"><span id="orange"><u>noah</u></span></a>
-        </p>
-    </section>
+      </div>
+
+      <div class="hero-photo-wrap">
+        <img class="hero-photo-circle" src="../images/homepage/beach.png" alt="Noah Wong" />
+      </div>
+    </div>
+    
+    <!-- ── 2. NOW ──────────────────────────────────────────────── -->
+    <div class="home-section">
+      <p>
+        Hi! I'm Noah, a freshman at <span id="orange">UT Austin</span> studying <span id="orange">Computer Science</span> 
+        with a minor in <span id="orange">Core Texts and Ideas</span>. I write a lot of code and a lot of words about 
+        how technology works and how to use it to help people.
+      </p>
+      <p>
+        Right now I'm training as a <span id="orange">SOC analyst</span> at UT's Information Security Office, working on 
+        <span id="orange">hardware and security</span> research, building embedded systems with an 
+        <span id="orange">AI &amp; robotics</span> team, and software engineering at LHD.
+      </p>
+      <p>
+        I love philosophy, discussion, and teaching, especially when it lines up with the technical topics I nerd out 
+        about. I'm working on a few papers, technical writeups, and essays about the projects I'm building that you 
+        should check out!
+      </p>
+      <p>
+        Long term, I want to become a <span id="orange">security researcher or engineer</span> in industry. I'd love 
+        to contribute to the next layer of defense as we build new computer systems and AI infrastructure. I also really 
+        want to become a <span id="orange">teaching assistant</span> and start making <span id="orange">educational content</span> online, 
+        but I have to learn before I can teach, and that's what the next few years are for.
+      </p>
+      <p>
+        When I'm not at my desk, I play intramural <span id="orange">soccer</span> and solve <span id="orange">Rubik's cubes</span>. 
+        (just started averaging sub-20 seconds on 3x3!)
+      </p>
+      <p>
+        That's it for now — thanks for checking out my website!
+      </p>
+      <p style="margin-top: 2rem;">
+        peace,<br>
+        <a href="https://linkedin.com/in/neverwong" target="_blank"><span id="orange"><u>noah</u></span></a>
+      </p>
+    </div>
+
+  </section>
 
     <section id="writings" class="page">
       <h2>Writing</h2>
@@ -91,7 +102,7 @@
       <article>
         <h3>Esoterify: Cryptographic Chaining</h3>
         <p>
-          Coming Soon • Should we use multiple encryption methods?
+          Coming Soon
         </p>
         <a href="javascript:void(0)" class="read-button disabled">read</a>
       </article>
@@ -143,6 +154,7 @@
         <a target="_blank" href="https://github.com/Happytatoes/Pixel_Pirates" class="read-button">see code</a>
         <p></p>
         <img
+          class="small-img"
           src="../images/homepage/penny.png"
           alt="penny.png"
         />
@@ -158,6 +170,7 @@
         <a href="https://echoes-blond.vercel.app/" class="read-button">try it out!</a>
         <p></p>
         <img
+          class="small-img"
           src="../images/homepage/echoes.png"
           alt="echoes.png"
         />
@@ -173,6 +186,7 @@
         </p>
         <p></p>
         <img
+          class="small-img"
           src="../images/homepage/babble.png"
           alt="babble.png"
         />
@@ -189,6 +203,7 @@
         <a href="https://github.com/Happytatoes/eco-empire" target="_blank" class="read-button">see code</a>
         <p></p>
         <img
+          class="small-img"
           src="../images/homepage/eco.png"
           alt="eco.png"
         />
@@ -205,23 +220,9 @@
         <a href="https://github.com/Happytatoes/brainrot-button-backend" target="_blank" class="read-button">see code</a>
         <p></p>
         <img
+          class="small-img"
           src="../images/homepage/brainrot.png"
           alt="brainrot.png"
-        />
-      </article>
-
-      <article>
-        <h3>To-do List</h3>
-        <p>
-          Organize your life. Simple frontend to-do list built with HTML, CSS, and
-          Vanilla JavaScript. Includes add, edit, and delete functions.
-        </p>
-        <a href="https://happytatoes.github.io/frontend-todo-list/" target="_blank" class="read-button">try it out!</a>
-        <a href="https://github.com/Happytatoes/frontend-todo-list" target="_blank" class="read-button">see code</a>
-        <p></p>
-        <img
-          src="../images/homepage/todo.png"
-          alt="todo.png"
         />
       </article>
 
@@ -233,6 +234,7 @@
           Android Studio, Java, and XML to design and create an Android application.
         </p>
         <img
+          class="small-img"
           src="../images/homepage/lucky.png"
           alt="lucky.png"
         />
@@ -247,38 +249,9 @@
           a prehistoric twist and some relevant dino info.
         </p>
         <img
+          class="small-img"
           src="../images/homepage/dino.png"
           alt="dino.png"
-        />
-      </article>
-
-      <article>
-        <h3>Rock Paper Scissors</h3>
-        <p>
-          Simple project with JavaScript logic and
-          website development. Play against a “bot” that uses a random number generator.
-        </p>
-        <a href="https://happytatoes.github.io/rock-paper-scissors/" target="_blank" class="read-button">try it out!</a>
-        <a href="https://github.com/Happytatoes/rock-paper-scissors" target="_blank" class="read-button">see code</a>
-        <p></p>
-        <img
-          src="../images/homepage/rps.png"
-          alt="rps.png"
-        />
-      </article>
-
-      <article>
-        <h3>Font Tester</h3>
-        <p>
-          Simple website that taught me JavaScript basics. Only works with HTML font
-          families such as Helvetica and Times New Roman.
-        </p>
-        <a href="https://happytatoes.github.io/font-tester/" target="_blank" class="read-button">try it out!</a>
-        <a href="https://github.com/Happytatoes/font-tester" target="_blank" class="read-button">see code</a>
-        <p></p>
-        <img
-          src="../images/homepage/font.png"
-          alt="font.png"
         />
       </article>
       

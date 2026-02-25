@@ -38,3 +38,17 @@ document.addEventListener("keydown", e => {
     toggleTheme();
   }
 });
+
+document.querySelectorAll('.achieve-toggle').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const expanded = btn.getAttribute('aria-expanded') === 'true';
+    const listId = btn.getAttribute('aria-controls');
+    const list = document.getElementById(listId);
+    btn.setAttribute('aria-expanded', String(!expanded));
+    if (expanded) {
+      list.hidden = true;
+    } else {
+      list.hidden = false;
+    }
+  });
+});
