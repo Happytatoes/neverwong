@@ -161,6 +161,11 @@ article {
   margin-bottom: 3rem;
 }
 
+article p {
+  overflow-wrap: break-word;
+  word-break: break-all; /* More aggressive breaking for technical strings */
+}
+
 .small {
   max-width: 400px;
 }
@@ -406,7 +411,6 @@ article {
 .achieve-list li {
   color: var(--text);
 }
-
 
 /* ── RESPONSIVE ───────────────────────────────────────────────── */
 
