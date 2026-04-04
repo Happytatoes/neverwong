@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Happytatoes</title>
-
+ 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -17,257 +17,342 @@
 <body>
   <nav>
     <div class="nav-left">
-      <button class="nav-btn active" data-page="home">Home</button>
+      <button class="nav-btn active" data-page="home">Teahouse</button>
+      <button class="nav-btn" data-page="about">Everest</button>
       <button class="nav-btn" data-page="writings">Writing</button>
       <button class="nav-btn" data-page="projects">Projects</button>
       <button class="nav-btn" data-page="connect">Connect</button>
     </div>
-
+ 
     <button id="themeToggle" aria-label="Toggle theme">
       <span id="themeIcon">☾</span>
     </button>
   </nav>
-
+ 
   <main>
+ 
+    <!-- ── HOME: TEAHOUSE ────────────────────────────────────────── -->
+    <section id="home" class="page active teahouse-page">
+ 
+      <h1 class="teahouse-title"><i>{noah wong / ut austin}</i></h1>
+ 
+      <div class="drinks-row">
+ 
+        <button class="drink-card" data-page="about" data-flavor="taro" data-label="{taro / about me}">
+          <div class="drink-img-wrap">
+            <img src="images/drinks/taro.png" alt="taro boba" />
+          </div>
+          <span class="drink-name">taro</span>
+          <span class="drink-sub">about me</span>
+        </button>
+ 
+        <button class="drink-card" data-page="writings" data-flavor="honeydew" data-label="{honeydew / writing}">
+          <div class="drink-img-wrap">
+            <img src="images/drinks/honeydew.png" alt="honeydew boba" />
+          </div>
+          <span class="drink-name">honeydew</span>
+          <span class="drink-sub">writing</span>
+        </button>
+ 
+        <button class="drink-card" data-page="projects" data-flavor="thai" data-label="{thai tea / projects}">
+          <div class="drink-img-wrap">
+            <img src="images/drinks/thai.png" alt="thai tea boba" />
+          </div>
+          <span class="drink-name">thai tea</span>
+          <span class="drink-sub">projects</span>
+        </button>
+ 
+        <button class="drink-card" data-page="connect" data-flavor="brown" data-label="{brown sugar / connect}">
+          <div class="drink-img-wrap">
+            <img src="images/drinks/brown.png" alt="brown sugar boba" />
+          </div>
+          <span class="drink-name">brown sugar</span>
+          <span class="drink-sub">connect</span>
+        </button>
 
-   <section id="home" class="page active">
+      </div>
+ 
+    </section>
+ 
+    <!-- ── ABOUT ──────────────────────────────────────────────── -->
+    <!-- OPENER -->
+  <section id="about" class="page">
+  <h2>Noah <i><span id="orange">Everest</span></i> Wong</h2>
 
-  <!-- ── 1. HERO ─────────────────────────────────────────────── -->
+  <!-- OPENER -->
+  <div class="home-section">
+   <p>Hi! I'm Noah, and I love [<a href="javascript:void(0)" class="nav-btn" data-page="projects"><span id="orange"><u>building</u></span></a>], [<a href="javascript:void(0)" class="nav-btn" data-page="writings"><span id="orange"><u>researching, writing</u></span></a>], and [<a href="javascript:void(0)" class="nav-btn" data-page="connect"><span id="orange"><u>talking</u></span></a>] to people about how to use technology to make a positive impact on the world.</p>
 
-    <div class="hero">
-      <div class="hero-text">
-        <p class="meta" id="press">press space to change theme</p>
-        <h1 class="jumbled jumbled-large" aria-label="NOAH EVEREST WONG">
-          <span style="--r:-6deg; --y:-2px;">N</span>
-          <span style="--r:4deg;  --y:1px;" id="orange">O</span>
-          <span style="--r:-3deg; --y:0px;">A</span>
-          <span style="--r:6deg;  --y:-1px;">H</span>
-          <span>&nbsp;</span>
-          <span style="--r:-5deg; --y:2px;" >W</span>
-          <span style="--r:3deg;  --y:-1px;">O</span>
-          <span style="--r:-4deg; --y:1px;"  id="orange">N</span>
-          <span style="--r:5deg;  --y:-2px;">G</span>
-        </h1>
-        <p class="hero-tagline">
-          CS @ UT Austin | security, systems, AI/ML
-        </p>
+   <p>-----</p>
+
+   <!-- PHOTO -->
+  <div class="home-section">
+    <img src="images/homepage/beach.png" alt="beach" style="max-width: 250px;" />
+    <img src="images/homepage/look.png" alt="look" style="max-width: 250px;" />
+  </div>
+
+   <p>Right now, I'm a freshman at <span id="orange">UT Austin</span> studying <span id="orange">Computer Science</span> with a minor in <span id="orange">Core Texts and Ideas</span>.</p>
+
+   <p>I'm training as a <span id="orange">SOC Analyst</span> at UT's Information Security Office, working on <span id="orange">Systems Security Research</span>, and building a few other things.</p>
+
+   <p>Long term, I'd love to contribute to the next layer of defense as we build new computer systems and AI infrastructure.</p>
+
+   <p>Here's a little timeline about what I've been up to, where I am now, and where I hope to go someday.</p>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="home-section">
+    <p class="home-section-title">TIMELINE</p>
+    <div class="timeline-grid">
+
+      <div class="tl-block">
+        <div class="tl-year">2019</div>
+        <div class="tl-title">Content Creator</div>
+        <div class="tl-desc">I made videos about Minecraft/Wynncraft. ~10k total views and 60 subs.</div>
       </div>
 
-      <div class="hero-photo-wrap">
-        <img class="hero-photo-circle" src="../images/homepage/beach.png" alt="Noah Wong" />
+      <div class="tl-block">
+        <div class="tl-year">2020</div>
+        <div class="tl-title">Harpist</div>
+        <div class="tl-desc">Reached UIL State Solo & Ensemble + All-Region Orchestra.</div>
       </div>
-    </div>
-    
-    <!-- ── 2. NOW ──────────────────────────────────────────────── -->
-    <div class="home-section">
-      <p>
-        Hi! I'm Noah, a freshman at <span id="orange">UT Austin</span> studying <span id="orange">Computer Science</span> 
-        with a minor in <span id="orange">Core Texts and Ideas</span>. I write a lot of code and a lot of words about 
-        how technology works and how to use it to help people.
-      </p>
-      <p>
-        Right now I'm training as a <span id="orange">SOC analyst</span> at UT's Information Security Office, working on 
-        <span id="orange">hardware and security</span> research, building embedded systems with an 
-        <span id="orange">AI &amp; robotics</span> team, and software engineering at LHD.
-      </p>
-      <p>
-        I love philosophy, discussion, and teaching, especially when it lines up with the technical topics I nerd out 
-        about. I'm working on a few papers, technical writeups, and essays about the projects I'm building that you 
-        should check out!
-      </p>
-      <p>
-        Long term, I'd love to contribute to the next layer of defense as we build new computer systems and AI infrastructure. I also really 
-        want to become a <span id="orange">teaching assistant</span> and start making <span id="orange">educational content</span> online, 
-        but I have to learn before I can teach, and that's what the next few years are for.
-      </p>
-      <p>
-        When I'm not at my desk, I play intramural <span id="orange">soccer</span> and solve <span id="orange">Rubik's cubes</span>. 
-        (just started averaging sub-20 seconds on 3x3!)
-      </p>
-      <p>
-        That's it for now — thanks for checking out my website :)
-      </p>
-      <p style="margin-top: 2rem;">
-        peace,<br>
-        <a href="https://linkedin.com/in/neverwong" target="_blank"><span id="orange"><u>noah</u></span></a>
-      </p>
+
+      <div class="tl-block">
+        <div class="tl-year">2022</div>
+        <div class="tl-title">Debater</div>
+        <div class="tl-desc">Ranked #1 in Texas at my peak in PF. Got 5th best speaker & 3rd seed at TFA State.</div>
+      </div>
+
+      <div class="tl-block">
+        <div class="tl-year">2022</div>
+        <div class="tl-title">Programming Tutor</div>
+        <div class="tl-desc">Taught Python and English through JuniorCoach. Rated 5-stars.</div>
+      </div>
+
+      <div class="tl-block">
+        <div class="tl-year">2023</div>
+        <div class="tl-title">Co-founder</div>
+        <div class="tl-desc">Started Java Junction to teach kids how to code. Educated 150+ students.</div>
+      </div>
+
+       <div class="tl-block">
+        <div class="tl-year">2023</div>
+        <div class="tl-title">Co-founder</div>
+        <div class="tl-desc">Started an NSTEM chapter, grew to 200+ members, 1,300+ volunteer hours.</div>
+      </div>
+
+      <div class="tl-block">
+        <div class="tl-year">2024</div>
+        <div class="tl-title">Programming Tutor</div>
+        <div class="tl-desc">Taught kids how to solve hard problems at 5i Robotics.</div>
+      </div>
+
+      <div class="tl-block">
+        <div class="tl-year">2024</div>
+        <div class="tl-title">Software Developer</div>
+        <div class="tl-desc">Architected a humanitarian law trivia app for Android with RedCross.</div>
+      </div>
+
+      <div class="tl-block">
+        <div class="tl-year">2025</div>
+        <div class="tl-title">Software Engineer</div>
+        <div class="tl-desc">Building embedded software on autonomous robotics systems with ECLAIR.</div>
+      </div>
+
+      <div class="tl-block">
+        <div class="tl-year">2025</div>
+        <div class="tl-title">Software Engineer</div>
+        <div class="tl-desc">Building an app to help the UT community with Longhorn Developers.</div>
+      </div>
+
+      <div class="tl-block">
+        <div class="tl-year">2026</div>
+        <div class="tl-title">Security Operations</div>
+        <div class="tl-desc">Working toward my CSDA Certification at UT's Information Security Office.</div>
+      </div>
+
+      <div class="tl-block">
+        <div class="tl-year">2026</div>
+        <div class="tl-title">Cyber Competitions</div>
+        <div class="tl-desc">TracerFIRE, MeowCTFs, UTCTF, ISSS Trivia, HASH Firewalling.</div>
+      </div>
+
     </div>
 
-  </section>
+    <p></p>
 
+    <p>-----</p>
+
+    <p>The world is changing fast, and so am I. In general, I want to use my { <span id="orange">integrity, curiosity, creativity, adaptability</span> }
+      for the benefit of { <span id="orange">humanity, community, freedom</span> }.</p>
+
+    <p>I'm into tech because I love learning, and I want to evolve fast in the face of cutting edge breakthroughs.</p>
+
+    <p>-----</p>
+
+  <!-- INTERESTS -->
+  <div class="home-section">
+    <p class="home-section-title">Interests</p>
+    <ul class="interests-list">
+      <li>Internet privacy</li>
+      <li>Digital freedom</li>
+      <li>Cryptography</li>
+      <li>Quantum computing</li>
+      <li>Interstellar travel</li>
+      <li>AI safety</li>
+      <li>Nanotechnology</li>
+      <li>Malware</li>
+      <li>Agentic frameworks</li>
+      <li>Public benefit tech</li>
+      <li>Open source software</li>
+      <li>Binary exploitation</li>
+      <li>Security architecture</li>
+      <li>Hardware</li>
+      <li>Human intelligence</li>
+      <li>Formal verification</li>
+      <li>Intersectional politics</li>
+      <li>Cybersecurity research</li>
+      <li>The GNU Project</li>
+      <li>Learning full OLL</li>
+      <li>3-2-3 edge pairing</li>
+      <li>Tech law</li>
+      <li>Public transportation</li>
+      <li>Reverse engineering</li>
+    </ul>
+  </div>
+
+  <!-- CLOSER -->
+  <div class="home-section">
+    <p>
+     If anything above resonated with you, 
+     don't hesitate to [<a href="https://linkedin.com/in/neverwong" target="_blank"><span id="orange">connect</span></a>]. 
+     And if you're all the way down here, thank you so much for reading. 
+
+    </p>
+    <p style="margin-top: 2rem; font-style: italic;">
+      peace,<br>
+      <span id="orange"><i>noah</i></span>
+    </p>
+  </div>
+
+</section>
+ 
+ 
+    <!-- ── WRITINGS ───────────────────────────────────────────── -->
     <section id="writings" class="page">
-      <h2>Writing</h2>
-
+      <h2><i>Writing</i></h2>
+ 
       <article>
         <h3>OS Sandboxing of a Web Application - Part 1: Theory & Setup</h3>
-        <p>
-          Coming Soon
-        </p>
+        <p>Coming Soon</p>
         <a href="javascript:void(0)" class="read-button disabled">read</a>
       </article>
-
+ 
       <article>
         <h3>Esoterify: Cryptographic Composition Toolkit</h3>
-        <p>
-          March 23, 2026 • What are the tradeoffs of each encryption method? • 3260 words
-        </p>
+        <p>March 23, 2026 • What are the tradeoffs of each encryption method? • 3260 words</p>
         <a href="/writings/esoterify.html" class="read-button">read</a>
       </article>
-
+ 
       <article>
         <h3>Rethinking Success and Comparison</h3>
-        <p>
-          February 17, 2026 • What should we strive for? • 1280 words
-        </p>
+        <p>February 17, 2026 • What should we strive for? • 1280 words</p>
         <a href="/writings/rethinking-success.html" class="read-button">read</a>
       </article>
-
+ 
       <article>
         <h3>The Full Adder: A Logical Deep Dive</h3>
-        <p>
-          February 9, 2026 • Why does the full adder work? • 661 words
-        </p>
+        <p>February 9, 2026 • Why does the full adder work? • 661 words</p>
         <a href="/writings/why-the-full-adder-works.html" class="read-button">read</a>
       </article>
-
+ 
       <article>
         <h3>Identity in the Post-AI World</h3>
-        <p>
-          January 31, 2026 • What makes us human? • 554 words
-        </p>
+        <p>January 31, 2026 • What makes us human? • 554 words</p>
         <a href="/writings/identity.html" class="read-button">read</a>
       </article>
-
+ 
       <article>
         <h3>Binary Expoitation & AI Safety: It Doesn't Matter How You Say It</h3>
-        <p>
-          January 23, 2026 • Does tone make LLMs more dangerous? • 975 words
-        </p>
+        <p>January 23, 2026 • Does tone make LLMs more dangerous? • 975 words</p>
         <a href="/writings/it-doesnt-matter-how-you-say-it.html" class="read-button">read</a>
       </article>
     </section>
-
+ 
+    <!-- ── PROJECTS ───────────────────────────────────────────── -->
     <section id="projects" class="page">
-      <h2>Projects</h2>
+      <h2><i>Projects</i></h2>
+ 
+      <article>
+        <h3>Esoterify</h3>
+        <p>Cryptographic Chaining Toolkit. I took the RSA, AES, ChaCha20, and Caesar ciphers and experimented with their combinations.
+            I compared the computational efficiency of each method, and discussed when it might be valuable to use a combo like RSA + AES.   
+        </p>
+        <a target="_blank" href="https://happytatoes.com/writings/esoterify.html" class="read-button">see writeup</a>
+        <a target="_blank" href="https://github.com/Happytatoes/Esoterify" class="read-button">see code</a>
+        <p></p>
+        <img class="small-img" src="../images/homepage/menu.png" alt="menu.png" />
+      </article>
 
       <article>
         <h3>Penny</h3>
-        <p>
-          Penny makes financial advice cuter than ever! Penny uses Gemini API to analyze
-          financial data and generate financial tips
-          based on the specifics of the data. Built for
-          HackTX with Heather Kim, Avery Allen, and Isaac Fleitas.
-        </p>
+        <p>Penny makes financial advice cuter than ever! Penny uses Gemini API to analyze financial data and generate financial tips based on the specifics of the data. Built for HackTX with Heather Kim, Avery Allen, and Isaac Fleitas.</p>
         <a target="_blank" href="https://github.com/Happytatoes/Pixel_Pirates" class="read-button">see code</a>
         <p></p>
-        <img
-          class="small-img"
-          src="../images/homepage/penny.png"
-          alt="penny.png"
-        />
+        <img class="small-img" src="../images/homepage/penny.png" alt="penny.png" />
       </article>
-
+ 
       <article>
         <h3>Echoes</h3>
-        <p>
-          The Ephemeral Social Media Site. This full-stack project was designed with Supabase,
-          SQL, Google Auth, and vanilla JS. It includes a multi-layered hate speech filter and
-          auto-deletion function. Over 1200 posts and 40 users!
-        </p>
+        <p>The Ephemeral Social Media Site. This full-stack project was designed with Supabase, SQL, Google Auth, and vanilla JS. It includes a multi-layered hate speech filter and auto-deletion function. Over 1200 posts and 40 users!</p>
         <a href="https://echoes-blond.vercel.app/" class="read-button">try it out!</a>
         <p></p>
-        <img
-          class="small-img"
-          src="../images/homepage/echoes.png"
-          alt="echoes.png"
-        />
+        <img class="small-img" src="../images/homepage/echoes.png" alt="echoes.png" />
       </article>
-
+ 
       <article>
         <h3>Babble</h3>
-        <p>
-          Custom language models. Experimental LLM project based on a tutorial by
-          Andrej Karpathy. I built a language model from scratch and implemented
-          self-attention using his tutorial. Users input custom datasets and get custom
-          language models based on their writing styles.
-        </p>
+        <p>Custom language models. Experimental LLM project based on a tutorial by Andrej Karpathy. I built a language model from scratch and implemented self-attention using his tutorial. Users input custom datasets and get custom language models based on their writing styles.</p>
         <p></p>
-        <img
-          class="small-img"
-          src="../images/homepage/babble.png"
-          alt="babble.png"
-        />
+        <img class="small-img" src="../images/homepage/babble.png" alt="babble.png" />
       </article>
-
+ 
       <article>
         <h3>Eco Empire</h3>
-        <p>
-          Eco Empire challenges players to
-          manage a virtual power plant, balancing economic growth and environmental
-          sustainability.
-        </p>
+        <p>Eco Empire challenges players to manage a virtual power plant, balancing economic growth and environmental sustainability.</p>
         <a href="https://happytatoes.github.io/eco-empire/" target="_blank" class="read-button">try it out!</a>
         <a href="https://github.com/Happytatoes/eco-empire" target="_blank" class="read-button">see code</a>
         <p></p>
-        <img
-          class="small-img"
-          src="../images/homepage/eco.png"
-          alt="eco.png"
-        />
+        <img class="small-img" src="../images/homepage/eco.png" alt="eco.png" />
       </article>
-
+ 
       <article>
         <h3>Brainrot Button</h3>
-        <p>
-          Take control of your brainrot. Tired of getting dopamine hits from infinite
-          scroll apps? Use the brainrot button: a fun app built with Node, Express, and
-          Node.
-        </p>
+        <p>Take control of your brainrot. Tired of getting dopamine hits from infinite scroll apps? Use the brainrot button: a fun app built with Node, Express, and Node.</p>
         <a href="https://happytatoes.github.io/brainrot-button/" target="_blank" class="read-button">try it out!</a>
         <a href="https://github.com/Happytatoes/brainrot-button-backend" target="_blank" class="read-button">see code</a>
         <p></p>
-        <img
-          class="small-img"
-          src="../images/homepage/brainrot.png"
-          alt="brainrot.png"
-        />
+        <img class="small-img" src="../images/homepage/brainrot.png" alt="brainrot.png" />
       </article>
-
+ 
       <article>
         <h3>Lucky App</h3>
-        <p>
-          What are the chances? With this application, flip a coin, roll some dice, or
-          access the weather via an API. This application was my first experience using
-          Android Studio, Java, and XML to design and create an Android application.
-        </p>
-        <img
-          class="small-img"
-          src="../images/homepage/lucky.png"
-          alt="lucky.png"
-        />
+        <p>What are the chances? With this application, flip a coin, roll some dice, or access the weather via an API. This application was my first experience using Android Studio, Java, and XML to design and create an Android application.</p>
+        <img class="small-img" src="../images/homepage/lucky.png" alt="lucky.png" />
       </article>
-
+ 
       <article>
         <h3>Dino App</h3>
-        <p>
-          Prehistoric information, modern interface. This was my first experiment with
-          Swift and iOS application development. With help from tutorial by Sean Allen,
-          I set up Xcode and built the framework of my application. After that, I added
-          a prehistoric twist and some relevant dino info.
-        </p>
-        <img
-          class="small-img"
-          src="../images/homepage/dino.png"
-          alt="dino.png"
-        />
+        <p>Prehistoric information, modern interface. This was my first experiment with Swift and iOS application development. With help from tutorial by Sean Allen, I set up Xcode and built the framework of my application. After that, I added a prehistoric twist and some relevant dino info.</p>
+        <img class="small-img" src="../images/homepage/dino.png" alt="dino.png" />
       </article>
-      
     </section>
-
+ 
+    <!-- ── CONNECT ────────────────────────────────────────────── -->
     <section id="connect" class="page">
-      <h2>Connect</h2>
+      <h2><i>Connect</i></h2>
       <p>
-        <a id="link" href="mailto:noah@example.com" target="_blank"><span id="orange">noaheverestwong</span> [at] gmail [dot] com</a>
+        <a id="link" href="mailto:noaheverestwong@gmail.com" target="_blank"><span id="orange">noaheverestwong</span> [at] gmail [dot] com</a>
       </p>
       <p>
         <a id="link" href="https://github.com/happytatoes" target="_blank">github.com/<span id="orange">happytatoes</span></a>
@@ -279,8 +364,10 @@
         <a id="link" href="https://instagram.com/nichenoah_" target="_blank">instagram.com/<span id="orange">nichenoah_</span></a>
       </p>
     </section>
+ 
   </main>
-
+ 
   <script src="script.js"></script>
 </body>
 </html>
+ 

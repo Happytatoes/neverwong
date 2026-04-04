@@ -1,39 +1,84 @@
-const pages = document.querySelectorAll(".page");
-const navButtons = document.querySelectorAll(".nav-btn");
-const themeToggle = document.getElementById("themeToggle");
-const themeIcon = document.getElementById("themeIcon");
-const body = document.body;
+/* ── PAGE NAVIGATION ──────────────────────────────────────────── */
 
-/* Navigation */
-navButtons.forEach(btn => {
-  btn.addEventListener("click", () => {
-    navButtons.forEach(b => b.classList.remove("active"));
-    pages.forEach(p => p.classList.remove("active"));
+const pages   = document.querySelectorAll('.page');
+const navBtns = document.querySelectorAll('.nav-btn');
 
-    btn.classList.add("active");
-    document.getElementById(btn.dataset.page).classList.add("active");
+function showPage(id) {
+  pages.forEach(p => p.classList.remove('active', 'fade-in'));
+  navBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.page === id));
+
+  const target = document.getElementById(id);
+  if (!target) return;
+
+  if (id === 'home') {
+    target.classList.add('active');
+  } else {
+    target.classList.add('active', 'fade-in');
+  }
+}
+
+navBtns.forEach(btn => {
+  btn.addEventListener('click', () => showPage(btn.dataset.page));
+});
+
+document.querySelectorAll('.drink-card').forEach(card => {
+  card.addEventListener('click', () => showPage(card.dataset.page));
+});
+
+
+/* ── TITLE COLOR ON DRINK HOVER ───────────────────────────────── */
+
+const title = document.querySelector('.teahouse-title');
+
+document.querySelectorAll('.drink-card').forEach(card => {
+  card.addEventListener('mouseenter', () => {
+    if (!title) return;
+    title.className = `teahouse-title flavor-${card.dataset.flavor}`;
+    title.innerHTML = `<i>${card.dataset.label}</i>`;
+  });
+  card.addEventListener('mouseleave', () => {
+    if (!title) return;
+    title.className = 'teahouse-title';
   });
 });
 
+const drinksRow = document.querySelector('.drinks-row');
+const teahouseTitle = document.querySelector('.teahouse-title');
+
+drinksRow.addEventListener('mouseleave', () => {
+  teahouseTitle.textContent = '{noah wong / ut austin}';
+  teahouseTitle.innerHTML = '<i>{noah wong / ut austin}</i>';
+  teahouseTitle.className = 'teahouse-title';
+});
+
+/* ── THEME TOGGLE ─────────────────────────────────────────────── */
+
+const body = document.body;
+const themeToggle = document.getElementById('themeToggle');
+const themeIcon = document.getElementById('themeIcon');
+
 /* Theme persistence */
-if (localStorage.getItem("theme") === "light") {
+if (themeIcon && localStorage.getItem("theme") === "light") {
   body.classList.add("light");
   themeIcon.textContent = "☀︎";
 }
 
 /* Toggle theme */
 function toggleTheme() {
+  if (!themeIcon) return;
   body.classList.toggle("light");
   const isLight = body.classList.contains("light");
   themeIcon.textContent = isLight ? "☀︎" : "☾";
   localStorage.setItem("theme", isLight ? "light" : "dark");
 }
 
-themeToggle.addEventListener("click", toggleTheme);
+if (themeToggle) {
+  themeToggle.addEventListener("click", toggleTheme);
+}
 
 /* Spacebar toggles theme */
 document.addEventListener("keydown", e => {
-  if (e.code === "Space") {
+  if ((e.code === "Space" || e.key === " ") && !['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) {
     e.preventDefault();
     toggleTheme();
   }

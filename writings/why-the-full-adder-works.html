@@ -20,7 +20,7 @@
   </nav>
 
   <main class="article">
-    <h1>The Full Adder: A Logical Deep Dive</h1>
+    <h1><i>The Full Adder: A Logical Deep Dive</i></h1>
     <p class="meta">Noah Wong · February 9, 2026</p>
 
     <h2>Introduction</h2>
@@ -98,22 +98,6 @@
 	<p>Thank you for reading, and if you have any ideas as to how to break this down better, let me know. I’m always trying to learn more.</p>
   </main>
 
-  <script>
-    const body = document.body;
-    const toggle = document.getElementById("themeToggle");
-    const icon = document.getElementById("themeIcon");
-
-    if (localStorage.getItem("theme") === "light") {
-      body.classList.add("light");
-      icon.textContent = "☀︎";
-    }
-
-    toggle.addEventListener("click", () => {
-      body.classList.toggle("light");
-      const isLight = body.classList.contains("light");
-      icon.textContent = isLight ? "☀︎" : "☾";
-      localStorage.setItem("theme", isLight ? "light" : "dark");
-    });
-  </script>
+  <script src="article-theme.js"></script>
 </body>
 </html>
