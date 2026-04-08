@@ -25,20 +25,20 @@
 
     <h2>Introduction</h2>
     <p>Esoterify is a command line tool that allows a user to input text, encrypt it, decrypt it, and store keys using four encryption techniques: Caesar, RSA, ChaCha20, and AES. You can find the code 
-		[<a target="_blank" href="https://github.com/Happytatoes/esoterify"><span id="orange"><u>here</u></span></a>]</p>
+    [<a target="_blank" href="https://github.com/Happytatoes/esoterify"><span id="orange"><u>here</u></span></a>]</p>
 
     <p>The main feature of Esoterify is that the program allows the user to chain multiple cryptographic methods and see transparently how each method builds upon each other.</p>
 
     <p>The program is written in Python and uses a command line interface. The menu options are as follows:</p>
 
-    <p>e - enter a message<br>
-    v - view current message<br>
-    r - run a single encryption or decryption<br>
-    c - run a chain of encryptions or decryptions<br>
-    k - view keys<br>
-    l - access the link to the writeup<br>
-    m - view menu<br>
-    q - quit program</p>
+<pre><code>e - enter a message
+v - view current message
+r - run a single encryption or decryption
+c - run a chain of encryptions or decryptions
+k - view keys
+l - access the link to the writeup
+m - view menu
+q - quit program</code></pre>
 
     <p>Entering a message, viewing the current message, viewing stored keys, viewing the menu, and quitting the program are all helpers that let the user understand what they’re doing, but the real purpose is to run encryptions or chain multiple methods.</p>
 
@@ -108,53 +108,53 @@
 
     <p>Now, this is how it works, but I was curious as to why. To get a better understanding, I started with an easy example.</p>
 
-    <p>Let’s say p = 3, and q = 11.</p>
+<pre><code>Let p = 3, and q = 11.
 
-    <p>Then, n = 3 x 11 = 33 and φ(n) = (3-1) x (11-1) = 20</p>
+Then, n = 3 x 11 = 33 and φ(n) = (3-1) x (11-1) = 20
 
-    <p>Now, we pick some e such that e is coprime to 20. Let’s say e = 3.</p>
+Now, we pick some e such that e is coprime to 20. Let’s say e = 3.
 
-    <p>Our private exponent d is something such that d x 3 ≡ 1 (mod 20)</p>
+Our private exponent d is something such that d x 3 ≡ 1 (mod 20)
 
-    <p>One candidate is seven, since 7 x 3 = 21, and 21 ≡ 1 (mod 20)</p>
+One candidate is seven, since 7 x 3 = 21, and 21 ≡ 1 (mod 20)
 
-    <p>So now, we have a public key of (n = 33, e = 3) and a private key of (n = 33, d = 7)</p>
+So now, we have a public key of (n = 33, e = 3) and a private key of (n = 33, d = 7)
 
-    <p>Let’s try an example, say M = 5</p>
+Let’s try an example, say M = 5
 
-    <p>Encryption:</p>
+Encryption:
 
-    <p>C = 5^3 (mod 33) = 26</p>
+C = 5^3 (mod 33) = 26
 
-    <p>Decryption:</p>
+Decryption:
 
-    <p>M = 26^7 (mod 33) = 5</p>
+M = 26^7 (mod 33) = 5
 
-    <p>So, it works. But why?</p>
+So, it works. But why?
 
-    <p>C ≡ M^e (mod n) and M ≡ C^d (mod n)</p>
+C ≡ M^e (mod n) and M ≡ C^d (mod n)
 
-    <p>so</p>
+so
 
-    <p>M ≡ ( M^e (mod n) ) ^ d (mod n)</p>
+M ≡ ( M^e (mod n) ) ^ d (mod n)
 
-    <p>and</p>
+and
 
-    <p>M ≡ M^ed (mod n)</p>
+M ≡ M^ed (mod n)
 
-    <p>Now, since d x e ≡ 1 (mod φ(n))</p>
+Now, since d x e ≡ 1 (mod φ(n))
 
-    <p>For some integer k,</p>
+For some integer k,
 
-    <p>ed = k x φ(n) + 1</p>
+ed = k x φ(n) + 1
 
-    <p>so</p>
+so
 
-    <p>M^ed = M^(k x φ(n)+1) = ( M^φ(n) ) ^ k times M^1</p>
+M^ed = M^(k x φ(n)+1) = ( M^φ(n) ) ^ k times M^1
 
-    <p>Since M^φ(n) ≡ 1 (mod n) due to Euler's Totient Theorem,</p>
+Since M^φ(n) ≡ 1 (mod n) due to Euler's Totient Theorem,
 
-    <p>( M^φ(n) ) ^ k times M^1 = 1^k x M ≡ M (mod n)</p>
+( M^φ(n) ) ^ k times M^1 = 1^k x M ≡ M (mod n)</code></pre>
 
     <p>Nice! It seems to work, but why is this secure?</p>
 
@@ -165,7 +165,7 @@
 
     <p>The keys are typically 128, 192, or 256 bits, and those lengths correspond to how many rounds the data goes through. 128 means 10 rounds, 192 means 12 rounds, and 256 means 14 rounds.</p>
 
-    <p>Each round contains four steps, and before I tell you the steps, try to conceptualize the data as a matrix with rows and columns, so each step makes more sense. It’s also helpful to understand the terms “block” and “state.” The blocks are units of data that sit static in the disc. You can think of these blocks as similar to the original message, M. The state is</p>
+    <p>Each round contains four steps, and before I tell you the steps, try to conceptualize the data as a matrix with rows and columns, so each step makes more sense. It’s also helpful to understand the terms “block” and “state.” The blocks are units of data that sit static in the disc. You can think of these blocks as similar to the original message, M.</p>
 
     <p>Step 1:</p>
 
@@ -203,80 +203,68 @@
 
     <p>Here is an example run of the program that uses the aforementioned menu options:</p>
 
-    <p>welcome to esoterify!</p>
+<pre><code>enter your menu option: e
 
-    <p>menu:<br>
-    e - enter a message<br>
-    v - view current message<br>
-    r - run a single encryption or decryption<br>
-    c - run a chain of encryptions or decryptions<br>
-    k - view keys<br>
-    l - access the link to the writeup<br>
-    m - view menu<br>
-    q - quit program</p>
+enter your message: hello
 
-    <p>enter your menu option: e</p>
+enter your menu option: v
 
-    <p>enter your message: hello</p>
+current message: hello
 
-    <p>enter your menu option: v</p>
+enter your menu option: r
 
-    <p>current message: hello</p>
+options:
+a - caesar cipher (use the previous key times negative 1 to reverse)
+options for encryption:
+b - rsa
+c - aes
+d - chacha20
+options for decryption:
+e - rsa
+f - aes
+g - chacha20
 
-    <p>enter your menu option: r</p>
+enter the letter code of the encryption or decryption you would like to run: a
 
-    <p>options:<br>
-    a - caesar cipher (use the previous key times negative 1 to reverse)<br>
-    options for encryption:<br>
-    b - rsa<br>
-    c - aes<br>
-    d - chacha20<br>
-    options for decryption:<br>
-    e - rsa<br>
-    f - aes<br>
-    g - chacha20</p>
+&lt;caesar cipher engaged&gt;
 
-    <p>enter the letter code of the encryption or decryption you would like to run: a</p>
+info: shifts character values by a key amount
+i.e. positive one shifts A -> B, negative two shifts C -> A
+enter key: 3
 
-    <p>&lt;caesar cipher engaged&gt;</p>
+&lt;message to encrypt&gt;
 
-    <p>info: shifts character values by a key amount<br>
-    i.e. positive one shifts A -> B, negative two shifts C -> A<br>
-    enter key: 3</p>
+hello
 
-    <p>&lt;message to encrypt&gt;</p>
+&lt;step 1: break into characters&gt;
 
-    <p>hello</p>
+['h', 'e', 'l', 'l', 'o']
 
-    <p>&lt;step 1: break into characters&gt;</p>
+&lt;step 2: convert to ASCII values&gt;
 
-    <p>['h', 'e', 'l', 'l', 'o']</p>
+[104, 101, 108, 108, 111]
 
-    <p>&lt;step 2: convert to ASCII values&gt;</p>
+&lt;step 3: shift by key&gt;
 
-    <p>[104, 101, 108, 108, 111]</p>
+[107, 104, 111, 111, 114]
 
-    <p>&lt;step 3: shift by key&gt;</p>
+&lt;step 4: convert back to characters&gt;
 
-    <p>[107, 104, 111, 111, 114]</p>
+['k', 'h', 'o', 'o', 'r']
 
-    <p>&lt;step 4: convert back to characters&gt;</p>
+&lt;step 5: rejoin&gt;
 
-    <p>['k', 'h', 'o', 'o', 'r']</p>
+khoor
 
-    <p>&lt;step 5: rejoin&gt;</p>
+&lt;result: new current message&gt;
 
-    <p>khoor</p>
+enter your menu option: v
 
-    <p>&lt;result: new current message&gt;</p>
+current message: khoor
 
-    <p>enter your menu option: v</p>
+enter your menu option: q
 
-    <p>current message: khoor</p>
-
-    <p>enter your menu option: q</p>
-
-    <p>bye bye!</p>
+bye bye!</code></pre>
 
     <h2>Chaining</h2>
     <p>It does something similar with each single encryption, but the interesting feature is the ability to run multiple encryptions in a chaining pattern.</p>
@@ -308,290 +296,292 @@
 
     <h2>Chaining Example</h2>
 
-    <p>enter your menu option: e</p>
+<pre><code>enter your menu option: e
 
-    <p>enter your message: hello guys!</p>
+enter your message: hello guys!
 
-    <p>enter your menu option: c</p>
+enter your menu option: c
 
-    <p>&lt;chain mode engaged&gt;</p>
+&lt;chain mode engaged&gt;
 
-    <p>info: run multiple encryptions/decryptions in sequence<br>
-    enter space-separated letter codes<br>
-    example: b c f<br>
-    a=caesar b=rsa c=aes d=chacha20 e=rsa decrypt f=aes decrypt g=chacha20 decrypt<br>
-    enter chain: a b c</p>
+info: run multiple encryptions/decryptions in sequence
+enter space-separated letter codes
+example: b c f
+a=caesar b=rsa c=aes d=chacha20 e=rsa decrypt f=aes decrypt g=chacha20 decrypt
+enter chain: a b c
 
-    <p>&lt;chain summary&gt;</p>
+&lt;chain summary&gt;
 
-    <p>1. a - Caesar<br>
-    2. b - RSA<br>
-    3. c - AES-256-CFB</p>
+1. a - Caesar
+2. b - RSA
+3. c - AES-256-CFB
 
-    <p>&lt;chain step 1/3: Caesar&gt;</p>
+&lt;chain step 1/3: Caesar&gt;
 
-    <p>message before step:<br>
-    hello guys!</p>
+message before step:
+hello guys!
 
-    <p>&lt;caesar cipher engaged&gt;</p>
+&lt;caesar cipher engaged&gt;
 
-    <p>info: shifts character values by a key amount<br>
-    i.e. positive one shifts A -> B, negative two shifts C -> A<br>
-    enter key: 1</p>
+info: shifts character values by a key amount
+i.e. positive one shifts A -> B, negative two shifts C -> A
+enter key: 1
 
-    <p>&lt;message to encrypt&gt;</p>
+&lt;message to encrypt&gt;
 
-    <p>hello guys!</p>
+hello guys!
 
-    <p>&lt;step 1: break into characters&gt;</p>
+&lt;step 1: break into characters&gt;
 
-    <p>['h', 'e', 'l', 'l', 'o', ' ', 'g', 'u', 'y', 's', '!']</p>
+['h', 'e', 'l', 'l', 'o', ' ', 'g', 'u', 'y', 's', '!']
 
-    <p>&lt;step 2: convert to ASCII values&gt;</p>
+&lt;step 2: convert to ASCII values&gt;
 
-    <p>[104, 101, 108, 108, 111, 32, 103, 117, 121, 115, 33]</p>
+[104, 101, 108, 108, 111, 32, 103, 117, 121, 115, 33]
 
-    <p>&lt;step 3: shift by key&gt;</p>
+&lt;step 3: shift by key&gt;
 
-    <p>[105, 102, 109, 109, 112, 33, 104, 118, 122, 116, 34]</p>
+[105, 102, 109, 109, 112, 33, 104, 118, 122, 116, 34]
 
-    <p>&lt;step 4: convert back to characters&gt;</p>
+&lt;step 4: convert back to characters&gt;
 
-    <p>['i', 'f', 'm', 'm', 'p', '!', 'h', 'v', 'z', 't', '"']</p>
+['i', 'f', 'm', 'm', 'p', '!', 'h', 'v', 'z', 't', '"']
 
-    <p>&lt;step 5: rejoin&gt;</p>
+&lt;step 5: rejoin&gt;
 
-    <p>ifmmp!hvzt"</p>
+ifmmp!hvzt"
 
-    <p>&lt;result: new current message&gt;</p>
+&lt;result: new current message&gt;
 
-    <p>message after step:<br>
-    ifmmp!hvzt"</p>
+message after step:
+ifmmp!hvzt"
 
-    <p>&lt;chain step 2/3: RSA&gt;</p>
+&lt;chain step 2/3: RSA&gt;
 
-    <p>message before step:<br>
-    ifmmp!hvzt"</p>
+message before step:
+ifmmp!hvzt"
 
-    <p>&lt;rsa cipher engaged&gt;</p>
+&lt;rsa cipher engaged&gt;
 
-    <p>info: asymmetric cipher using public key (e, n) and private key (d, n)</p>
+info: asymmetric cipher using public key (e, n) and private key (d, n)
 
-    <p>&lt;message to encrypt&gt;</p>
+&lt;message to encrypt&gt;
 
-    <p>ifmmp!hvzt"</p>
+ifmmp!hvzt"
 
-    <p>&lt;step 1: generate prime numbers p and q&gt;</p>
+&lt;step 1: generate prime numbers p and q&gt;
 
-    <p>p: 3413<br>
-    q: 15887</p>
+p: 3413
+q: 15887
 
-    <p>&lt;step 2: compute n and phi(n)&gt;</p>
+&lt;step 2: compute n and phi(n)&gt;
 
-    <p>n: 54222331<br>
-    phi(n): 54203032</p>
+n: 54222331
+phi(n): 54203032
 
-    <p>&lt;step 3: choose public exponent e&gt;</p>
+&lt;step 3: choose public exponent e&gt;
 
-    <p>e: 65537</p>
+e: 65537
 
-    <p>&lt;step 4: compute private exponent d&gt;</p>
+&lt;step 4: compute private exponent d&gt;
 
-    <p>d: 26405545</p>
+d: 26405545
 
-    <p>&lt;step 5: convert message to ASCII integers&gt;</p>
+&lt;step 5: convert message to ASCII integers&gt;
 
-    <p>[105, 102, 109, 109, 112, 33, 104, 118, 122, 116, 34]</p>
+[105, 102, 109, 109, 112, 33, 104, 118, 122, 116, 34]
 
-    <p>&lt;step 6: encrypt each integer with c = m^e mod n&gt;</p>
+&lt;step 6: encrypt each integer with c = m^e mod n&gt;
 
-    <p>[22584759, 5810400, 7271499, 7271499, 48073005, 40981122, 48223838, 767863, 7057970, 24026372, 34514369]</p>
+[22584759, 5810400, 7271499, 7271499, 48073005, 40981122, 48223838, 767863, 7057970, 24026372, 34514369]
 
-    <p>&lt;step 7: convert ciphertext to bytes and encode base64&gt;</p>
+&lt;step 7: convert ciphertext to bytes and encode base64&gt;
 
-    <p>ciphertext bytes (hex): 01589db70058a8e0006ef44b006ef44b02dd892d<br>0271528202dfd65e000bb777006bb232016e9d04020ea5c1<br>
-    base64: AVidtwBYqOAAbvRLAG70SwLdiS0CcVKCAt/WXgALt3cAa7IyAW6dBAIOpcE=</p>
+ciphertext bytes (hex): 01589db70058a8e0006ef44b006ef44b02dd892d0271528202dfd65e000bb777006bb232016e9d04020ea5c1
+base64: AVidtwBYqOAAbvRLAG70SwLdiS0CcVKCAt/WXgALt3cAa7IyAW6dBAIOpcE=
 
-    <p>&lt;result: encryption complete&gt;</p>
+&lt;result: encryption complete&gt;
 
-    <p>stored key #1: 26405545:54222331<br>
-    message after step:<br>
-    AVidtwBYqOAAbvRLAG70SwLdiS0CcVKCAt/WXgALt3cAa7IyAW6dBAIOpcE=</p>
+stored key #1: 26405545:54222331
+message after step:
+AVidtwBYqOAAbvRLAG70SwLdiS0CcVKCAt/WXgALt3cAa7IyAW6dBAIOpcE=
 
-    <p>&lt;chain step 3/3: AES-256-CFB&gt;</p>
+&lt;chain step 3/3: AES-256-CFB&gt;
 
-    <p>message before step:<br>
-    AVidtwBYqOAAbvRLAG70SwLdiS0CcVKCAt/WXgALt3cAa7IyAW6dBAIOpcE=</p>
+message before step:
+AVidtwBYqOAAbvRLAG70SwLdiS0CcVKCAt/WXgALt3cAa7IyAW6dBAIOpcE=
 
-    <p>&lt;aes-256 cipher engaged&gt;</p>
+&lt;aes-256 cipher engaged&gt;
 
-    <p>info: industry-standard block cipher, 128-bit blocks with 256-bit key</p>
+info: industry-standard block cipher, 128-bit blocks with 256-bit key
 
-    <p>&lt;message to encrypt&gt;</p>
+&lt;message to encrypt&gt;
 
-    <p>AVidtwBYqOAAbvRLAG70SwLdiS0CcVKCAt/WXgALt3cAa7IyAW6dBAIOpcE=</p>
+AVidtwBYqOAAbvRLAG70SwLdiS0CcVKCAt/WXgALt3cAa7IyAW6dBAIOpcE=
 
-    <p>&lt;step 1: convert to bytes&gt;</p>
+&lt;step 1: convert to bytes&gt;
 
-    <p>message as bytes: b'AVidtwBYqOAAbvRLAG70SwLdiS0CcVKCAt/WXgALt3cAa7IyAW6dBAIOpcE='<br>
-    length: 60 bytes</p>
+message as bytes: b'AVidtwBYqOAAbvRLAG70SwLdiS0CcVKCAt/WXgALt3cAa7IyAW6dBAIOpcE='
+length: 60 bytes
 
-    <p>&lt;step 2: generate key and iv (initialization vector)&gt;</p>
+&lt;step 2: generate key and iv (initialization vector)&gt;
 
-    <p>key (256 bits): 2ea75331d4e1bc7eddcdcf0892b07fe7f176b70a6bbcaab417a56466daec1148<br>
-    iv (128 bits): 7ada8ef7f238a1793bbff06a25eb32a2</p>
+key (256 bits): 2ea75331d4e1bc7eddcdcf0892b07fe7f176b70a6bbcaab417a56466daec1148
+iv (128 bits): 7ada8ef7f238a1793bbff06a25eb32a2
 
-    <p>&lt;step 3: encrypt using aes-cfb&gt;</p>
+&lt;step 3: encrypt using aes-cfb&gt;
 
-    <p>encrypted bytes (hex): 6343a10b83d0648c43330db8612d4eaca1b958ae452a06dd7e1078f00af9<br>f312f960fcacfb5acfce8f7284f69d98f785baff8e56f6cc5e4dab3d837b<br>
-    length: 60 bytes</p>
+encrypted bytes (hex): 6343a10b83d0648c43330db8612d4eaca1b958ae452a06dd7e1078f00af9f312f960fcacfb5acfce8f7284f69d98f785baff8e56f6cc5e4dab3d837b
+length: 60 bytes
 
-    <p>&lt;step 4: prepend iv and encode base64&gt;</p>
+&lt;step 4: prepend iv and encode base64&gt;
 
-    <p>iv + ciphertext (hex): 7ada8ef7f238a1793bbff06a25eb32a26343a10b83d0648c43330db8612d<br>4eaca1b958ae452a06dd7e1078f00af9f312f960fcacfb5acf<br>ce8f7284f69d98f785baff8e56f6cc5e4dab3d837b<br>
-    base64: etqO9/I4oXk7v/BqJesyomNDoQuD0GSMQzMNuGEtTqyhuViuRSoG3X4<br>QePAK+fMS+WD8rPtaz86PcoT2nZj3hbr/jlb2zF5Nqz2Dew==</p>
+iv + ciphertext (hex): 7ada8ef7f238a1793bbff06a25eb32a26343a10b83d0648c43330db8612d4eaca1b958ae452a06dd7e1078f00af9f312f960fcacfb5acfce8f7284f69d98f785baff8e56f6cc5e4dab3d837b
+base64: etqO9/I4oXk7v/BqJesyomNDoQuD0GSMQzMNuGEtTqyhuViuRSoG3X4QePAK+fMS+WD8rPtaz86PcoT2nZj3hbr/jlb2zF5Nqz2Dew==
 
-    <p>&lt;result: encryption complete&gt;</p>
+&lt;result: encryption complete&gt;
 
-    <p>stored key #2: 2ea75331d4e1bc7eddcdcf0892b07fe7f176b70a6bbcaab417a56466daec1148<br>
-    message after step:<br>
-    etqO9/I4oXk7v/BqJesyomNDoQuD0GSMQzMNuGEtTqyhuViuRSoG<br>3X4QePAK+fMS+WD8rPtaz86PcoT2nZj3hbr/jlb2zF5Nqz2Dew==</p>
+stored key #2: 2ea75331d4e1bc7eddcdcf0892b07fe7f176b70a6bbcaab417a56466daec1148
+message after step:
+etqO9/I4oXk7v/BqJesyomNDoQuD0GSMQzMNuGEtTqyhuViuRSoG3X4QePAK+fMS+WD8rPtaz86PcoT2nZj3hbr/jlb2zF5Nqz2Dew==
 
-    <p>&lt;result: chain complete&gt;</p>
+&lt;result: chain complete&gt;
 
-    <p>enter your menu option: c</p>
+enter your menu option: c
 
-    <p>&lt;chain mode engaged&gt;</p>
+&lt;chain mode engaged&gt;
 
-    <p>info: run multiple encryptions/decryptions in sequence<br>
-    enter space-separated letter codes<br>
-    example: b c f<br>
-    a=caesar b=rsa c=aes d=chacha20 e=rsa decrypt f=aes decrypt g=chacha20 decrypt<br>
-    enter chain: f e a</p>
+info: run multiple encryptions/decryptions in sequence
+enter space-separated letter codes
+example: b c f
+a=caesar b=rsa c=aes d=chacha20 e=rsa decrypt f=aes decrypt g=chacha20 decrypt
+enter chain: f e a
 
-    <p>&lt;chain summary&gt;</p>
+&lt;chain summary&gt;
 
-    <p>1. f - AES-256-CFB decrypt<br>
-    2. e - RSA decrypt<br>
-    3. a - Caesar</p>
+1. f - AES-256-CFB decrypt
+2. e - RSA decrypt
+3. a - Caesar
 
-    <p>&lt;chain step 1/3: AES-256-CFB decrypt&gt;</p>
+&lt;chain step 1/3: AES-256-CFB decrypt&gt;
 
-    <p>message before step:<br>
-    etqO9/I4oXk7v/BqJesyomNDoQuD0GSMQzMNuGEtTqyhuViuRSoG3X4Qe<br>PAK+fMS+WD8rPtaz86PcoT2nZj3hbr/jlb2zF5Nqz2Dew==</p>
+message before step:
+etqO9/I4oXk7v/BqJesyomNDoQuD0GSMQzMNuGEtTqyhuViuRSoG3X4QePAK+fMS+WD8rPtaz86PcoT2nZj3hbr/jlb2zF5Nqz2Dew==
 
-    <p>&lt;aes-256 decryption engaged&gt;</p>
+&lt;aes-256 decryption engaged&gt;
 
-    <p>&lt;step 1: get key&gt;</p>
+&lt;step 1: get key&gt;
 
-    <p>stored keys:<br>
-    1. RSA: 26405545:54222331<br>
-    2. AES-256-CFB: 2ea75331d4e1bc7eddcdcf0892b07fe7f176b70a6bbcaab417a56466daec1148</p>
+stored keys:
+1. RSA: 26405545:54222331
+2. AES-256-CFB: 2ea75331d4e1bc7eddcdcf0892b07fe7f176b70a6bbcaab417a56466daec1148
 
-    <p>enter key number or paste key: 2<br>
-    using key: 2ea75331d4e1bc7eddcdcf0892b07fe7f176b70a6bbcaab417a56466daec1148</p>
+enter key number or paste key: 2
+using key: 2ea75331d4e1bc7eddcdcf0892b07fe7f176b70a6bbcaab417a56466daec1148
 
-    <p>&lt;step 2: decode base64&gt;</p>
+&lt;step 2: decode base64&gt;
 
-    <p>base64 input: etqO9/I4oXk7v/BqJesyomNDoQuD0GSMQzMNuGEtTqyhuViuRS<br>oG3X4QePAK+fMS+WD8rPtaz86PcoT2nZj3hbr/jlb2zF5Nqz2Dew==<br>
-    decoded (hex): 7ada8ef7f238a1793bbff06a25eb32a26343a10b83d0648c43330<br>db8612d4eaca1b958ae452a06dd7e1078f00af9f312f960fcacfb5acfce8f7284f69d98f785baff8e56f6cc5e4dab3d837b</p>
+base64 input: etqO9/I4oXk7v/BqJesyomNDoQuD0GSMQzMNuGEtTqyhuViuRSoG3X4QePAK+fMS+WD8rPtaz86PcoT2nZj3hbr/jlb2zF5Nqz2Dew==
+decoded (hex): 7ada8ef7f238a1793bbff06a25eb32a26343a10b83d0648c43330db8612d4eaca1b958ae452a06dd7e1078f00af9f312f960fcacfb5acfce8f7284f69d98f785baff8e56f6cc5e4dab3d837b
 
-    <p>&lt;step 3: extract iv&gt;</p>
+&lt;step 3: extract iv&gt;
 
-    <p>iv: 7ada8ef7f238a1793bbff06a25eb32a2<br>
-    ciphertext: 6343a10b83d0648c43330db8612d4eaca1b958ae452a06dd7e1078f00af9f312f960fc<br>acfb5acfce8f7284f69d98f785baff8e56f6cc5e4dab3d837b</p>
+iv: 7ada8ef7f238a1793bbff06a25eb32a2
+ciphertext: 6343a10b83d0648c43330db8612d4eaca1b958ae452a06dd7e1078f00af9f312f960fcacfb5acfce8f7284f69d98f785baff8e56f6cc5e4dab3d837b
 
-    <p>&lt;step 4: decrypt&gt;</p>
+&lt;step 4: decrypt&gt;
 
-    <p>decrypted bytes: 4156696474774259714f41416276524c4147373053774c646953304363<br>64b4341742f575867414c7433634161374979415736644241494f7063453d</p>
+decrypted bytes: 4156696474774259714f41416276524c4147373053774c64695330436364b4341742f575867414c7433634161374979415736644241494f7063453d
 
-    <p>&lt;step 5: convert to string&gt;</p>
+&lt;step 5: convert to string&gt;
 
-    <p>decrypted: AVidtwBYqOAAbvRLAG70SwLdiS0CcVKCAt/WXgALt3cAa7IyAW6dBAIOpcE=</p>
+decrypted: AVidtwBYqOAAbvRLAG70SwLdiS0CcVKCAt/WXgALt3cAa7IyAW6dBAIOpcE=
 
-    <p>&lt;result: decryption complete&gt;</p>
+&lt;result: decryption complete&gt;
 
-    <p>message after step:<br>
-    AVidtwBYqOAAbvRLAG70SwLdiS0CcVKCAt/WXgALt3cAa7IyAW6dBAIOpcE=</p>
+message after step:
+AVidtwBYqOAAbvRLAG70SwLdiS0CcVKCAt/WXgALt3cAa7IyAW6dBAIOpcE=
 
-    <p>&lt;chain step 2/3: RSA decrypt&gt;</p>
+&lt;chain step 2/3: RSA decrypt&gt;
 
-    <p>message before step:<br>
-    AVidtwBYqOAAbvRLAG70SwLdiS0CcVKCAt/WXgALt3cAa7IyAW6dBAIOpcE=</p>
+message before step:
+AVidtwBYqOAAbvRLAG70SwLdiS0CcVKCAt/WXgALt3cAa7IyAW6dBAIOpcE=
 
-    <p>&lt;rsa decryption engaged&gt;</p>
+&lt;rsa decryption engaged&gt;
 
-    <p>&lt;step 1: get private key (d:n)&gt;</p>
+&lt;step 1: get private key (d:n)&gt;
 
-    <p>stored keys:<br>
-    1. RSA: 26405545:54222331<br>
-    2. AES-256-CFB: 2ea75331d4e1bc7eddcdcf0892b07fe7f176b70a6bbcaab417a56466daec1148</p>
+stored keys:
+1. RSA: 26405545:54222331
+2. AES-256-CFB: 2ea75331d4e1bc7eddcdcf0892b07fe7f176b70a6bbcaab417a56466daec1148
 
-    <p>enter key number or paste private key: 1<br>
-    using d: 26405545<br>
-    using n: 54222331</p>
+enter key number or paste private key: 1
+using d: 26405545
+using n: 54222331
 
-    <p>&lt;step 2: decode base64 to ciphertext bytes&gt;</p>
+&lt;step 2: decode base64 to ciphertext bytes&gt;
 
-    <p>base64 input: AVidtwBYqOAAbvRLAG70SwLdiS0CcVKCAt/WXgALt3cAa7IyAW6dBAIOpcE=<br>
-    ciphertext bytes (hex): 01589db70058a8e0006ef44b006ef44b02dd892d0271528202dfd65e000bb777006bb232016e9d04020ea5c1</p>
+base64 input: AVidtwBYqOAAbvRLAG70SwLdiS0CcVKCAt/WXgALt3cAa7IyAW6dBAIOpcE=
+ciphertext bytes (hex): 01589db70058a8e0006ef44b006ef44b02dd892d0271528202dfd65e000bb777006bb232016e9d04020ea5c1
 
-    <p>&lt;step 3: split bytes into rsa blocks&gt;</p>
+&lt;step 3: split bytes into rsa blocks&gt;
 
-    <p>[22584759, 5810400, 7271499, 7271499, 48073005, 40981122, 48223838, 767863, 7057970, 24026372, 34514369]</p>
+[22584759, 5810400, 7271499, 7271499, 48073005, 40981122, 48223838, 767863, 7057970, 24026372, 34514369]
 
-    <p>&lt;step 4: decrypt each integer with m = c^d mod n&gt;</p>
+&lt;step 4: decrypt each integer with m = c^d mod n&gt;
 
-    <p>[105, 102, 109, 109, 112, 33, 104, 118, 122, 116, 34]</p>
+[105, 102, 109, 109, 112, 33, 104, 118, 122, 116, 34]
 
-    <p>&lt;step 5: convert ASCII integers to characters&gt;</p>
+&lt;step 5: convert ASCII integers to characters&gt;
 
-    <p>ifmmp!hvzt"</p>
+ifmmp!hvzt"
 
-    <p>&lt;result: decryption complete&gt;</p>
+&lt;result: decryption complete&gt;
 
-    <p>message after step:<br>
-    ifmmp!hvzt"</p>
+message after step:
+ifmmp!hvzt"
 
-    <p>&lt;chain step 3/3: Caesar&gt;</p>
+&lt;chain step 3/3: Caesar&gt;
 
-    <p>message before step:<br>
-    ifmmp!hvzt"</p>
+message before step:
+ifmmp!hvzt"
 
-    <p>&lt;caesar cipher engaged&gt;</p>
+&lt;caesar cipher engaged&gt;
 
-    <p>info: shifts character values by a key amount<br>
-    i.e. positive one shifts A -> B, negative two shifts C -> A<br>
-    enter key: -1</p>
+info: shifts character values by a key amount
+i.e. positive one shifts A -> B, negative two shifts C -> A
+enter key: -1
 
-    <p>&lt;message to encrypt&gt;</p>
+&lt;message to encrypt&gt;
 
-    <p>ifmmp!hvzt"</p>
+ifmmp!hvzt"
 
-    <p>&lt;step 1: break into characters&gt;</p>
+&lt;step 1: break into characters&gt;
 
-    <p>['i', 'f', 'm', 'm', 'p', '!', 'h', 'v', 'z', 't', '"']</p>
+['i', 'f', 'm', 'm', 'p', '!', 'h', 'v', 'z', 't', '"']
 
-    <p>&lt;step 2: convert to ASCII values&gt;</p>
+&lt;step 2: convert to ASCII values&gt;
 
-    <p>[105, 102, 109, 109, 112, 33, 104, 118, 122, 116, 34]</p>
+[105, 102, 109, 109, 112, 33, 104, 118, 122, 116, 34]
 
-    <p>&lt;step 3: shift by key&gt;</p>
+&lt;step 3: shift by key&gt;
 
-    <p>[104, 101, 108, 108, 111, 32, 103, 117, 121, 115, 33]</p>
+[104, 101, 108, 108, 111, 32, 103, 117, 121, 115, 33]
 
-    <p>&lt;step 4: convert back to characters&gt;</p>
+&lt;step 4: convert back to characters&gt;
 
-    <p>['h', 'e', 'l', 'l', 'o', ' ', 'g', 'u', 'y', 's', '!']</p>
+['h', 'e', 'l', 'l', 'o', ' ', 'g', 'u', 'y', 's', '!']
 
-    <p>&lt;step 5: rejoin&gt;</p>
+&lt;step 5: rejoin&gt;
 
-    <p>hello guys!</p>
+hello guys!
 
-    <p>&lt;result: new current message&gt;</p>
+&lt;result: new current message&gt;
 
-    <p>message after step:<br>
-    hello guys!</p>
+message after step:
+hello guys!</code></pre>
+
+<p>That's it for today! Thanks for reading.</p>
   </main>
 
   <script src="article-theme.js"></script>

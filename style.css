@@ -718,3 +718,29 @@ article {
     grid-template-columns: 1fr;
   }
 }
+
+/* ── CODE & TERMINAL OUTPUT ──────────────────────────────────── */
+
+pre {
+  background: rgba(0, 0, 0, 0.2); /* Subtle contrast from your deep navy bg */
+  border-left: 3px solid var(--accent);
+  padding: 1.25rem;
+  margin: 1.5rem 0;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+
+code {
+  font-family: "SF Mono", "JetBrains Mono", "Roboto Mono", monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text);
+  /* This handles the long keys */
+  white-space: pre-wrap;       /* Maintains breaks but wraps when needed */
+  overflow-wrap: anywhere;    /* Forces a break in the middle of a long hex string */
+}
+
+/* Light mode adjustment */
+body.light pre {
+  background: rgba(0, 0, 0, 0.05);
+}
