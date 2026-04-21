@@ -27,7 +27,7 @@
     <p>Esoterify is a command line tool that allows a user to input text, encrypt it, decrypt it, and store keys using four encryption techniques: Caesar, RSA, ChaCha20, and AES. You can find the code 
     [<a target="_blank" href="https://github.com/Happytatoes/esoterify"><span id="orange"><u>here</u></span></a>]</p>
 
-    <p>The main feature of Esoterify is that the program allows the user to chain multiple cryptographic methods and see transparently how each method builds upon each other.</p>
+    <p>The main feature of Esoterify is that the program allows the user to chain multiple cryptographic methods and see transparently how methods build upon each other.</p>
 
     <p>The program is written in Python and uses a command line interface. The menu options are as follows:</p>
 
@@ -165,7 +165,7 @@ Since M^φ(n) ≡ 1 (mod n) due to Euler's Totient Theorem,
 
     <p>The keys are typically 128, 192, or 256 bits, and those lengths correspond to how many rounds the data goes through. 128 means 10 rounds, 192 means 12 rounds, and 256 means 14 rounds.</p>
 
-    <p>Each round contains four steps, and before I tell you the steps, try to conceptualize the data as a matrix with rows and columns, so each step makes more sense. It’s also helpful to understand the terms “block” and “state.” The blocks are units of data that sit static in the disc. You can think of these blocks as similar to the original message, M.</p>
+    <p>Each round contains four steps, and before I tell you the steps, try to conceptualize the data as a matrix with rows and columns, so each step makes more sense. It’s also helpful to understand the terms “block” and “state.” The blocks are units of data that sit static in the disk. You can think of these blocks as similar to the original message, M.</p>
 
     <p>Step 1:</p>
 
@@ -196,7 +196,7 @@ Since M^φ(n) ≡ 1 (mod n) due to Euler's Totient Theorem,
     <h2>ChaCha20</h2>
     <p>ChaCha20 is a stream cipher, so instead of breaking the text into blocks, it continuously encrypts the data. It uses a 256-bit key and a 96-bit nonce (which means number used once) to generate a very long stream of random numbers with which to XOR the data.</p>
 
-    <p>ChaCha20 is an ARX cipher, which means it uses Additional, Rotation, and XOR operations to scramble the data. These three operations are very efficient in hardware, making ChaCha20 fast. The 20 in the name comes from the 20 rounds of ARX operations done on the data to make it seem random.</p>
+    <p>ChaCha20 is an ARX cipher, which means it uses Addition, Rotation, and XOR operations to scramble the data. These three operations are very efficient in hardware, making ChaCha20 fast. The 20 in the name comes from the 20 rounds of ARX operations done on the data to make it seem random.</p>
 
     <h2>Program</h2>
     <p>Now, let’s talk about the program and its features.</p>
