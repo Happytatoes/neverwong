@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>chat</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap');
+
+  :root {
+    --bg: #0f172a;
+    --text: #f1f5f9;
+    --muted: #94a3b8;
+    --border: rgba(255, 255, 255, 0.12);
+    --accent: #e7a4ff;
+    --bubble-user: rgba(231, 164, 255, 0.08);
+    --bubble-ai: rgba(255, 255, 255, 0.03);
+    --input-bg: rgba(255, 255, 255, 0.05);
+  }
+
+  body.light {
+    --bg: #f4f6f8;
+    --text: #1a1a1a;
+    --muted: #4a5568;
+    --border: rgba(0, 0, 0, 0.12);
+    --accent: hsl(284, 100%, 65%);
+    --bubble-user: rgba(180, 80, 255, 0.07);
+    --bubble-ai: rgba(0, 0, 0, 0.03);
+    --input-bg: rgba(0, 0, 0, 0.04);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  #app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  /* ── HEADER ── */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 24px 14px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .header-left { display: flex; align-items: center; gap: 10px; }
+
+  .logo {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+  }
+
+  .model-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    padding: 2px 8px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s;
+  }
+
+  .model-tag:hover { border-color: var(--accent); color: var(--accent); }
+
+  #themeToggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--muted);
+    font-size: 16px;
+    padding: 2px 4px;
+    line-height: 1;
+    transition: color 0.15s;
+  }
+
+  #themeToggle:hover { color: var(--text); }
+
+  /* ── MESSAGES ── */
+  #messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    scroll-behavior: smooth;
+  }
+
+  #messages::-webkit-scrollbar { width: 4px; }
+  #messages::-webkit-scrollbar-track { background: transparent; }
+  #messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .msg {
+    display: flex;
+    flex-direction: column;
+    padding: 12px 16px;
+    border-radius: 8px;
+    animation: fadeUp 0.2s ease;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .msg.user {
+    background: var(--bubble-user);
+    border: 1px solid rgba(231, 164, 255, 0.1);
+    align-self: flex-end;
+    max-width: 82%;
+  }
+
+  .msg.assistant {
+    background: var(--bubble-ai);
+    border: 1px solid var(--border);
+    align-self: flex-start;
+    max-width: 92%;
+  }
+
+  .msg-role {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .msg.user .msg-role { color: var(--accent); opacity: 0.7; }
+
+  .msg-content {
+    font-size: 14px;
+    line-height: 1.65;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .msg-content code {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    background: var(--input-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+  }
+
+  .thinking { display: flex; gap: 5px; align-items: center; padding: 6px 0 2px; }
+
+  .dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--muted);
+    animation: blink 1.2s infinite;
+  }
+
+  .dot:nth-child(2) { animation-delay: 0.2s; }
+  .dot:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes blink {
+    0%, 80%, 100% { opacity: 0.2; }
+    40% { opacity: 1; }
+  }
+
+  /* ── INPUT ── */
+  #input-area {
+    padding: 16px 24px 20px;
+    border-top: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .input-row { display: flex; gap: 10px; align-items: flex-end; }
+
+  #userInput {
+    flex: 1;
+    background: var(--input-bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 14px;
+    padding: 11px 14px;
+    border-radius: 6px;
+    outline: none;
+    resize: none;
+    min-height: 44px;
+    max-height: 160px;
+    overflow-y: auto;
+    transition: border-color 0.15s;
+    line-height: 1.5;
+  }
+
+  #userInput:focus { border-color: var(--accent); }
+  #userInput::placeholder { color: var(--muted); }
+
+  #sendBtn {
+    background: var(--accent);
+    color: #0f172a;
+    border: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 6px;
+    cursor: pointer;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.15s;
+  }
+
+  #sendBtn:hover { opacity: 0.85; }
+  #sendBtn:disabled { opacity: 0.3; cursor: default; }
+  #sendBtn svg { width: 16px; height: 16px; fill: none; stroke: #0f172a; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  .input-meta { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
+
+  .input-hint { font-size: 11px; color: var(--muted); font-family: 'IBM Plex Mono', monospace; }
+
+  #clearBtn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 11px;
+    font-family: 'IBM Plex Mono', monospace;
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.15s;
+  }
+
+  #clearBtn:hover { color: var(--text); }
+
+  .error-msg {
+    font-size: 13px;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-left: 2px solid var(--accent);
+    padding: 10px 14px;
+    border-radius: 4px;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  /* ── MODEL MODAL ── */
+  #modelModal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(4px);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #modelModal.open { display: flex; }
+
+  .modal-box {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+    width: 360px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .modal-box h3 { font-weight: 400; font-size: 15px; }
+
+  .field-label {
+    font-size: 11px;
+    font-family: 'IBM Plex Mono', monospace;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  select, input[type="text"] {
+    width: 100%;
+    background: var(--input-bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    padding: 10px 14px;
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  select:focus, input[type="text"]:focus { border-color: var(--accent); }
+  select option { background: var(--bg); color: var(--text); }
+
+  .modal-actions { display: flex; gap: 8px; justify-content: flex-end; }
+
+  .btn {
+    background: var(--accent);
+    color: #0f172a;
+    border: none;
+    padding: 8px 18px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+
+  .btn:hover { opacity: 0.85; }
+
+  .btn-ghost {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 8px 16px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s;
+  }
+
+  .btn-ghost:hover { border-color: var(--text); color: var(--text); }
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="header-left">
+      <span class="logo">// chat</span>
+      <!--<span class="model-tag" id="modelTag" onclick="openModelModal()">llama-3.3-70b-versatile</span>-->
+    </div>
+    <button id="themeToggle"><span id="themeIcon">☾</span></button>
+  </header>
+
+  <div id="messages"></div>
+
+  <div id="input-area">
+    <div class="input-row">
+      <textarea id="userInput" placeholder="Message…" rows="1"></textarea>
+      <button id="sendBtn" onclick="sendMessage()">
+        <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+    <div class="input-meta">
+      <span class="input-hint">shift+enter newline · enter send</span>
+      <button id="clearBtn" onclick="clearChat()">clear</button>
+    </div>
+  </div>
+</div>
+
+<!--<div id="modelModal">
+  
+	<div class="modal-box">
+    <h3>Switch model</h3>
+    <div>
+      <div class="field-label">Model</div>
+      <select id="modelSelect">
+        <option value="llama-3.3-70b-versatile">llama-3.3-70b-versatile</option>
+        <option value="llama-3.1-8b-instant">llama-3.1-8b-instant</option>
+        <option value="mixtral-8x7b-32768">mixtral-8x7b-32768</option>
+        <option value="gemma2-9b-it">gemma2-9b-it</option>
+        <option value="custom">custom…</option>
+      </select>
+    </div>
+    <div id="customModelWrap" style="display:none">
+      <div class="field-label">Model name</div>
+      <input type="text" id="customModelInput" placeholder="e.g. llama3:8b" />
+    </div>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeModelModal()">cancel</button>
+      <button class="btn" onclick="applyModel()">apply</button>
+    </div>
+  </div>
+</div>-->
+
+<script>
+const SYSTEM_PROMPT = `You are a direct, intelligent assistant. Your behavior:
+
+- Be concise. If something can be said in one sentence, say it in one sentence.
+- Never use filler phrases like "Certainly!", "Great question!", "Absolutely!", "Of course!" or similar opener words. Start replies with the answer itself.
+- Don't use em dashes (—). Use commas, periods, or restructure the sentence.
+- When you're wrong, say what's actually true without framing it as a correction. Just state the right thing directly.
+- Avoid hedging that doesn't add information: "It's worth noting that", "It's important to understand that", "Keep in mind that" — cut these.
+- If a question is ambiguous or you'd need to guess at context to answer well, ask a single clarifying question instead of making a long guess. Prefer one short question over a possibly wrong long answer.
+- Be honest about uncertainty. "I'm not sure" or "I don't know" are acceptable answers.
+- Don't pad responses with summaries, sign-offs, or offers to help further at the end of replies.
+- When providing lists, don't label them with numbers or bullets unless order or discreteness matters.
+- Technical questions get technical answers. Don't over-explain basics unless asked.`;
+
+let model = 'llama-3.3-70b-versatile';
+let history = [];
+let isStreaming = false;
+
+/* ── THEME ── */
+const themeToggle = document.getElementById('themeToggle');
+const themeIcon = document.getElementById('themeIcon');
+
+if (localStorage.getItem('theme') === 'light') {
+  document.body.classList.add('light');
+  themeIcon.textContent = '☀︎';
+}
+
+function toggleTheme() {
+  document.body.classList.toggle('light');
+  const isLight = document.body.classList.contains('light');
+  themeIcon.textContent = isLight ? '☀︎' : '☾';
+  localStorage.setItem('theme', isLight ? 'light' : 'dark');
+}
+
+themeToggle.addEventListener('click', toggleTheme);
+
+document.addEventListener('keydown', e => {
+  if ((e.code === 'Space' || e.key === ' ') && !['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName)) {
+    e.preventDefault();
+    toggleTheme();
+  }
+});
+
+/* ── TEXTAREA ── */
+const userInput = document.getElementById('userInput');
+
+userInput.addEventListener('input', () => {
+  userInput.style.height = 'auto';
+  userInput.style.height = Math.min(userInput.scrollHeight, 160) + 'px';
+});
+
+userInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    if (!isStreaming) sendMessage();
+  }
+});
+
+window.addEventListener('load', () => userInput.focus());
+
+/* ── MESSAGES ── */
+const messagesEl = document.getElementById('messages');
+
+function appendMessage(role, content = '') {
+  const div = document.createElement('div');
+  div.className = `msg ${role}`;
+
+  const roleEl = document.createElement('div');
+  roleEl.className = 'msg-role';
+  roleEl.textContent = role === 'user' ? 'you' : 'assistant';
+
+  const contentEl = document.createElement('div');
+  contentEl.className = 'msg-content';
+  contentEl.textContent = content;
+
+  div.appendChild(roleEl);
+  div.appendChild(contentEl);
+  messagesEl.appendChild(div);
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+  return contentEl;
+}
+
+function showThinking() {
+  const div = document.createElement('div');
+  div.className = 'msg assistant';
+  div.id = 'thinkingMsg';
+  const roleEl = document.createElement('div');
+  roleEl.className = 'msg-role';
+  roleEl.textContent = 'assistant';
+  const dots = document.createElement('div');
+  dots.className = 'thinking';
+  dots.innerHTML = '<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
+  div.appendChild(roleEl);
+  div.appendChild(dots);
+  messagesEl.appendChild(div);
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+}
+
+function removeThinking() {
+  document.getElementById('thinkingMsg')?.remove();
+}
+
+function showError(msg) {
+  removeThinking();
+  const div = document.createElement('div');
+  div.className = 'error-msg';
+  div.textContent = msg;
+  messagesEl.appendChild(div);
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+}
+
+/* ── SEND ── */
+async function sendMessage() {
+  const input = userInput.value.trim();
+  if (!input || isStreaming) return;
+
+  userInput.value = '';
+  userInput.style.height = 'auto';
+  isStreaming = true;
+  document.getElementById('sendBtn').disabled = true;
+
+  history.push({ role: 'user', content: input });
+  appendMessage('user', input);
+  showThinking();
+
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model,
+        messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...history],
+        stream: true,
+        temperature: 0.7,
+        max_tokens: 2048,
+      }),
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err?.error?.message || `HTTP ${res.status}`);
+    }
+
+    removeThinking();
+    const contentEl = appendMessage('assistant', '');
+    let fullText = '';
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop();
+
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed || trimmed === 'data: [DONE]') continue;
+        const data = trimmed.startsWith('data: ') ? trimmed.slice(6) : trimmed;
+        try {
+          const delta = JSON.parse(data)?.choices?.[0]?.delta?.content || '';
+          if (delta) {
+            fullText += delta;
+            contentEl.textContent = fullText;
+            messagesEl.scrollTop = messagesEl.scrollHeight;
+          }
+        } catch {}
+      }
+    }
+
+    history.push({ role: 'assistant', content: fullText });
+
+  } catch (err) {
+    showError(`Error: ${err.message}`);
+    history.pop();
+  } finally {
+    isStreaming = false;
+    document.getElementById('sendBtn').disabled = false;
+    userInput.focus();
+  }
+}
+
+/* ── CLEAR ── */
+function clearChat() {
+  history = [];
+  messagesEl.innerHTML = '';
+}
+
+/* ── MODEL MODAL ── */
+const modelModal = document.getElementById('modelModal');
+const modelSelect = document.getElementById('modelSelect');
+
+modelSelect.addEventListener('change', e => {
+  document.getElementById('customModelWrap').style.display = e.target.value === 'custom' ? 'block' : 'none';
+});
+
+function openModelModal() {
+  const knownOption = [...modelSelect.options].find(o => o.value === model);
+  modelSelect.value = knownOption ? model : 'custom';
+  if (!knownOption) {
+    document.getElementById('customModelInput').value = model;
+    document.getElementById('customModelWrap').style.display = 'block';
+  }
+  modelModal.classList.add('open');
+}
+
+function closeModelModal() {
+  modelModal.classList.remove('open');
+}
+
+function applyModel() {
+  const sel = modelSelect.value;
+  const picked = sel === 'custom' ? document.getElementById('customModelInput').value.trim() : sel;
+  if (!picked) return;
+  model = picked;
+  document.getElementById('modelTag').textContent = model;
+  closeModelModal();
+}
+
+modelModal.addEventListener('click', e => {
+  if (e.target === modelModal) closeModelModal();
+});
+</script>
+</body>
+</html>
