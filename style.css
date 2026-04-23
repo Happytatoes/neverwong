@@ -478,6 +478,44 @@ article {
   text-decoration: underline;
 }
 
+/* ── FLOATING CHAT LAUNCHER ─────────────────────────────────── */
+
+.chat-launcher {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  border: 1px solid var(--accent);
+  background: var(--bg);
+  color: var(--accent);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.24);
+  z-index: 140;
+  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.chat-launcher svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+
+.chat-launcher:hover,
+.chat-launcher:focus-visible {
+  transform: translateY(-2px);
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.chat-launcher:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 3px;
+}
+
 /* ── RESPONSIVE ───────────────────────────────────────────────── */
  
 @media (max-width: 640px) {
@@ -559,6 +597,13 @@ article {
  
   .teahouse-title {
     font-size: 2rem;
+  }
+
+  .chat-launcher {
+    right: 16px;
+    bottom: max(16px, env(safe-area-inset-bottom));
+    width: 52px;
+    height: 52px;
   }
 }
  
