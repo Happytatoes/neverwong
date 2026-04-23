@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>chat</title>
+<title>Chat | Happytatoes</title>
+<link rel="icon" href="images/favicon.png" type="image/png">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap');
 
@@ -111,6 +112,7 @@
   #messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
   .msg {
+    position: relative;
     display: flex;
     flex-direction: column;
     padding: 12px 16px;
@@ -148,11 +150,62 @@
 
   .msg.user .msg-role { color: var(--accent); opacity: 0.7; }
 
+  /* ── COPY BUTTON ── */
+  .copy-btn {
+    opacity: 0;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: opacity 0.15s, color 0.15s;
+  }
+
+  .msg:hover .copy-btn { opacity: 1; }
+  .copy-btn:hover { color: var(--text); }
+
+  /* ── MESSAGE CONTENT ── */
   .msg-content {
     font-size: 14px;
     line-height: 1.65;
-    white-space: pre-wrap;
     word-break: break-word;
+  }
+
+  .msg-content h1, .msg-content h2, .msg-content h3 {
+    font-weight: 500;
+    margin: 8px 0 4px;
+  }
+
+  .msg-content strong { font-weight: 600; }
+  .msg-content em { font-style: italic; }
+
+  .msg-content ul, .msg-content ol {
+    padding-left: 18px;
+    margin: 4px 0;
+  }
+
+  .msg-content li { margin: 2px 0; }
+
+  .msg-content pre {
+    background: var(--input-bg);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 12px 14px;
+    overflow-x: auto;
+    margin: 8px 0;
+  }
+
+  .msg-content pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 12px;
   }
 
   .msg-content code {
@@ -164,6 +217,9 @@
     border: 1px solid var(--border);
   }
 
+  .msg-content p { margin: 4px 0; }
+
+  /* ── THINKING ── */
   .thinking { display: flex; gap: 5px; align-items: center; padding: 6px 0 2px; }
 
   .dot {
@@ -345,7 +401,7 @@
 <div id="app">
   <header>
     <div class="header-left">
-      <span class="logo">// chat</span>
+      <span class="logo">chat</span>
       <!--<span class="model-tag" id="modelTag" onclick="openModelModal()">llama-3.3-70b-versatile</span>-->
     </div>
     <button id="themeToggle"><span id="themeIcon">☾</span></button>
@@ -367,9 +423,8 @@
   </div>
 </div>
 
-<!--<div id="modelModal">
-  
-	<div class="modal-box">
+<div id="modelModal">
+  <div class="modal-box">
     <h3>Switch model</h3>
     <div>
       <div class="field-label">Model</div>
@@ -390,7 +445,7 @@
       <button class="btn" onclick="applyModel()">apply</button>
     </div>
   </div>
-</div>-->
+</div>
 
 <script>
 const SYSTEM_PROMPT = `You are a direct, intelligent assistant. Your behavior:
@@ -452,6 +507,40 @@ userInput.addEventListener('keydown', e => {
 
 window.addEventListener('load', () => userInput.focus());
 
+/* ── MARKDOWN ── */
+function escapeHtml(str) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function renderMarkdown(text) {
+  // extract code blocks before anything else to avoid mangling them
+  const codeBlocks = [];
+  text = text.replace(/```(\w*)\n?([\s\S]*?)```/g, (_, lang, code) => {
+    codeBlocks.push(`<pre><code>${escapeHtml(code.trim())}</code></pre>`);
+    return `\x00CODE${codeBlocks.length - 1}\x00`;
+  });
+
+  text = text
+    .replace(/`([^`]+)`/g, (_, c) => `<code>${escapeHtml(c)}</code>`)
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+    .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+    .replace(/^# (.+)$/gm, '<h1>$1</h1>')
+    .replace(/^[-*] (.+)$/gm, '<li>$1</li>')
+    .replace(/(<li>[\s\S]+?<\/li>)/g, '<ul>$1</ul>')
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/\n/g, '<br>');
+
+  // restore code blocks
+  text = text.replace(/\x00CODE(\d+)\x00/g, (_, i) => codeBlocks[i]);
+
+  return `<p>${text}</p>`;
+}
+
 /* ── MESSAGES ── */
 const messagesEl = document.getElementById('messages');
 
@@ -465,10 +554,20 @@ function appendMessage(role, content = '') {
 
   const contentEl = document.createElement('div');
   contentEl.className = 'msg-content';
-  contentEl.textContent = content;
+  if (content) contentEl.innerHTML = renderMarkdown(content);
+
+  const copyBtn = document.createElement('button');
+  copyBtn.className = 'copy-btn';
+  copyBtn.textContent = 'copy';
+  copyBtn.onclick = () => {
+    navigator.clipboard.writeText(contentEl.innerText);
+    copyBtn.textContent = 'copied';
+    setTimeout(() => copyBtn.textContent = 'copy', 1500);
+  };
 
   div.appendChild(roleEl);
   div.appendChild(contentEl);
+  div.appendChild(copyBtn);
   messagesEl.appendChild(div);
   messagesEl.scrollTop = messagesEl.scrollHeight;
   return contentEl;
@@ -557,7 +656,7 @@ async function sendMessage() {
           const delta = JSON.parse(data)?.choices?.[0]?.delta?.content || '';
           if (delta) {
             fullText += delta;
-            contentEl.textContent = fullText;
+            contentEl.innerHTML = renderMarkdown(fullText);
             messagesEl.scrollTop = messagesEl.scrollHeight;
           }
         } catch {}
