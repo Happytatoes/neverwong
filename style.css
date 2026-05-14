@@ -755,7 +755,28 @@ hr.writing-divider {
     grid-template-columns: repeat(2, 1fr);
     gap: 0.85rem;
   }
- 
+
+  .project-card-back {
+    padding: 0.75rem 0.85rem;
+  }
+
+  .project-back-desc {
+    font-size: 0.72rem;
+  }
+
+  .flip-hint {
+    font-size: 0.9rem;
+  }
+
+  #about h2 {
+    font-size: 2.2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  #about h2 span {
+    margin: 0 0.04em;
+  }
+
   /* teahouse: 2x2 grid on mobile */
   .drinks-row {
     display: grid;
@@ -780,6 +801,13 @@ hr.writing-divider {
   }
 }
  
+@media (max-width: 480px) {
+  .project-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+}
+
 @media (min-width: 641px) and (max-width: 900px) {
   main {
     padding: 6.5rem 1.25rem 3.5rem;
