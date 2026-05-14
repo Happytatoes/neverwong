@@ -84,6 +84,12 @@ document.addEventListener("keydown", e => {
   }
 });
 
+/* ── PROJECT CARD FLIP ────────────────────────────────────────── */
+
+document.querySelectorAll('.project-card').forEach(card => {
+  card.addEventListener('click', () => card.classList.toggle('flipped'));
+});
+
 document.querySelectorAll('.achieve-toggle').forEach(btn => {
   btn.addEventListener('click', () => {
     const expanded = btn.getAttribute('aria-expanded') === 'true';

@@ -173,6 +173,41 @@ main {
 article {
   margin-bottom: 3rem;
 }
+
+/* ── WRITING LIST ─────────────────────────────────────────────── */
+
+.writing-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  padding-bottom: 1.25rem;
+  transition: color 0.2s ease;
+  cursor: pointer;
+}
+
+.writing-link:hover {
+  color: var(--accent);
+}
+
+.writing-link article {
+  margin-bottom: 0;
+}
+
+#writings .writing-link h3 {
+  font-size: 1.1rem;
+}
+
+#writings .writing-link p {
+  font-size: 0.88rem;
+  color: var(--muted);
+  margin-bottom: 0;
+}
+
+hr.writing-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin-bottom: 1.25rem;
+}
  
 .small {
   max-width: 400px;
@@ -246,6 +281,31 @@ article {
 }
  
  
+/* ── ABOUT NAME ───────────────────────────────────────────────── */
+
+#about h2 {
+  font-size: 3.5rem;
+  margin-bottom: 2.5rem;
+}
+
+#about h2 span {
+  display: inline-block;
+  transform: rotate(var(--r, 0deg)) translateY(var(--y, 0px));
+  margin: 0 0.06em;
+  transition: transform 0.2s ease;
+}
+
+@keyframes letter-twitch {
+  0%   { transform: rotate(var(--r, 0deg))           translateY(var(--y, 0px)); }
+  25%  { transform: rotate(calc(var(--r, 0deg) + 12deg)) translateY(calc(var(--y, 0px) - 2px)); }
+  60%  { transform: rotate(calc(var(--r, 0deg) - 5deg))  translateY(var(--y, 0px)); }
+  100% { transform: rotate(calc(var(--r, 0deg) + 8deg))  translateY(var(--y, 0px)); }
+}
+
+#about h2 span:hover {
+  animation: letter-twitch 0.28s ease forwards;
+}
+
 /* ── HOME SECTIONS (used in about page) ──────────────────────── */
  
 .home-section {
@@ -478,6 +538,119 @@ article {
   text-decoration: underline;
 }
 
+/* ── PROJECT GRID ─────────────────────────────────────────────── */
+
+.flip-hint {
+  font-size: 1.1rem;
+  color: var(--muted);
+  font-style: italic;
+  margin-top: -1rem;
+  margin-bottom: 1.5rem;
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.project-card {
+  aspect-ratio: 1;
+  perspective: 800px;
+  cursor: pointer;
+}
+
+.project-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.55s ease;
+}
+
+.project-card.flipped .project-card-inner {
+  transform: rotateY(180deg);
+}
+
+.project-card-front,
+.project-card-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  overflow: hidden;
+  border: 1px solid var(--accent);
+}
+
+.project-card-front img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border: none;
+  max-width: none;
+}
+
+.project-front-title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0.6rem 0.85rem;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.72));
+  color: #fff;
+  font-size: 0.88rem;
+}
+
+.project-card-front::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.project-card:not(.flipped):hover .project-card-front::after {
+  opacity: 0.38;
+}
+
+.project-card-back {
+  transform: rotateY(180deg);
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1.1rem;
+}
+
+.project-back-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+.project-back-desc {
+  font-size: 0.76rem;
+  line-height: 1.55;
+  flex: 1;
+  overflow-y: auto;
+  color: var(--text);
+  margin-bottom: 0.75rem;
+}
+
+.project-back-links {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.project-back-links .read-button {
+  font-size: 0.72rem;
+  padding: 0.25rem 0.65rem;
+}
+
 /* ── FLOATING CHAT LAUNCHER ─────────────────────────────────── */
 
 .chat-launcher {
@@ -562,11 +735,6 @@ article {
     margin-top: 0.75rem;
   }
  
-  .read-button {
-    padding: 0.45rem 1rem;
-    font-size: 0.85rem;
-  }
- 
   .small, .small-img {
     max-width: 60%;
   }
@@ -581,6 +749,11 @@ article {
  
   .achieve-list {
     grid-template-columns: 1fr;
+  }
+
+  .project-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.85rem;
   }
  
   /* teahouse: 2x2 grid on mobile */

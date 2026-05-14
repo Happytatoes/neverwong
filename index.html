@@ -17,8 +17,8 @@
 <body>
   <nav>
     <div class="nav-left">
-      <button class="nav-btn active" data-page="home">Teahouse</button>
-      <button class="nav-btn" data-page="about">Everest</button>
+      <button class="nav-btn active" data-page="home">Home</button>
+      <button class="nav-btn" data-page="about">About</button>
       <button class="nav-btn" data-page="writings">Writing</button>
       <button class="nav-btn" data-page="projects">Projects</button>
       <button class="nav-btn" data-page="connect">Connect</button>
@@ -77,7 +77,9 @@
     <!-- ── ABOUT ──────────────────────────────────────────────── -->
     <!-- OPENER -->
   <section id="about" class="page">
-  <h2>Noah <i><span id="orange">Everest</span></i> Wong</h2>
+  <h2>
+    <span style="--r:-6deg; --y:-2px;">N</span><span style="--r:4deg;  --y:1px;"  id="orange">O</span><span style="--r:-3deg; --y:0px;">A</span><span style="--r:6deg;  --y:-1px;">H</span><span>&nbsp;</span><span style="--r:-5deg; --y:2px;">W</span><span style="--r:3deg;  --y:-1px;">O</span><span style="--r:-4deg; --y:1px;"  id="orange">N</span><span style="--r:5deg;  --y:-2px;">G</span>
+  </h2>
 
   <!-- OPENER -->
   <div class="home-section">
@@ -238,105 +240,198 @@
     <!-- ── WRITINGS ───────────────────────────────────────────── -->
     <section id="writings" class="page">
       <h2>Writing</h2>
- 
-      <article>
-        <h3>Esoterify: Cryptographic Composition Toolkit</h3>
-        <p>March 23, 2026 • What are the tradeoffs of each encryption method? • 3201 words</p>
-        <a href="/writings/esoterify.html" class="read-button">read</a>
-      </article>
- 
-      <article>
-        <h3>Rethinking Success and Comparison</h3>
-        <p>February 17, 2026 • What should we strive for? • 1280 words</p>
-        <a href="/writings/rethinking-success.html" class="read-button">read</a>
-      </article>
- 
-      <article>
-        <h3>The Full Adder: A Logical Deep Dive</h3>
-        <p>February 9, 2026 • Why does the full adder work? • 661 words</p>
-        <a href="/writings/why-the-full-adder-works.html" class="read-button">read</a>
-      </article>
- 
-      <article>
-        <h3>Identity in the Post-AI World</h3>
-        <p>January 31, 2026 • What makes us human? • 554 words</p>
-        <a href="/writings/identity.html" class="read-button">read</a>
-      </article>
- 
-      <article>
-        <h3>Binary Exploitation & AI Safety: It Doesn't Matter How You Say It</h3>
-        <p>January 23, 2026 • Does tone make LLMs more dangerous? • 975 words</p>
-        <a href="/writings/it-doesnt-matter-how-you-say-it.html" class="read-button">read</a>
-      </article>
+
+      <a class="writing-link" href="/writings/esoterify.html">
+        <article>
+          <h3>Esoterify: Cryptographic Composition Toolkit</h3>
+          <p>March 23, 2026 • What are the tradeoffs of each encryption method? • 3201 words</p>
+        </article>
+      </a>
+      <hr class="writing-divider">
+
+      <a class="writing-link" href="/writings/rethinking-success.html">
+        <article>
+          <h3>Rethinking Success and Comparison</h3>
+          <p>February 17, 2026 • What should we strive for? • 1280 words</p>
+        </article>
+      </a>
+      <hr class="writing-divider">
+
+      <a class="writing-link" href="/writings/why-the-full-adder-works.html">
+        <article>
+          <h3>The Full Adder: A Logical Deep Dive</h3>
+          <p>February 9, 2026 • Why does the full adder work? • 661 words</p>
+        </article>
+      </a>
+      <hr class="writing-divider">
+
+      <a class="writing-link" href="/writings/identity.html">
+        <article>
+          <h3>Identity in the Post-AI World</h3>
+          <p>January 31, 2026 • What makes us human? • 554 words</p>
+        </article>
+      </a>
+      <hr class="writing-divider">
+
+      <a class="writing-link" href="/writings/it-doesnt-matter-how-you-say-it.html">
+        <article>
+          <h3>Binary Exploitation & AI Safety: It Doesn't Matter How You Say It</h3>
+          <p>January 23, 2026 • Does tone make LLMs more dangerous? • 975 words</p>
+        </article>
+      </a>
     </section>
  
     <!-- ── PROJECTS ───────────────────────────────────────────── -->
     <section id="projects" class="page">
       <h2>Projects</h2>
- 
-      <article>
-        <h3>Esoterify</h3>
-        <p>Cryptographic Chaining Toolkit. I took the RSA, AES, ChaCha20, and Caesar ciphers and experimented with their combinations.
-            I compared the computational efficiency of each method, and discussed when it might be valuable to use a combo like RSA + AES.   
-        </p>
-        <a target="_blank" href="https://happytatoes.com/writings/esoterify.html" class="read-button">see writeup</a>
-        <a target="_blank" href="https://github.com/Happytatoes/Esoterify" class="read-button">see code</a>
-        <p></p>
-        <img class="small-img" src="../images/homepage/menu.png" alt="menu.png" />
-      </article>
+      
+      <p>hint: click to flip!</p>
 
-      <article>
-        <h3>Penny</h3>
-        <p>Penny makes financial advice cuter than ever! Penny uses Gemini API to analyze financial data and generate financial tips based on the specifics of the data. Built for HackTX with Heather Kim, Avery Allen, and Isaac Fleitas.</p>
-        <a target="_blank" href="https://github.com/Happytatoes/Pixel_Pirates" class="read-button">see code</a>
-        <p></p>
-        <img class="small-img" src="../images/homepage/penny.png" alt="penny.png" />
-      </article>
- 
-      <article>
-        <h3>Echoes</h3>
-        <p>The Ephemeral Social Media Site. This full-stack project was designed with Supabase, SQL, Google Auth, and vanilla JS. It includes a multi-layered hate speech filter and auto-deletion function. Over 1200 posts and 40 users!</p>
-        <a href="https://echoes-blond.vercel.app/" class="read-button">try it out!</a>
-        <p></p>
-        <img class="small-img" src="../images/homepage/echoes.png" alt="echoes.png" />
-      </article>
- 
-      <article>
-        <h3>Babble</h3>
-        <p>Custom language models. Experimental LLM project based on a tutorial by Andrej Karpathy. I built a language model from scratch and implemented self-attention using his tutorial. Users input custom datasets and get custom language models based on their writing styles.</p>
-        <p></p>
-        <img class="small-img" src="../images/homepage/babble.png" alt="babble.png" />
-      </article>
- 
-      <article>
-        <h3>Eco Empire</h3>
-        <p>Eco Empire challenges players to manage a virtual power plant, balancing economic growth and environmental sustainability.</p>
-        <a href="https://happytatoes.github.io/eco-empire/" target="_blank" class="read-button">try it out!</a>
-        <a href="https://github.com/Happytatoes/eco-empire" target="_blank" class="read-button">see code</a>
-        <p></p>
-        <img class="small-img" src="../images/homepage/eco.png" alt="eco.png" />
-      </article>
- 
-      <article>
-        <h3>Brainrot Button</h3>
-        <p>Take control of your brainrot. Tired of getting dopamine hits from infinite scroll apps? Use the brainrot button: a fun app built with Node, Express, and Node.</p>
-        <a href="https://happytatoes.github.io/brainrot-button/" target="_blank" class="read-button">try it out!</a>
-        <a href="https://github.com/Happytatoes/brainrot-button-backend" target="_blank" class="read-button">see code</a>
-        <p></p>
-        <img class="small-img" src="../images/homepage/brainrot.png" alt="brainrot.png" />
-      </article>
- 
-      <article>
-        <h3>Lucky App</h3>
-        <p>What are the chances? With this application, flip a coin, roll some dice, or access the weather via an API. This application was my first experience using Android Studio, Java, and XML to design and create an Android application.</p>
-        <img class="small-img" src="../images/homepage/lucky.png" alt="lucky.png" />
-      </article>
- 
-      <article>
-        <h3>Dino App</h3>
-        <p>Prehistoric information, modern interface. This was my first experiment with Swift and iOS application development. With help from a tutorial by Sean Allen, I set up Xcode and built the framework of my application. After that, I added a prehistoric twist and some relevant dino info.</p>
-        <img class="small-img" src="../images/homepage/dino.png" alt="dino.png" />
-      </article>
+      <div class="project-grid">
+
+        <div class="project-card">
+          <div class="project-card-inner">
+            <div class="project-card-front">
+              <img src="images/homepage/orca.png" alt="OrcaStrike" />
+              <span class="project-front-title">OrcaStrike</span>
+            </div>
+            <div class="project-card-back">
+              <p class="project-back-title">OrcaStrike</p>
+              <p class="project-back-desc">The forensics layer for cybersecurity in agentic AI workflows. Traces tainted data across agent handoffs, generates structured forensic reports, and suggests fixes. Built with LangGraph, Next.js, FastAPI, and MongoDB for the IBM Track at Hook 'Em Hacks.</p>
+              <div class="project-back-links">
+                <a target="_blank" href="https://devpost.com/software/orcastrike" class="read-button">devpost</a>
+                <a target="_blank" href="https://github.com/DarioDeSilva/OrcaStrike" class="read-button">see code</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-card-inner">
+            <div class="project-card-front">
+              <img src="images/homepage/menu.png" alt="Esoterify" />
+              <span class="project-front-title">Esoterify</span>
+            </div>
+            <div class="project-card-back">
+              <p class="project-back-title">Esoterify</p>
+              <p class="project-back-desc">Cryptographic Chaining Toolkit. I combined RSA, AES, ChaCha20, and Caesar ciphers to explore their tradeoffs. Compared effeciency and security benefits.<p>
+              <div class="project-back-links">
+                <a target="_blank" href="https://happytatoes.com/writings/esoterify.html" class="read-button">see writeup</a>
+                <a target="_blank" href="https://github.com/Happytatoes/Esoterify" class="read-button">see code</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-card-inner">
+            <div class="project-card-front">
+              <img src="images/homepage/penny.png" alt="Penny" />
+              <span class="project-front-title">Penny</span>
+            </div>
+            <div class="project-card-back">
+              <p class="project-back-title">Penny</p>
+              <p class="project-back-desc">Penny makes financial advice cuter than ever! Uses Gemini API to analyze your data and generate personalized tips. Built for HackTX with Heather Kim, Avery Allen, and Isaac Fleitas.</p>
+              <div class="project-back-links">
+                <a target="_blank" href="https://github.com/Happytatoes/Pixel_Pirates" class="read-button">see code</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-card-inner">
+            <div class="project-card-front">
+              <img src="images/homepage/echoes.png" alt="Echoes" />
+              <span class="project-front-title">Echoes</span>
+            </div>
+            <div class="project-card-back">
+              <p class="project-back-title">Echoes</p>
+              <p class="project-back-desc">The Ephemeral Social Media Site. Built with Supabase, SQL, Google Auth, and vanilla JS. Includes a multi-layered hate speech filter and auto-deletion function. Over 1200 posts and 40 users!</p>
+              <div class="project-back-links">
+                <a href="https://echoes-blond.vercel.app/" class="read-button">try it out!</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-card-inner">
+            <div class="project-card-front">
+              <img src="images/homepage/babble.png" alt="Babble" />
+              <span class="project-front-title">Babble</span>
+            </div>
+            <div class="project-card-back">
+              <p class="project-back-title">Babble</p>
+              <p class="project-back-desc">Custom language models from scratch. Built on Andrej Karpathy's self-attention tutorial. Feed in any dataset and get a model that writes in your style.</p>
+              <div class="project-back-links"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-card-inner">
+            <div class="project-card-front">
+              <img src="images/homepage/eco.png" alt="Eco Empire" />
+              <span class="project-front-title">Eco Empire</span>
+            </div>
+            <div class="project-card-back">
+              <p class="project-back-title">Eco Empire</p>
+              <p class="project-back-desc">Manage a virtual power plant through rounds of tough decisions. Balance economic growth against environmental impact and try not to melt the planet.</p>
+              <div class="project-back-links">
+                <a href="https://happytatoes.github.io/eco-empire/" target="_blank" class="read-button">try it out!</a>
+                <a href="https://github.com/Happytatoes/eco-empire" target="_blank" class="read-button">see code</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-card-inner">
+            <div class="project-card-front">
+              <img src="images/homepage/brainrot.png" alt="Brainrot Button" />
+              <span class="project-front-title">Brainrot Button</span>
+            </div>
+            <div class="project-card-back">
+              <p class="project-back-title">Brainrot Button</p>
+              <p class="project-back-desc">Take control of your brainrot. Tired of dopamine hits from infinite scroll? Click the button instead. Built with Node, Express, and MongoDB.</p>
+              <div class="project-back-links">
+                <a href="https://happytatoes.github.io/brainrot-button/" target="_blank" class="read-button">try it out!</a>
+                <a href="https://github.com/Happytatoes/brainrot-button-backend" target="_blank" class="read-button">see code</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-card-inner">
+            <div class="project-card-front">
+              <img src="images/homepage/lucky.png" alt="Lucky App" />
+              <span class="project-front-title">Lucky App</span>
+            </div>
+            <div class="project-card-back">
+              <p class="project-back-title">Lucky App</p>
+              <p class="project-back-desc">What are the chances? Flip a coin, roll dice, or fetch live weather via API. My first Android app. Built from scratch with Android Studio, Java, and XML.</p>
+              <div class="project-back-links"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-card-inner">
+            <div class="project-card-front">
+              <img src="images/homepage/dino.png" alt="Dino App" />
+              <span class="project-front-title">Dino App</span>
+            </div>
+            <div class="project-card-back">
+              <p class="project-back-title">Dino App</p>
+              <p class="project-back-desc">Prehistoric info, modern interface. My first Swift/iOS project, built in Xcode following a Sean Allen tutorial. Then added my own prehistoric twist with real dino facts.</p>
+              <div class="project-back-links"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </section>
  
     <!-- ── CONNECT ────────────────────────────────────────────── -->
@@ -346,13 +441,16 @@
         <a id="link" href="mailto:noaheverestwong@gmail.com" target="_blank"><span id="orange">noaheverestwong</span> [at] gmail [dot] com</a>
       </p>
       <p>
+        <a id="link" href="https://linkedin.com/in/neverwong" target="_blank">linkedin.com/in/<span id="orange">neverwong</span></a>
+      </p>
+      <!---<p>
+        <a id="link" href="https://instagram.com/nichenoah_" target="_blank">instagram.com/<span id="orange">nichenoah_</span></a>
+      </p>--->
+      <p>
         <a id="link" href="https://github.com/happytatoes" target="_blank">github.com/<span id="orange">happytatoes</span></a>
       </p>
       <p>
-        <a id="link" href="https://linkedin.com/in/neverwong" target="_blank">linkedin.com/in/<span id="orange">neverwong</span></a>
-      </p>
-      <p>
-        <a id="link" href="https://instagram.com/nichenoah_" target="_blank">instagram.com/<span id="orange">nichenoah_</span></a>
+        <a id="link" href="https://x.com/happytatoes" target="_blank">x.com/<span id="orange">happytatoes</span></a>
       </p>
     </section>
  
