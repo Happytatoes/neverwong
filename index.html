@@ -253,6 +253,14 @@
     <section id="writings" class="page">
       <h2>Writing</h2>
 
+      <a class="writing-link" href="/images/pipe/PIPE-.pdf" target="_blank">
+        <article>
+          <h3>ARM Pipeline: Reference Diagram</h3>
+          <p>May 29, 2026 • A reference diagram for the ARM Pipeline emulator project</p>
+        </article>
+      </a>
+      <hr class="writing-divider">
+
       <a class="writing-link" href="/writings/esoterify.html">
         <article>
           <h3>Esoterify: Cryptographic Composition Toolkit</h3>
@@ -304,6 +312,20 @@
         <div class="project-card">
           <div class="project-card-inner">
             <div class="project-card-front">
+              <img src="images/homepage/pipe.png" alt="ARM Pipeline" />
+              <span class="project-front-title">ARM Pipeline</span>
+            </div>
+            <div class="project-card-back">
+              <p class="project-back-title">ARM Pipeline</p>
+              <p class="project-back-desc">Cycle-accurate 5-stage ARMv8-A pipeline emulator in C. Handles data forwarding, load-use stalls, and branch-prediction recovery. Includes a configurable L1 cache with LRU replacement and write-back policies.</p>
+              <div class="project-back-links"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-card-inner">
+            <div class="project-card-front">
               <img src="images/homepage/orca.png" alt="OrcaStrike" />
               <span class="project-front-title">OrcaStrike</span>
             </div>
@@ -321,6 +343,20 @@
         <div class="project-card">
           <div class="project-card-inner">
             <div class="project-card-front">
+              <img src="images/homepage/mem.png" alt="Memory Allocator" />
+              <span class="project-front-title">Memory Allocator</span>
+            </div>
+            <div class="project-card-back">
+              <p class="project-back-title">Memory Allocator</p>
+              <p class="project-back-desc">Dynamic heap memory allocator in C. Uses a binned free-list with six size-class bins and first-fit placement. Minimizes fragmentation with 32-byte minimum blocks and remainder-based splitting.</p>
+              <div class="project-back-links"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-card-inner">
+            <div class="project-card-front">
               <img src="images/homepage/menu.png" alt="Esoterify" />
               <span class="project-front-title">Esoterify</span>
             </div>
@@ -331,6 +367,20 @@
                 <a target="_blank" href="https://happytatoes.com/writings/esoterify.html" class="read-button">see writeup</a>
                 <a target="_blank" href="https://github.com/Happytatoes/Esoterify" class="read-button">see code</a>
               </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-card-inner">
+            <div class="project-card-front">
+              <img src="images/homepage/parser.png" alt="ASML Parser & Interpreter" />
+              <span class="project-front-title">ASML Parser & Interpreter</span>
+            </div>
+            <div class="project-card-back">
+              <p class="project-back-title">ASML Parser & Interpreter</p>
+              <p class="project-back-desc">Parser and interpreter for an abstract state machine language, built in C. Uses recursive descent to handle the full pipeline from source to output.</p>
+              <div class="project-back-links"></div>
             </div>
           </div>
         </div>
