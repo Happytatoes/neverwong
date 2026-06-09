@@ -33,7 +33,9 @@
  
     <!-- ── HOME: TEAHOUSE ────────────────────────────────────────── -->
     <section id="home" class="page active teahouse-page">
- 
+
+      <div class="teahouse-bubbles"></div>
+
       <h1 class="teahouse-title"><i>{noah wong / ut austin}</i></h1>
  
       <div class="drinks-row">
@@ -77,23 +79,32 @@
     <!-- ── ABOUT ──────────────────────────────────────────────── -->
     <!-- OPENER -->
   <section id="about" class="page">
-  <h2>
-    <span style="--r:-6deg; --y:-2px;">N</span><span style="--r:4deg;  --y:1px;"  id="orange">O</span><span style="--r:-3deg; --y:0px;">A</span><span style="--r:6deg;  --y:-1px;">H</span><span>&nbsp;</span><span style="--r:-5deg; --y:2px;">W</span><span style="--r:3deg;  --y:-1px;">O</span><span style="--r:-4deg; --y:1px;"  id="orange">N</span><span style="--r:5deg;  --y:-2px;">G</span>
-  </h2>
+
+  <div class="about-hero">
+    <h2>
+      <span style="--r:-6deg; --y:-2px;">N</span><span style="--r:4deg;  --y:1px;"  id="orange">O</span><span style="--r:-3deg; --y:0px;">A</span><span style="--r:6deg;  --y:-1px;">H</span><span>&nbsp;</span><span style="--r:-5deg; --y:2px;">W</span><span style="--r:3deg;  --y:-1px;">O</span><span style="--r:-4deg; --y:1px;"  id="orange">N</span><span style="--r:5deg;  --y:-2px;">G</span>
+    </h2>
+
+    <div class="tagline-ticker">
+      <div class="tagline-track">
+        <span>computer science · university of texas at austin · co-founder at behuve · machine learning research · cybersecurity research · software engineer &nbsp;&nbsp;&nbsp;&nbsp;</span>
+      </div>
+    </div>
+  </div>
 
   <!-- OPENER -->
   <div class="home-section">
    <p>Hi! I'm Noah, and I love [<a href="javascript:void(0)" class="nav-btn" data-page="projects"><span id="orange"><u>building</u></span></a>], [<a href="https://behuve.io" target="_blank"><span id="orange"><u>researching</u></span></a>], [<a href="javascript:void(0)" class="nav-btn" data-page="writings"><span id="orange"><u>writing</u></span></a>], and [<a href="javascript:void(0)" class="nav-btn" data-page="connect"><span id="orange"><u>talking</u></span></a>] to people about how to use technology to make a positive impact on the world.</p>
 
-   <p>-----</p>
+   <hr class="about-divider">
 
    <!-- PHOTO -->
-  <div class="home-section">
+  <div class="about-photos">
     <img src="images/homepage/beach.png" alt="beach" style="max-width: 250px;" />
     <img src="images/homepage/look.png" alt="look" style="max-width: 250px;" />
   </div>
 
-   <p>Right now, I'm a freshman at <span id="orange">UT Austin</span> studying <span id="orange">Computer Science</span> with a minor in <span id="orange">Core Texts and Ideas</span>.</p>
+   <p>Right now, I'm a student at <span id="orange">UT Austin</span> studying <span id="orange">Computer Science</span> with a minor in <span id="orange">Core Texts and Ideas</span>.</p>
 
    <p>I'm building at <a href="https://behuve.io" target="_blank"></a>[<span id="orange"><u>behuve.io</u></span>]</a>, doing <span id="orange">undergraduate research</span> at UT, and training as a <span id="orange">SOC Analyst</span> at UT's Information Security Office.</p>
 
@@ -187,9 +198,7 @@
 
     </div>
 
-    <p></p>
-
-    <p>-----</p>
+    <hr class="about-divider">
 
     <p>The world is changing fast, and so am I. In general, I want to use my { <span id="orange">integrity, curiosity, creativity, adaptability</span> }
       for the benefit of { <span id="orange">humanity, community, freedom</span> }.</p>
@@ -198,8 +207,7 @@
 
     <p>In no particular order, these are my other current obsessions.</p>
 
-
-    <p>-----</p>
+    <hr class="about-divider">
 
   <!-- INTERESTS -->
   <div class="home-section">
@@ -499,21 +507,34 @@
     <!-- ── CONNECT ────────────────────────────────────────────── -->
     <section id="connect" class="page">
       <h2>Connect</h2>
-      <p>
-        <a id="link" href="mailto:noaheverestwong@gmail.com" target="_blank"><span id="orange">noaheverestwong</span> [at] gmail [dot] com</a>
-      </p>
-      <p>
-        <a id="link" href="https://linkedin.com/in/neverwong" target="_blank">linkedin.com/in/<span id="orange">neverwong</span></a>
-      </p>
-      <!---<p>
-        <a id="link" href="https://instagram.com/nichenoah_" target="_blank">instagram.com/<span id="orange">nichenoah_</span></a>
-      </p>--->
-      <p>
-        <a id="link" href="https://github.com/happytatoes" target="_blank">github.com/<span id="orange">happytatoes</span></a>
-      </p>
-      <p>
-        <a id="link" href="https://x.com/happytatoes" target="_blank">x.com/<span id="orange">happytatoes</span></a>
-      </p>
+
+      <div class="connect-list">
+
+        <a class="connect-row" href="mailto:noaheverestwong@gmail.com" target="_blank">
+          <span class="connect-arrow">→</span>
+          <span class="connect-platform">Email</span>
+          <span class="connect-handle">noaheverestwong@gmail.com</span>
+        </a>
+
+        <a class="connect-row" href="https://linkedin.com/in/neverwong" target="_blank">
+          <span class="connect-arrow">→</span>
+          <span class="connect-platform">LinkedIn</span>
+          <span class="connect-handle">neverwong</span>
+        </a>
+
+        <a class="connect-row" href="https://github.com/happytatoes" target="_blank">
+          <span class="connect-arrow">→</span>
+          <span class="connect-platform">GitHub</span>
+          <span class="connect-handle">happytatoes</span>
+        </a>
+
+        <a class="connect-row" href="https://x.com/happytatoes" target="_blank">
+          <span class="connect-arrow">→</span>
+          <span class="connect-platform">X</span>
+          <span class="connect-handle">happytatoes</span>
+        </a>
+
+      </div>
     </section>
  
   </main>
