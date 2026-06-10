@@ -362,23 +362,29 @@ hr.writing-divider {
 
 .about-photos {
   display: flex;
+  justify-content: center;
   gap: 1.5rem;
   align-items: flex-start;
   margin: 1.5rem 0;
 }
 
 .about-photos img {
-  max-width: 220px;
+  max-width: 200px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.about-photos img:first-child {
+.about-photos img:nth-child(1) {
   transform: rotate(-2.5deg);
   box-shadow: 4px 6px 18px rgba(0, 0, 0, 0.18);
 }
 
-.about-photos img:last-child {
-  transform: rotate(1.8deg);
+.about-photos img:nth-child(2) {
+  transform: rotate(0.8deg);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+
+.about-photos img:nth-child(3) {
+  transform: rotate(-1.8deg);
   box-shadow: -4px 6px 18px rgba(0, 0, 0, 0.18);
 }
 
@@ -958,7 +964,8 @@ hr.writing-divider {
 
   .about-photos {
     flex-direction: row;
-    gap: 0.75rem;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
   }
 
   .about-photos img {
