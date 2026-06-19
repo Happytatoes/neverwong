@@ -369,7 +369,9 @@ hr.writing-divider {
 }
 
 .about-photos img {
-  max-width: 200px;
+  flex: 1;
+  min-width: 0;
+  max-width: none;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -1017,6 +1019,10 @@ hr.writing-divider {
   .drink-img-wrap {
     width: 140px;
     height: 175px;
+  }
+
+  .tagline-track span {
+    font-size: 0.65rem;
   }
 
   .teahouse-title {
