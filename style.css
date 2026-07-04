@@ -818,9 +818,13 @@ hr.writing-divider {
   }
  
   p, a {
-    font-size: 13px;
+    font-size: 15px;
   }
- 
+
+  #about .home-section:first-of-type > p:first-child {
+    font-size: 1.05rem;
+  }
+
   article {
     margin-bottom: 2.25rem;
   }
@@ -885,29 +889,6 @@ hr.writing-divider {
     display: none;
   }
 
-  .connect-row {
-    gap: 0.75rem;
-    padding: 0.85rem 0;
-  }
-
-  .connect-platform {
-    width: 62px;
-    font-size: 0.62rem;
-  }
-
-  .connect-handle {
-    font-size: 0.88rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    min-width: 0;
-  }
-
-  .interests-list li {
-    font-size: 0.75rem;
-    padding: 0.2rem 0.6rem;
-  }
-
   /* teahouse: 2x2 grid on mobile */
   .drinks-row {
     display: grid;
@@ -918,6 +899,14 @@ hr.writing-divider {
   .drink-img-wrap {
     width: 105px;
     height: 130px;
+  }
+
+  .drink-name {
+    font-size: 1rem;
+  }
+
+  .drink-sub {
+    font-size: 0.78rem;
   }
 
   .teahouse-title {
@@ -1112,16 +1101,25 @@ hr.writing-divider {
   color: var(--accent);
 }
 
+@media (max-width: 640px) {
+  .interests-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.4rem 1rem;
+  }
+
+  .interests-list li {
+    font-size: 0.8rem;
+    padding: 0.15rem 0;
+    border: none;
+    border-radius: 0;
+  }
+}
+
 .about-divider {
   border: none;
   border-top: 1px solid var(--border);
   margin: 2.5rem 0;
-}
-
-@media (max-width: 640px) {
-  .timeline-grid {
-    grid-template-columns: 1fr;
-  }
 }
 
 /* ── CONNECT PAGE ─────────────────────────────────────────────── */
@@ -1199,6 +1197,26 @@ hr.writing-divider {
 .connect-handle {
   font-size: 1.05rem;
   flex: 1;
+}
+
+@media (max-width: 640px) {
+  .connect-row {
+    gap: 0.75rem;
+    padding: 0.85rem 0;
+  }
+
+  .connect-platform {
+    width: 62px;
+    font-size: 0.62rem;
+  }
+
+  .connect-handle {
+    font-size: 0.88rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
 }
 
 /* ── CODE & TERMINAL OUTPUT ──────────────────────────────────── */
