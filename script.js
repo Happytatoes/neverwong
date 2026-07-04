@@ -95,37 +95,40 @@ drinksRow.addEventListener('mouseleave', () => {
 });
 
 /* ── THEME TOGGLE ─────────────────────────────────────────────── */
+/* dark mode only for now — uncomment this whole block to restore the toggle
 
-const body = document.body;
-const themeToggle = document.getElementById('themeToggle');
-const themeIcon = document.getElementById('themeIcon');
+// const body = document.body;
+// const themeToggle = document.getElementById('themeToggle');
+// const themeIcon = document.getElementById('themeIcon');
+//
+// // Theme persistence — default is dark
+// if (localStorage.getItem("theme") === "light") {
+//   body.classList.add("light");
+//   if (themeIcon) themeIcon.textContent = "☀︎";
+// }
+//
+// // Toggle theme
+// function toggleTheme() {
+//   if (!themeIcon) return;
+//   body.classList.toggle("light");
+//   const isLight = body.classList.contains("light");
+//   themeIcon.textContent = isLight ? "☀︎" : "☾";
+//   localStorage.setItem("theme", isLight ? "light" : "dark");
+// }
+//
+// if (themeToggle) {
+//   themeToggle.addEventListener("click", toggleTheme);
+// }
+//
+// // Spacebar toggles theme
+// document.addEventListener("keydown", e => {
+//   if ((e.code === "Space" || e.key === " ") && !['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) {
+//     e.preventDefault();
+//     toggleTheme();
+//   }
+// });
 
-/* Theme persistence — default is dark */
-if (localStorage.getItem("theme") === "light") {
-  body.classList.add("light");
-  if (themeIcon) themeIcon.textContent = "☀︎";
-}
-
-/* Toggle theme */
-function toggleTheme() {
-  if (!themeIcon) return;
-  body.classList.toggle("light");
-  const isLight = body.classList.contains("light");
-  themeIcon.textContent = isLight ? "☀︎" : "☾";
-  localStorage.setItem("theme", isLight ? "light" : "dark");
-}
-
-if (themeToggle) {
-  themeToggle.addEventListener("click", toggleTheme);
-}
-
-/* Spacebar toggles theme */
-document.addEventListener("keydown", e => {
-  if ((e.code === "Space" || e.key === " ") && !['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) {
-    e.preventDefault();
-    toggleTheme();
-  }
-});
+*/
 
 /* ── PROJECT CARD FLIP ────────────────────────────────────────── */
 

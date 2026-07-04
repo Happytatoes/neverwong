@@ -139,6 +139,12 @@ nav {
   color: var(--text);
   cursor: pointer;
 }
+
+/* in-paragraph nav-btn links (e.g. About's "building"/"writing"/"talking") should
+   match surrounding text size, not the header nav's button size */
+p .nav-btn {
+  font-size: inherit;
+}
  
 .nav-btn:hover,
 .nav-btn.active {
@@ -817,7 +823,7 @@ hr.writing-divider {
     font-size: 1.15rem;
   }
  
-  p, a {
+  p {
     font-size: 15px;
   }
 
@@ -860,7 +866,7 @@ hr.writing-divider {
   }
 
   .project-back-desc {
-    font-size: 0.72rem;
+    font-size: 0.85rem;
   }
 
   .flip-hint {
@@ -1092,13 +1098,7 @@ hr.writing-divider {
   border: 1px solid var(--border);
   border-radius: 999px;
   color: var(--muted);
-  transition: border-color 0.2s ease, color 0.2s ease;
   cursor: default;
-}
-
-.interests-list li:hover {
-  border-color: var(--accent);
-  color: var(--accent);
 }
 
 @media (max-width: 640px) {
@@ -1119,6 +1119,10 @@ hr.writing-divider {
 .about-divider {
   border: none;
   border-top: 1px solid var(--border);
+  margin: 2.5rem 0;
+}
+
+.about-spacer {
   margin: 2.5rem 0;
 }
 

@@ -1,31 +1,35 @@
-const body = document.body;
-const themeToggle = document.getElementById('themeToggle');
-const themeIcon = document.getElementById('themeIcon');
+/* dark mode only for now — uncomment this whole block to restore the toggle
 
-/* Theme persistence — default is dark */
-if (localStorage.getItem('theme') === 'light') {
-  body.classList.add('light');
-  if (themeIcon) themeIcon.textContent = '☀︎';
-}
+// const body = document.body;
+// const themeToggle = document.getElementById('themeToggle');
+// const themeIcon = document.getElementById('themeIcon');
+//
+// // Theme persistence — default is dark
+// if (localStorage.getItem('theme') === 'light') {
+//   body.classList.add('light');
+//   if (themeIcon) themeIcon.textContent = '☀︎';
+// }
+//
+// function toggleTheme() {
+//   if (!themeIcon) return;
+//   body.classList.toggle('light');
+//   const isLight = body.classList.contains('light');
+//   themeIcon.textContent = isLight ? '☀︎' : '☾';
+//   localStorage.setItem('theme', isLight ? 'light' : 'dark');
+// }
+//
+// if (themeToggle) {
+//   themeToggle.addEventListener('click', toggleTheme);
+// }
+//
+// document.addEventListener('keydown', e => {
+//   if ((e.code === 'Space' || e.key === ' ') && !['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) {
+//     e.preventDefault();
+//     toggleTheme();
+//   }
+// });
 
-function toggleTheme() {
-  if (!themeIcon) return;
-  body.classList.toggle('light');
-  const isLight = body.classList.contains('light');
-  themeIcon.textContent = isLight ? '☀︎' : '☾';
-  localStorage.setItem('theme', isLight ? 'light' : 'dark');
-}
-
-if (themeToggle) {
-  themeToggle.addEventListener('click', toggleTheme);
-}
-
-document.addEventListener('keydown', e => {
-  if ((e.code === 'Space' || e.key === ' ') && !['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) {
-    e.preventDefault();
-    toggleTheme();
-  }
-});
+*/
 
 /* ── TABLE OF CONTENTS ──────────────────────────────────────────── */
 
