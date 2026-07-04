@@ -10,8 +10,6 @@ function showPage(id) {
     c.classList.remove('visible');
     c.style.transitionDelay = '';
   });
-  document.querySelectorAll('#about h2 span').forEach(s => s.classList.remove('entered'));
-
   pages.forEach(p => p.classList.remove('active', 'fade-in'));
   navBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.page === id));
 
@@ -43,17 +41,6 @@ function showPage(id) {
         setTimeout(() => {
           links.forEach(link => { link.style.transitionDelay = ''; });
         }, links.length * 60 + 350);
-      });
-    });
-  }
-
-  if (id === 'about') {
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        document.querySelectorAll('#about h2 span').forEach((span, i) => {
-          setTimeout(() => span.classList.add('entered'), i * 55);
-        });
-        initTicker();
       });
     });
   }
@@ -145,30 +132,6 @@ document.addEventListener("keydown", e => {
 document.querySelectorAll('.project-card').forEach(card => {
   card.addEventListener('click', () => card.classList.toggle('flipped'));
 });
-
-/* ── TICKER INIT ──────────────────────────────────────────────── */
-
-function initTicker() {
-  const track = document.querySelector('.tagline-track');
-  if (!track || track.dataset.initialized) return;
-  const original = track.querySelector('span');
-  if (!original) return;
-
-  const spanWidth = original.getBoundingClientRect().width;
-  if (spanWidth === 0) return;
-
-  const copies = Math.max(Math.ceil((window.innerWidth * 3) / spanWidth), 4);
-  const html = original.innerHTML;
-  track.innerHTML = '';
-  for (let i = 0; i < copies; i++) {
-    const s = document.createElement('span');
-    s.innerHTML = html;
-    track.appendChild(s);
-  }
-
-  track.style.setProperty('--ticker-shift', `-${spanWidth}px`);
-  track.dataset.initialized = '1';
-}
 
 /* ── TIMELINE SCROLL REVEAL ───────────────────────────────────── */
 

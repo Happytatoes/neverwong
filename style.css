@@ -301,68 +301,6 @@ hr.writing-divider {
 }
  
  
-/* ── ABOUT NAME ───────────────────────────────────────────────── */
-
-@keyframes letter-enter {
-  from { opacity: 0; transform: translateY(-14px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.about-hero {
-  text-align: center;
-  padding: 2rem 0 0;
-  margin-bottom: 3rem;
-  border-bottom: 1px solid var(--border);
-}
-
-#about h2 {
-  font-size: clamp(3rem, 6vw, 5rem);
-  margin-bottom: 1.5rem;
-}
-
-#about h2 span {
-  display: inline-block;
-  margin: 0 0.06em;
-  opacity: 0;
-}
-
-#about h2 span.entered {
-  animation: letter-enter 0.35s ease forwards;
-}
-
-/* ── TAGLINE TICKER ───────────────────────────────────────────── */
-
-.tagline-ticker {
-  overflow: hidden;
-  width: 100vw;
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
-  margin: -1rem 0 2.5rem;
-  padding: 0.45rem 0;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-}
-
-.tagline-track {
-  display: flex;
-  white-space: nowrap;
-  animation: ticker-scroll 28s linear infinite;
-}
-
-.tagline-track span {
-  font-size: 0.8rem;
-  font-style: italic;
-  color: var(--muted);
-  letter-spacing: 0.04em;
-  flex-shrink: 0;
-}
-
-@keyframes ticker-scroll {
-  from { transform: translateX(0); }
-  to   { transform: translateX(var(--ticker-shift, -50%)); }
-}
-
 /* ── ABOUT PHOTOS (POLAROID) ──────────────────────────────────── */
 
 .about-photos {
@@ -420,9 +358,7 @@ hr.writing-divider {
   color: var(--muted);
   margin-bottom: 1.25rem;
   padding-bottom: 0.4rem;
-  padding-left: 0.6rem;
   border-bottom: 1px solid var(--border);
-  border-left: 2px solid var(--accent);
 }
 
  
@@ -927,20 +863,6 @@ hr.writing-divider {
     font-size: 0.9rem;
   }
 
-  #about h2 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-  }
-
-  #about h2 span {
-    margin: 0 0.04em;
-  }
-
-  .about-hero {
-    padding: 1rem 0 0;
-    margin-bottom: 2rem;
-  }
-
   .about-photos {
     flex-direction: row;
     flex-wrap: nowrap;
@@ -996,10 +918,6 @@ hr.writing-divider {
   .drink-img-wrap {
     width: 105px;
     height: 130px;
-  }
-
-  .tagline-track span {
-    font-size: 0.65rem;
   }
 
   .teahouse-title {
@@ -1083,6 +1001,10 @@ hr.writing-divider {
   display: flex;
   flex-direction: column;
   gap: 0;
+}
+
+.timeline-grid[hidden] {
+  display: none;
 }
 
 .era-marker {
