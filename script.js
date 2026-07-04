@@ -12,13 +12,6 @@ function showPage(id) {
   });
   document.querySelectorAll('#about h2 span').forEach(s => s.classList.remove('entered'));
 
-  // Clear parallax transforms when leaving home
-  if (id !== 'home') {
-    document.querySelectorAll('.drink-card').forEach(c => { c.style.transform = ''; });
-    const t = document.querySelector('.teahouse-title');
-    if (t) t.style.transform = '';
-  }
-
   pages.forEach(p => p.classList.remove('active', 'fade-in'));
   navBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.page === id));
 
@@ -98,7 +91,7 @@ document.querySelectorAll('.drink-card').forEach(card => {
   card.addEventListener('mouseenter', () => {
     if (!title) return;
     title.className = `teahouse-title flavor-${card.dataset.flavor}`;
-    title.innerHTML = `<i>${card.dataset.label}</i>`;
+    title.textContent = card.dataset.label;
   });
   card.addEventListener('mouseleave', () => {
     if (!title) return;
@@ -110,8 +103,7 @@ const drinksRow = document.querySelector('.drinks-row');
 const teahouseTitle = document.querySelector('.teahouse-title');
 
 drinksRow.addEventListener('mouseleave', () => {
-  teahouseTitle.textContent = '{noah wong / ut austin}';
-  teahouseTitle.innerHTML = '<i>{noah wong / ut austin}</i>';
+  teahouseTitle.textContent = 'Noah Wong';
   teahouseTitle.className = 'teahouse-title';
 });
 
@@ -121,8 +113,8 @@ const body = document.body;
 const themeToggle = document.getElementById('themeToggle');
 const themeIcon = document.getElementById('themeIcon');
 
-/* Theme persistence — default is light */
-if (localStorage.getItem("theme") !== "dark") {
+/* Theme persistence — default is dark */
+if (localStorage.getItem("theme") === "light") {
   body.classList.add("light");
   if (themeIcon) themeIcon.textContent = "☀︎";
 }
@@ -154,91 +146,6 @@ document.querySelectorAll('.project-card').forEach(card => {
   card.addEventListener('click', () => card.classList.toggle('flipped'));
 });
 
-/* ── HOME EFFECTS: PARALLAX + NEIGHBOR PUSH ──────────────────── */
-
-function initHomeEffects() {
-  const title = document.querySelector('.teahouse-title');
-  const cards = [...document.querySelectorAll('.drink-card')];
-  if (!cards.length) return;
-
-  let mouseX = 0, mouseY = 0, lerpX = 0, lerpY = 0;
-  let neighborTarget  = cards.map(() => 0);
-  let neighborCurrent = cards.map(() => 0);
-  const depths = [7, 12, 9, 14];
-  let entranceDone = false;
-
-  document.addEventListener('mousemove', e => {
-    mouseX = (e.clientX / window.innerWidth  - 0.5) * 2;
-    mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
-  });
-
-  cards.forEach((card, i) => {
-    card.addEventListener('mouseenter', () => {
-      neighborTarget = cards.map((_, j) => {
-        if (i === j) return 0;
-        const dist = Math.abs(i - j);
-        return (j < i ? -1 : 1) * (dist === 1 ? 12 : 5);
-      });
-    });
-    card.addEventListener('mouseleave', () => {
-      neighborTarget = cards.map(() => 0);
-    });
-  });
-
-  setTimeout(() => {
-    entranceDone = true;
-    cards.forEach(c => { c.style.animation = 'none'; c.style.opacity = '1'; });
-  }, 1300);
-
-  function tick() {
-    if (entranceDone && document.getElementById('home')?.classList.contains('active')) {
-      lerpX += (mouseX - lerpX) * 0.07;
-      lerpY += (mouseY - lerpY) * 0.07;
-      cards.forEach((card, i) => {
-        neighborCurrent[i] += (neighborTarget[i] - neighborCurrent[i]) * 0.1;
-        const dx = (lerpX * depths[i] + neighborCurrent[i]).toFixed(2);
-        const dy = (lerpY * depths[i] * 0.55).toFixed(2);
-        card.style.transform = `translate(${dx}px, ${dy}px)`;
-      });
-      if (title) {
-        title.style.transform = `translate(${(lerpX * -9).toFixed(2)}px, ${(lerpY * -5).toFixed(2)}px)`;
-      }
-    }
-    requestAnimationFrame(tick);
-  }
-  tick();
-}
-
-/* ── BOBA BUBBLES ─────────────────────────────────────────────── */
-
-(function spawnBubbles() {
-  const container = document.querySelector('.teahouse-bubbles');
-  if (!container) return;
-  const colors = [
-    [192, 132, 252],
-    [141, 255, 125],
-    [251, 146,  60],
-    [255, 214, 156],
-  ];
-  for (let i = 0; i < 18; i++) {
-    const b = document.createElement('div');
-    b.className = 'boba-bubble';
-    const size = 24 + Math.random() * 48;
-    const [r, g, bl] = colors[i % colors.length];
-    const alpha = (0.65 + Math.random() * 0.3).toFixed(2);
-    b.style.cssText = [
-      `width:${size}px`,
-      `height:${size}px`,
-      `left:${3 + Math.random() * 94}%`,
-      `bottom:-${size}px`,
-      `background:rgba(${r},${g},${bl},${alpha})`,
-      `animation-duration:${7 + Math.random() * 6}s`,
-      `animation-delay:${Math.random() * 8}s`,
-    ].join(';');
-    container.appendChild(b);
-  }
-})();
-
 /* ── TICKER INIT ──────────────────────────────────────────────── */
 
 function initTicker() {
@@ -262,8 +169,6 @@ function initTicker() {
   track.style.setProperty('--ticker-shift', `-${spanWidth}px`);
   track.dataset.initialized = '1';
 }
-
-initHomeEffects();
 
 /* ── TIMELINE SCROLL REVEAL ───────────────────────────────────── */
 

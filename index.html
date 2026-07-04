@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;700&display=swap"
     rel="stylesheet"
   />
   <link rel="icon" href="images/favicon.png" type="image/png">
@@ -34,42 +34,43 @@
     <!-- ── HOME: TEAHOUSE ────────────────────────────────────────── -->
     <section id="home" class="page active teahouse-page">
 
-      <div class="teahouse-bubbles"></div>
+      <div class="teahouse-header">
+        <h1 class="teahouse-title">Noah Wong</h1>
+        <p class="teahouse-hint">(click a drink to explore)</p>
+      </div>
 
-      <h1 class="teahouse-title"><i>{noah wong / ut austin}</i></h1>
- 
       <div class="drinks-row">
- 
-        <button class="drink-card" data-page="about" data-flavor="taro" data-label="{about me / taro}">
+
+        <button class="drink-card" data-page="about" data-flavor="taro" data-label="About" aria-label="Go to About">
           <div class="drink-img-wrap">
             <img src="images/drinks/taro.png" alt="taro boba" />
           </div>
-          <span class="drink-name">about me</span>
-          <span class="drink-sub">taro</span>
+          <span class="drink-name">About Me</span>
+          <span class="drink-sub">Taro</span>
         </button>
 
-        <button class="drink-card" data-page="writings" data-flavor="honeydew" data-label="{writing / honeydew}">
+        <button class="drink-card" data-page="writings" data-flavor="honeydew" data-label="Writing" aria-label="Go to Writing">
           <div class="drink-img-wrap">
             <img src="images/drinks/honeydew.png" alt="honeydew boba" />
           </div>
-          <span class="drink-name">writing</span>
-          <span class="drink-sub">honeydew</span>
+          <span class="drink-name">Writing</span>
+          <span class="drink-sub">Honeydew</span>
         </button>
 
-        <button class="drink-card" data-page="projects" data-flavor="thai" data-label="{projects / thai tea}">
+        <button class="drink-card" data-page="projects" data-flavor="thai" data-label="Projects" aria-label="Go to Projects">
           <div class="drink-img-wrap">
             <img src="images/drinks/thai.png" alt="thai tea boba" />
           </div>
-          <span class="drink-name">projects</span>
-          <span class="drink-sub">thai tea</span>
+          <span class="drink-name">Projects</span>
+          <span class="drink-sub">Thai Tea</span>
         </button>
 
-        <button class="drink-card" data-page="connect" data-flavor="brown" data-label="{connect / brown sugar}">
+        <button class="drink-card" data-page="connect" data-flavor="brown" data-label="Connect" aria-label="Go to Connect">
           <div class="drink-img-wrap">
             <img src="images/drinks/brown.png" alt="brown sugar boba" />
           </div>
-          <span class="drink-name">connect</span>
-          <span class="drink-sub">brown sugar</span>
+          <span class="drink-name">Connect</span>
+          <span class="drink-sub">Brown Sugar</span>
         </button>
 
       </div>
@@ -82,7 +83,7 @@
 
   <div class="about-hero">
     <h2>
-      <span style="--r:-6deg; --y:-2px;">N</span><span style="--r:4deg;  --y:1px;"  id="orange">O</span><span style="--r:-3deg; --y:0px;">A</span><span style="--r:6deg;  --y:-1px;">H</span><span>&nbsp;</span><span style="--r:-5deg; --y:2px;">W</span><span style="--r:3deg;  --y:-1px;">O</span><span style="--r:-4deg; --y:1px;"  id="orange">N</span><span style="--r:5deg;  --y:-2px;">G</span>
+      <span>N</span><span id="orange">O</span><span>A</span><span>H</span><span>&nbsp;</span><span>W</span><span>O</span><span id="orange">N</span><span>G</span>
     </h2>
 
     <div class="tagline-ticker">

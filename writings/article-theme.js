@@ -2,8 +2,8 @@ const body = document.body;
 const themeToggle = document.getElementById('themeToggle');
 const themeIcon = document.getElementById('themeIcon');
 
-/* Theme persistence — default is light */
-if (localStorage.getItem('theme') !== 'dark') {
+/* Theme persistence — default is dark */
+if (localStorage.getItem('theme') === 'light') {
   body.classList.add('light');
   if (themeIcon) themeIcon.textContent = '☀︎';
 }
