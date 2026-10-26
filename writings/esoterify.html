@@ -30,7 +30,7 @@
 
     <h2>Introduction</h2>
     <p>Esoterify is a command line tool that allows a user to input text, encrypt it, decrypt it, and store keys using four encryption techniques: Caesar, RSA, ChaCha20, and AES. You can find the code 
-    [<a target="_blank" href="https://github.com/Happytatoes/esoterify"><span id="orange"><u>here</u></span></a>]</p>
+    [<a target="_blank" href="https://github.com/Happytatoes/esoterify"><span class="orange"><u>here</u></span></a>]</p>
 
     <p>The main feature of Esoterify is that the program allows the user to chain multiple cryptographic methods and see transparently how methods build upon each other.</p>
 
@@ -59,10 +59,10 @@ q - quit program</code></pre>
 
     <p>Rather than a “decryption,” users are prompted to enter the negative value of their prior key to reverse the transformation that they just did. Caesar is not used for any security purposes because you can try each number and in a very short amount of time, you will find the data that someone tried to encrypt.</p>
 
-    <p>Two notes on Caesar: first, it is crackable by frequency analysis also, since as certain letters like E and A show up often, you can see which characters appear the most and map them to the most frequent letters of the English language (if we know the plaintext is in English). Second, this is the only cipher where I’ll place this emphasis on a correlation to ASCII. Caesar is for text/letters, so it makes sense to understand the data as ASCII values, but with other encryption methods, it’s better to understand them as a stream of bits.</p>
+    <p>Two notes on Caesar: first, it is crackable by frequency analysis, since certain letters like E and A show up often, you can see which characters appear the most and map them to the most frequent letters of the English language (if we know the plaintext is in English). Second, this is the only cipher where I’ll place this emphasis on a correlation to ASCII. Caesar is for text/letters, so it makes sense to understand the data as ASCII values, but with other encryption methods, it’s better to understand them as a stream of bits.</p>
 
     <h2>RSA</h2>
-    <p>RSA or Rivest-Shamir-Adleman is a form of Asymmetric encryption, where each party is given a private key and a public key. It enhances security and it allows for two parties to create an encrypted line of communication without having agreed on a prior key.</p>
+    <p>RSA or Rivest-Shamir-Adleman is a form of asymmetric encryption, where each party is given a private key and a public key. It enhances security and it allows for two parties to create an encrypted line of communication without having agreed on a prior key.</p>
 
     <p>How do these keys get generated?</p>
 
@@ -95,7 +95,7 @@ q - quit program</code></pre>
 
     <p>d is the modular multiplicative inverse of e (mod φ(n))</p>
 
-    <p>What that essentially means is that if you take d and multiply it by e and then modulus it by φ(n), you get 1, the identity, as the result.</p>
+    <p>What that essentially means is that if you take d and multiply it by e and then take it modulo φ(n), you get 1, the identity, as the result.</p>
 
     <p>In other words, d x e ≡ 1 (mod φ(n))</p>
 
@@ -157,7 +157,7 @@ so
 
 M^ed = M^(k x φ(n)+1) = ( M^φ(n) ) ^ k times M^1
 
-Since M^φ(n) ≡ 1 (mod n) due to Euler's Totient Theorem,
+Since M^φ(n) ≡ 1 (mod n) due to Euler's theorem,
 
 ( M^φ(n) ) ^ k times M^1 = 1^k x M ≡ M (mod n)</code></pre>
 
@@ -170,7 +170,7 @@ Since M^φ(n) ≡ 1 (mod n) due to Euler's Totient Theorem,
 
     <p>The keys are typically 128, 192, or 256 bits, and those lengths correspond to how many rounds the data goes through. 128 means 10 rounds, 192 means 12 rounds, and 256 means 14 rounds.</p>
 
-    <p>Each round contains four steps, and before I tell you the steps, try to conceptualize the data as a matrix with rows and columns, so each step makes more sense. It’s also helpful to understand the terms “block” and “state.” The blocks are units of data that sit static in the disk. You can think of these blocks as similar to the original message, M.</p>
+    <p>Each round contains four steps, and before I tell you the steps, try to conceptualize the data as a matrix with rows and columns, so each step makes more sense. It’s also helpful to understand the terms “block” and “state.” The blocks are units of data that sit static on disk. You can think of these blocks as similar to the original message, M.</p>
 
     <p>Step 1:</p>
 
@@ -188,11 +188,11 @@ Since M^φ(n) ≡ 1 (mod n) due to Euler's Totient Theorem,
 
     <p>The original secret key contains several round keys, one per round of encryption. You XOR the round key with the data to get a value dependent on the key.</p>
 
-    <p>This is a symmetrical encryption method, unlike RSA. It’s a more computationally efficient method of encryption for large data sets, but computers need to establish a key without previous communication, for which asymmetric methods are key. Often, those methods are combined, and computers will use RSA to encrypt just a key, and then use that key for AES.</p>
+    <p>This is a symmetric encryption method, unlike RSA. It’s a more computationally efficient method of encryption for large data sets, but computers need to establish a key without previous communication, for which asymmetric methods are key. Often, those methods are combined, and computers will use RSA to encrypt just a key, and then use that key for AES.</p>
 
     <p>There are different types of AES, and the one I used to build Esoterify was AES-CFB, which acts differently and more like a stream cipher where it encrypts the IV and previous ciphertext and then XORs it with the plaintext. It moves continuously, and it uses the mechanisms of this block cipher to generate a keystream (a stream of randomized bits based on the key that XORs with the plaintext to generate ciphertext continuously – ChaCha20 does the same and that’s actually a stream cipher.)</p>
 
-    <p>One final note: I was confused that the amount of rounds was not proportional to the size of the key. (If a 128 bit key has 10 rounds, why doesn’t a 256 bit key have 20?) The reason is because increasing rounds has diminishing returns. Security doesn’t necessarily come from a large number of rounds, but mainly from the longer key, and AES-256 has a 256 bit key. There are 2^256 possibilities, which is such a large number, it is practically impossible to guess a key.</p>
+    <p>One final note: I was confused that the amount of rounds was not proportional to the size of the key. (If a 128 bit key has 10 rounds, why doesn’t a 256 bit key have 20?) The reason is because increasing rounds has diminishing returns. Security doesn’t necessarily come from a large number of rounds, but mainly from the longer key, and AES-256 has a 256 bit key. There are 2^256 possibilities, a number so large that it is practically impossible to guess a key.</p>
 
     <p>Both the rounds and the key are security features, and while the key length protects against brute force attacks, the rounds protect the data from cryptographic analysis. Note that the rounds are not all the same, since they each end by adding the round key, which changes each time.</p>
 
@@ -287,7 +287,7 @@ bye bye!</code></pre>
     AES + ChaCha20: Extremely High. This method is overkill since both methods are efficient, secure, symmetric encryptions. One will work, so there is no real reason to use both.<br>
     ChaCha20 + RSA: Very High. This is similar to AES, but works well as a stream cipher. Again, it is the best of both worlds, but RSA works better to encrypt a small amount of information.</p>
 
-    <p>I made this subjective graphic where darker colors correspond to “more” security and lighter colors correspond to “less.” I made RSA slightly lighter than AES and ChaCha20. It isn’t inherently less secure, but it requires a much longer key to achieve the same level of security as AES. (Fun fact, An AES-128 key is about as strong as a 3072-bit RSA key). RSA is also theoretically crackable by quantum computers.</p>
+    <p>I made this subjective graphic where darker colors correspond to “more” security and lighter colors correspond to “less.” I made RSA slightly lighter than AES and ChaCha20. It isn’t inherently less secure, but it requires a much longer key to achieve the same level of security as AES. (Fun fact: an AES-128 key is about as strong as a 3072-bit RSA key). RSA is also theoretically crackable by quantum computers.</p>
 
     <img src="../images/esoterify/first.png" alt="Encryption Security Levels Heatmap">
 
@@ -297,7 +297,7 @@ bye bye!</code></pre>
 
     <p>In conclusion, using RSA, AES, or ChaCha20 should keep your data safe. Any combination of them will still encrypt your data, but it will likely be unnecessary. The most practical application of using multiple cryptographic methods is the RSA + AES or ChaCha20 combination that leverages RSA’s asymmetric advantage while still using an efficient data scrambler.</p>
 
-    <p>I encourage you to play around with the Esoterify program [<a target="_blank" href="https://github.com/Happytatoes/esoterify"><span id="orange"><u>here</u></span></a>] and experiment with different combinations as an educational exercise. It helped me learn a ton about how each cryptography method worked step-by-step. I’ll leave you with an example of what Esoterify’s output looks like for chaining. Thank you for reading, and if you have any ideas to discuss with me about cryptography or security in general, please let me know! I’m always trying to learn more.</p>
+    <p>I encourage you to play around with the Esoterify program [<a target="_blank" href="https://github.com/Happytatoes/esoterify"><span class="orange"><u>here</u></span></a>] and experiment with different combinations as an educational exercise. It helped me learn a ton about how each cryptography method worked step-by-step. I’ll leave you with an example of what Esoterify’s output looks like for chaining. Thank you for reading, and if you have any ideas to discuss with me about cryptography or security in general, please let me know! I’m always trying to learn more.</p>
 
     <h2>Chaining Example</h2>
 

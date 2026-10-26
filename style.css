@@ -98,7 +98,7 @@ p {
   margin-bottom: 0.75rem;
 }
  
-#orange {
+.orange {
   color: var(--accent);
 }
  
