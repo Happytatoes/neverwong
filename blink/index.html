@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Blink</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="3 doodles. A few seconds to remember each.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Blink">
+<meta property="og:description" content="3 doodles. A few seconds to remember each.">
+<meta property="og:url" content="https://happytatoes.com/blink">
+<meta property="og:image" content="https://happytatoes.com/blink/og.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Blink">
+<meta name="twitter:description" content="3 doodles. A few seconds to remember each.">
+<meta name="twitter:image" content="https://happytatoes.com/blink/og.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%91%81%3C/text%3E%3C/svg%3E">
+<style>
+  :root {
+    --bg: #18181b; --card: #1f1f23; --text: #f4f4f5; --dim: #8b8b94;
+    --line: #34343b; --accent: #e7a4ff;
+  }
+  @media (prefers-color-scheme: light) {
+    :root { --bg: #f4f6f8; --card: #ffffff; --text: #1a1a1a; --dim: #6b6b75;
+            --line: #dcdde2; --accent: #a51fd6; }
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html, body { margin: 0; }
+  body {
+    background: var(--bg); color: var(--text);
+    font: 16px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+    min-height: 100vh; min-height: 100dvh; display: flex;
+    -webkit-tap-highlight-color: transparent; -webkit-user-select: none; user-select: none;
+    -webkit-touch-callout: none;
+  }
+  main {
+    width: 100%; max-width: 420px; margin: auto; padding: 20px 16px calc(24px + env(safe-area-inset-bottom));
+    display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center;
+  }
+  h1 { margin: 0; font-size: 28px; font-weight: 700; letter-spacing: .02em; }
+  h1 span { font-size: 15px; font-weight: 500; color: var(--dim); margin-left: 6px; letter-spacing: 0; }
+  p { margin: 0; }
+  .dim { color: var(--dim); }
+  #sub { min-height: 1.4em; }
+  #wrap, #track { width: min(100%, max(240px, calc(100vh - 350px))); }
+  #wrap, #track { width: min(100%, max(240px, calc(100dvh - 350px))); }
+  #wrap {
+    aspect-ratio: 1; background: var(--card);
+    border: 1px solid var(--line); border-radius: 14px; overflow: hidden;
+  }
+  canvas { display: block; width: 100%; height: 100%; touch-action: none; cursor: crosshair; }
+  #track { height: 3px; margin-top: -6px; }
+  #bar { display: block; height: 100%; background: var(--accent); border-radius: 2px; transform-origin: left; opacity: 0; }
+  #big { font-size: 56px; font-weight: 700; line-height: 1; }
+  #rows { margin: 0; font: inherit; font-size: 20px; line-height: 1.6; white-space: pre; text-align: left; }
+  #btns { display: flex; gap: 10px; justify-content: center; }
+  button {
+    font: inherit; font-weight: 600; color: var(--text); background: transparent;
+    border: 1px solid var(--line); border-radius: 999px; padding: 11px 24px; cursor: pointer;
+  }
+  button.primary { background: var(--text); color: var(--bg); border-color: var(--text); }
+  button:disabled { opacity: .35; cursor: default; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Blink<span id="num"></span></h1>
+  <p id="sub" class="dim"></p>
+  <div id="wrap" hidden><canvas id="c"></canvas></div>
+  <div id="track" hidden><i id="bar"></i></div>
+  <div id="big"></div>
+  <pre id="rows"></pre>
+  <p id="note" class="dim"></p>
+  <div id="btns"></div>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  // ───────── constants (tune scoring here) ─────────
+  var EPOCH = Date.UTC(2026, 10, 24);   // puzzle #1 = 2026-11-24
+  var DRAW_MS = 30000;
+  var R = 100;                          // raster size used for scoring
+  var THIN = 3, THICK = 9;              // line width: exact mask / tolerance mask
+  var F0 = 0.5, F1 = 0.92;              // F-score range mapped to 0..100
+  var KEY = 'blink:v1';
+  var DIFFS = [
+    { k: 'easy',   dot: '🟢', sec: 3 },
+    { k: 'medium', dot: '🟡', sec: 5 },
+    { k: 'hard',   dot: '🔴', sec: 7 }
+  ];
+  var OFFSET = { easy: 0, medium: 2, hard: 4 };
+
+  // ───────── doodles: SVG path strings in a 100x100 box, line art only ─────────
+  function O(cx, cy, r) {
+    return 'M' + (cx - r) + ' ' + cy + ' a' + r + ' ' + r + ' 0 1 0 ' + (2 * r) + ' 0 a' + r + ' ' + r + ' 0 1 0 ' + (-2 * r) + ' 0';
+  }
+  function E(cx, cy, rx, ry) {
+    return 'M' + (cx - rx) + ' ' + cy + ' a' + rx + ' ' + ry + ' 0 1 0 ' + (2 * rx) + ' 0 a' + rx + ' ' + ry + ' 0 1 0 ' + (-2 * rx) + ' 0';
+  }
+  function B(x, y, w, h) {
+    return 'M' + x + ' ' + y + ' L' + (x + w) + ' ' + y + ' L' + (x + w) + ' ' + (y + h) + ' L' + x + ' ' + (y + h) + ' Z';
+  }
+  var POOLS = {
+    easy: [
+      { name: 'house', d: ['M20 52 L20 86 L80 86 L80 52', 'M12 52 L50 16 L88 52 Z', 'M43 86 L43 64 L57 64 L57 86', 'M64 58 L74 58 L74 68 L64 68 Z'] },
+      { name: 'fish', d: ['M12 50 Q42 18 72 50 Q42 82 12 50 Z', 'M72 50 L92 32 L92 68 Z', O(24, 46, 2.5), 'M34 38 Q41 50 34 62'] },
+      { name: 'star', d: ['M50 14 L59.4 39.1 L86.1 40.3 L65.2 56.9 L72.3 82.7 L50 68 L27.7 82.7 L34.8 56.9 L13.9 40.3 L40.6 39.1 Z'] },
+      { name: 'cat', d: ['M22 58 Q22 84 50 84 Q78 84 78 58 Q78 42 70 38 L74 16 L56 30 Q50 29 44 30 L26 16 L30 38 Q22 42 22 58 Z', O(38, 56, 3), O(62, 56, 3), 'M46 66 L54 66 L50 71 Z'] },
+      { name: 'mug', d: ['M25 30 L25 75 Q25 85 35 85 L55 85 Q65 85 65 75 L65 30 Z', 'M65 40 Q85 40 85 55 Q85 70 65 70', 'M38 22 Q33 15 38 8', 'M52 22 Q47 15 52 8'] },
+      { name: 'apple', d: ['M50 30 Q20 20 18 52 Q18 88 40 88 Q50 84 60 88 Q82 88 82 52 Q80 20 50 30 Z', 'M50 30 Q50 16 56 10', 'M54 20 Q66 8 76 18 Q64 28 54 20 Z'] },
+      { name: 'moon', d: ['M62 12 Q22 20 22 55 Q22 88 62 90 Q40 76 40 51 Q40 26 62 12 Z', O(78, 30, 3), O(70, 66, 2)] },
+      { name: 'umbrella', d: ['M10 52 Q10 14 50 14 Q90 14 90 52 Q80 44 70 52 Q60 44 50 52 Q40 44 30 52 Q20 44 10 52 Z', 'M50 52 L50 82 Q50 92 40 90'] },
+      { name: 'heart', d: ['M50 86 Q8 54 14 32 Q22 10 50 30 Q78 10 86 32 Q92 54 50 86 Z'] },
+      { name: 'cloud', d: ['M24 72 Q6 72 8 56 Q10 42 26 44 Q28 24 48 26 Q62 14 74 30 Q92 30 92 50 Q94 72 76 72 Z', 'M30 80 L26 92', 'M50 80 L46 92', 'M70 80 L66 92'] },
+      { name: 'sun', d: [O(50, 50, 16), 'M76 50 L88 50', 'M68.4 68.4 L76.9 76.9', 'M50 76 L50 88', 'M31.6 68.4 L23.1 76.9', 'M24 50 L12 50', 'M31.6 31.6 L23.1 23.1', 'M50 24 L50 12', 'M68.4 31.6 L76.9 23.1'] },
+      { name: 'pine tree', d: ['M50 10 L26 42 L38 42 L18 68 L82 68 L62 42 L74 42 Z', 'M44 68 L44 90 L56 90 L56 68'] },
+      { name: 'flower', d: [O(50, 36, 7), O(50, 16, 8), O(69, 29.8, 8), O(61.8, 52.2, 8), O(38.2, 52.2, 8), O(31, 29.8, 8), 'M50 59 Q52 76 50 94', 'M50 76 Q66 64 76 72 Q64 84 50 76 Z'] },
+      { name: 'snowman', d: [O(50, 72, 20), O(50, 38, 14), 'M36 26 L64 26', 'M42 26 L42 10 L58 10 L58 26', 'M50 40 L60 42', 'M31 64 L10 50', 'M69 64 L90 50'] },
+      { name: 'ice cream', d: ['M30 52 L50 92 L70 52 Z', 'M28 52 Q26 22 50 22 Q74 22 72 52 Z', O(50, 14, 5)] },
+      { name: 'kite', d: ['M50 8 L76 36 L50 66 L24 36 Z', 'M50 8 L50 66', 'M24 36 L76 36', 'M50 66 Q40 76 50 84 Q60 92 50 96'] },
+      { name: 'light bulb', d: ['M36 66 Q20 52 20 38 Q20 12 50 12 Q80 12 80 38 Q80 52 64 66 Z', 'M38 76 L62 76', 'M40 86 L60 86', 'M42 40 L50 52 L58 40'] },
+      { name: 'envelope', d: [B(10, 24, 80, 54), 'M10 24 L50 56 L90 24'] },
+      { name: 'paper plane', d: ['M8 46 L92 12 L60 88 L48 58 Z', 'M48 58 L92 12'] },
+      { name: 'balloon', d: [E(50, 38, 24, 30), 'M45 76 L50 68 L55 76 Z', 'M50 76 Q40 84 52 90 Q60 94 50 98'] },
+      { name: 'wine glass', d: ['M28 12 L72 12 Q72 50 50 54 Q28 50 28 12 Z', 'M50 54 L50 84', 'M32 88 L68 88'] },
+      { name: 'pencil', d: ['M10 90 L18 66 L34 82 Z', 'M18 66 L66 18 L82 34 L34 82', 'M66 18 L74 10 L90 26 L82 34'] },
+      { name: 'snail', d: [O(44, 56, 22), O(44, 56, 10), 'M6 84 L74 84 Q88 84 86 68 L86 50', 'M86 50 L82 38', 'M86 50 L92 38'] },
+      { name: 'mushroom', d: ['M12 56 Q12 14 50 14 Q88 14 88 56 Z', 'M36 56 L38 88 L62 88 L64 56', O(34, 38, 5), O(62, 32, 6), O(70, 46, 4)] },
+      { name: 'ghost', d: ['M20 88 L20 44 Q20 12 50 12 Q80 12 80 44 L80 88 L68 76 L56 88 L44 76 L32 88 Z', O(38, 42, 5), O(62, 42, 5), O(50, 62, 5)] },
+      { name: 'cactus', d: ['M42 90 L42 24 Q42 12 50 12 Q58 12 58 24 L58 90', 'M42 64 L30 64 Q22 64 22 56 L22 40', 'M58 54 L70 54 Q78 54 78 46 L78 32', 'M16 90 L84 90'] },
+      { name: 'pizza slice', d: ['M50 92 L12 22 Q50 8 88 22 Z', 'M16 30 Q50 18 84 30', O(40, 38, 6), O(62, 40, 6), O(50, 62, 6)] },
+      { name: 'crown', d: ['M14 78 L14 36 L34 56 L50 24 L66 56 L86 36 L86 78 Z', 'M14 68 L86 68', O(50, 17, 4), O(14, 30, 4), O(86, 30, 4)] },
+      { name: 'bell', d: ['M26 72 Q30 56 30 40 Q30 22 50 22 Q70 22 70 40 Q70 56 74 72 Z', 'M20 72 L80 72', O(50, 82, 6), 'M50 22 L50 14'] },
+      { name: 'cupcake', d: ['M24 56 L32 88 L68 88 L76 56 Z', 'M20 56 Q18 36 38 36 Q40 20 56 24 Q74 28 68 40 Q82 42 80 56 Z', O(52, 16, 5)] },
+      { name: 'leaf', d: ['M20 80 Q16 24 80 20 Q84 76 20 80 Z', 'M20 80 L66 34', 'M20 80 L10 92'] }
+    ],
+    medium: [
+      { name: 'sailboat', d: ['M12 66 L88 66 L74 84 L26 84 Z', 'M50 66 L50 12', 'M50 16 L50 60 L22 60 Z', 'M54 24 L54 60 L78 60 Z', 'M4 92 Q12 86 20 92 T36 92 T52 92 T68 92 T84 92 T100 92'] },
+      { name: 'bicycle', d: [O(25, 66, 18), O(75, 66, 18), 'M25 66 L40 40 L68 40 L75 66', 'M25 66 L50 66 L40 40', 'M50 66 L68 40', 'M33 36 L47 36', 'M68 40 L67 30 L75 30'] },
+      { name: 'tree', d: ['M44 92 L44 58', 'M56 92 L56 58', 'M44 58 Q20 58 22 42 Q16 22 40 22 Q50 8 62 22 Q86 22 78 42 Q82 58 56 58', 'M8 92 L92 92', 'M72 10 Q77 4 82 10 Q87 4 92 10'] },
+      { name: 'key', d: [O(27, 50, 17), O(27, 50, 6), 'M44 50 L92 50', 'M92 50 L92 66', 'M80 50 L80 62', 'M68 50 L68 58'] },
+      { name: 'rocket', d: ['M50 6 Q72 28 66 64 L34 64 Q28 28 50 6 Z', O(50, 36, 7), 'M35 50 L19 74 L35 68', 'M65 50 L81 74 L65 68', 'M42 64 L50 90 L58 64'] },
+      { name: 'car', d: ['M8 66 L8 52 L24 48 L36 30 L68 30 L82 48 L94 52 L94 66 Z', O(28, 68, 9), O(74, 68, 9), 'M38 34 L36 47 L50 47 L50 34 Z', 'M54 34 L54 47 L72 47 L66 34 Z', 'M88 56 L92 56'] },
+      { name: 'airplane', d: ['M50 6 Q56 10 56 26 L92 52 L92 62 L56 52 L56 78 L68 88 L68 94 L50 90 L32 94 L32 88 L44 78 L44 52 L8 62 L8 52 L44 26 Q44 10 50 6 Z', O(50, 30, 2), O(50, 40, 2), O(50, 50, 2)] },
+      { name: 'dog', d: ['M24 30 Q22 60 34 76 Q50 90 66 76 Q78 60 76 30 Q60 22 50 22 Q40 22 24 30 Z', 'M24 30 L10 56 L22 62', 'M76 30 L90 56 L78 62', O(38, 48, 3.5), O(62, 48, 3.5), 'M44 62 Q50 58 56 62 Q50 70 44 62 Z', 'M50 68 L50 74', 'M50 74 Q44 80 40 76', 'M50 74 Q56 80 60 76'] },
+      { name: 'owl', d: [E(50, 56, 28, 34), 'M26 34 L30 14 L42 26', 'M74 34 L70 14 L58 26', O(38, 46, 9), O(62, 46, 9), O(38, 46, 2.5), O(62, 46, 2.5), 'M46 56 L54 56 L50 64 Z', 'M34 72 Q50 86 66 72', 'M40 90 L40 96', 'M60 90 L60 96'] },
+      { name: 'butterfly', d: ['M50 30 L50 76', 'M50 44 Q20 6 8 26 Q4 46 50 52', 'M50 44 Q80 6 92 26 Q96 46 50 52', 'M50 54 Q16 52 20 76 Q34 88 50 66', 'M50 54 Q84 52 80 76 Q66 88 50 66', 'M50 30 Q44 16 36 14', 'M50 30 Q56 16 64 14'] },
+      { name: 'teapot', d: ['M20 56 Q20 84 46 84 Q72 84 72 56 Q72 36 46 36 Q20 36 20 56 Z', 'M34 36 Q46 22 58 36', O(46, 24, 3), 'M70 52 L88 36 L94 40 L76 66', 'M22 48 Q4 48 6 62 Q8 76 24 72'] },
+      { name: 'camera', d: ['M8 32 L28 32 L34 22 L66 22 L72 32 L92 32 L92 82 L8 82 Z', O(50, 56, 18), O(50, 56, 9), 'M78 40 L86 40'] },
+      { name: 'guitar', d: [E(50, 72, 24, 22), E(50, 46, 16, 14), 'M44 34 L44 6 L56 6 L56 34', O(50, 72, 6), 'M38 86 L62 86'] },
+      { name: 'house plant', d: ['M30 66 L34 92 L66 92 L70 66 Z', 'M26 66 L74 66', 'M50 66 L50 20', 'M50 50 Q26 50 22 30 Q44 30 50 50 Z', 'M50 40 Q74 40 78 20 Q56 20 50 40 Z', 'M50 62 Q70 62 76 46 Q58 44 50 62 Z'] },
+      { name: 'whale', d: ['M10 58 Q12 34 44 32 Q74 32 84 54 Q88 44 98 40 Q96 56 90 62 Q96 70 98 78 Q86 74 80 68 Q60 86 34 82 Q10 78 10 58 Z', O(26, 52, 2.5), 'M34 32 L34 22', 'M34 22 Q26 12 22 16', 'M34 22 Q42 12 46 16', 'M4 94 Q12 90 20 94 T36 94 T52 94 T68 94 T84 94 T100 94'] },
+      { name: 'windmill', d: ['M40 92 L44 42 L56 42 L60 92 Z', 'M42 42 L50 32 L58 42', 'M18 8 L82 64', 'M82 8 L18 64', 'M46 92 L46 78 L54 78 L54 92', 'M10 92 L90 92'] },
+      { name: 'tent', d: ['M10 88 L50 16 L90 88 Z', 'M50 88 L38 88 L50 52 L62 88', 'M50 16 L50 6', 'M4 88 L96 88'] },
+      { name: 'alarm clock', d: [O(50, 54, 32), O(26, 22, 10), O(74, 22, 10), 'M50 54 L50 34', 'M50 54 L64 62', 'M50 26 L50 30', 'M32 84 L24 94', 'M68 84 L76 94'] },
+      { name: 'penguin', d: ['M50 8 Q24 10 22 50 Q20 84 34 90 L66 90 Q80 84 78 50 Q76 10 50 8 Z', 'M50 28 Q32 40 34 66 Q38 84 50 84 Q62 84 66 66 Q68 40 50 28 Z', O(42, 22, 2.5), O(58, 22, 2.5), 'M44 30 L56 30 L50 38 Z', 'M22 52 L8 70 L24 70', 'M78 52 L92 70 L76 70', 'M34 90 L26 96 L42 96', 'M66 90 L58 96 L74 96'] },
+      { name: 'rabbit', d: [O(50, 68, 22), E(38, 26, 7, 20), E(62, 26, 7, 20), O(42, 64, 2.5), O(58, 64, 2.5), 'M46 74 L54 74 L50 79 Z', 'M34 74 L18 72', 'M34 78 L18 82', 'M66 74 L82 72', 'M66 78 L82 82'] },
+      { name: 'anchor', d: [O(50, 16, 8), 'M50 24 L50 88', 'M36 38 L64 38', 'M18 62 Q22 88 50 88 Q78 88 82 62', 'M12 66 L18 60 L24 68', 'M88 66 L82 60 L76 68'] },
+      { name: 'trophy', d: ['M28 12 L72 12 Q72 52 50 56 Q28 52 28 12 Z', 'M28 20 Q8 20 12 36 Q16 46 30 46', 'M72 20 Q92 20 88 36 Q84 46 70 46', 'M50 56 L50 74', 'M34 90 L66 90 L62 74 L38 74 Z'] },
+      { name: 'scissors', d: [O(30, 78, 10), O(70, 78, 10), 'M36 70 L64 10', 'M64 70 L36 10', O(50, 39, 2.5)] },
+      { name: 'glasses', d: [O(28, 52, 18), O(72, 52, 18), 'M46 48 Q50 42 54 48', 'M10 48 L4 34', 'M90 48 L96 34'] },
+      { name: 'burger', d: ['M12 42 Q12 14 50 14 Q88 14 88 42 Z', 'M10 48 Q20 56 30 48 Q40 56 50 48 Q60 56 70 48 Q80 56 90 48', 'M12 60 L88 60 L88 70 L12 70 Z', 'M12 76 L88 76 Q88 90 74 90 L26 90 Q12 90 12 76 Z'] },
+      { name: 'donut', d: [O(50, 50, 38), O(50, 50, 12), 'M30 34 L36 38', 'M62 28 L68 32', 'M70 62 L64 66', 'M32 64 L38 68'] },
+      { name: 'cherries', d: [O(32, 74, 14), O(68, 72, 14), 'M32 60 Q36 32 54 16', 'M68 58 Q64 32 54 16', 'M54 16 Q70 6 84 14 Q70 26 54 16 Z'] },
+      { name: 'pumpkin', d: [E(50, 60, 36, 28), 'M50 32 Q36 60 50 88', 'M50 32 Q64 60 50 88', 'M46 32 L48 18 L56 18 L56 32', 'M56 22 Q70 14 74 24'] },
+      { name: 'turtle', d: ['M18 66 Q18 28 52 28 Q86 28 86 66 Z', 'M52 28 L52 66', 'M32 40 Q40 54 36 66', 'M72 40 Q64 54 68 66', E(91, 56, 6, 6), 'M18 66 L8 70', 'M28 66 L28 78 L40 78 L40 66', 'M62 66 L62 78 L74 78 L74 66'] },
+      { name: 'UFO', d: ['M32 40 Q32 16 50 16 Q68 16 68 40', E(50, 46, 40, 12), 'M30 56 L22 74', 'M50 58 L50 78', 'M70 56 L78 74', O(32, 46, 2), O(50, 50, 2), O(68, 46, 2)] },
+      { name: 'Saturn', d: [O(50, 50, 22), E(50, 50, 44, 11), 'M14 18 L14 24 M11 21 L17 21', 'M86 80 L86 86 M83 83 L89 83'] }
+    ],
+    hard: [
+      { name: 'lighthouse', d: ['M34 92 L42 30 L58 30 L66 92', 'M36.8 70 L63.2 70', 'M39.4 50 L60.6 50', 'M42 30 L42 20 L58 20 L58 30', 'M40 20 L50 6 L60 20 Z', 'M62 22 L88 14', 'M62 27 L90 27', 'M38 22 L12 14', 'M38 27 L10 27', 'M24 92 L76 92', 'M2 98 Q10 94 18 98 T34 98 T50 98 T66 98 T82 98 T98 98'] },
+      { name: 'cottage', d: ['M10 60 L10 84 L50 84 L50 60', 'M5 60 L30 38 L55 60 Z', 'M42 48 L42 36 L49 36 L49 56', 'M25 84 L25 70 L35 70 L35 84', 'M14 66 L21 66 L21 73 L14 73 Z', 'M76 84 L76 64', 'M82 84 L82 64', O(79, 48, 17), O(16, 16, 8), 'M46 20 Q46 12 54 14 Q58 8 65 14 Q73 13 72 20 Z', 'M2 84 L98 84'] },
+      { name: 'robot', d: ['M30 18 L70 18 L70 46 L30 46 Z', O(40, 30, 4), O(60, 30, 4), 'M38 39 L62 39', 'M50 18 L50 10', O(50, 6, 4), 'M26 52 L74 52 L74 82 L26 82 Z', 'M26 58 L12 70 L12 80', 'M74 58 L88 70 L88 80', 'M38 82 L38 94', 'M62 82 L62 94', O(50, 64, 5)] },
+      { name: 'castle', d: ['M30 92 L30 42 L36 42 L36 36 L44 36 L44 42 L56 42 L56 36 L64 36 L64 42 L70 42 L70 92', 'M43 92 L43 74 Q50 64 57 74 L57 92', 'M8 92 L8 54 L26 54 L26 92', 'M5 54 L17 36 L29 54 Z', 'M74 92 L74 54 L92 54 L92 92', 'M71 54 L83 36 L95 54 Z', 'M50 36 L50 14', 'M50 14 L64 19 L50 24', 'M17 66 L17 74', 'M83 66 L83 74', 'M2 92 L98 92'] },
+      { name: 'hot air balloon', d: ['M50 6 Q80 6 80 34 Q80 50 58 62 L42 62 Q20 50 20 34 Q20 6 50 6 Z', 'M50 6 Q36 30 44 62', 'M50 6 Q64 30 56 62', 'M44 62 L42 74', 'M56 62 L58 74', 'M42 74 L58 74 L56 86 L44 86 Z', 'M4 92 Q4 84 12 86 Q16 79 23 85 Q31 84 29 92 Z', 'M74 80 Q78 75 82 80 Q86 75 90 80', 'M84 66 Q87 62 90 66 Q93 62 96 66'] },
+      { name: 'suspension bridge', d: ['M30 20 L30 76', 'M70 20 L70 76', 'M4 66 L96 66', 'M4 46 Q18 34 30 20 Q50 60 70 20 Q82 34 96 46', 'M40 35 L40 66', 'M50 40 L50 66', 'M60 35 L60 66', 'M2 90 Q10 85 18 90 T34 90 T50 90 T66 90 T82 90 T98 90'] },
+      { name: 'birthday cake', d: ['M16 88 L16 56 L84 56 L84 88 Z', 'M26 56 L26 36 L74 36 L74 56', 'M16 56 Q26 66 36 56 Q46 66 56 56 Q66 66 76 56 Q80 62 84 56', 'M38 36 L38 24', 'M50 36 L50 24', 'M62 36 L62 24', 'M38 22 Q34 16 38 10 Q42 16 38 22 Z', 'M50 22 Q46 16 50 10 Q54 16 50 22 Z', 'M62 22 Q58 16 62 10 Q66 16 62 22 Z', 'M8 88 L92 88'] },
+      { name: 'ferris wheel', d: [O(50, 40, 32), O(50, 40, 4), 'M50 8 L50 72', 'M18 40 L82 40', 'M27.4 17.4 L72.6 62.6', 'M72.6 17.4 L27.4 62.6', 'M50 40 L30 92', 'M50 40 L70 92', 'M14 92 L86 92', O(82, 40, 3), O(18, 40, 3), O(50, 75, 3)] },
+      { name: 'city skyline', d: ['M2 92 L98 92', 'M6 92 L6 52 L24 52 L24 92', 'M28 92 L28 24 L50 24 L50 92', 'M39 24 L39 10', 'M54 92 L54 44 L70 44 L70 92', 'M74 92 L74 34 L94 34 L94 92', 'M33 36 L45 36', 'M33 48 L45 48', 'M33 60 L45 60', 'M80 46 L88 46', 'M80 58 L88 58', 'M12 62 L18 62', O(14, 26, 7)] },
+      { name: 'astronaut', d: [O(50, 28, 20), 'M36 24 Q50 14 64 24 L64 34 Q50 42 36 34 Z', 'M30 52 L70 52 L74 80 L26 80 Z', 'M30 56 L14 70', 'M70 56 L86 70', 'M34 80 L32 96', 'M66 80 L68 96', B(42, 60, 16, 10)] },
+      { name: 'mountain lake', d: ['M0 70 L24 30 L40 52 L58 20 L86 70', 'M16 42 L24 30 L32 44', 'M49 33 L58 20 L67 35', O(82, 16, 8), 'M4 70 L96 70', 'M10 80 L40 80', 'M54 80 L90 80', 'M22 90 L58 90'] },
+      { name: 'barn', d: ['M12 92 L12 48 L30 28 L70 28 L88 48 L88 92 Z', 'M36 92 L36 56 L64 56 L64 92', 'M36 56 L64 92', 'M64 56 L36 92', 'M44 38 L56 38 L56 48 L44 48 Z', 'M2 92 L98 92'] },
+      { name: 'train', d: ['M10 70 L10 40 L50 40 L50 26 L78 26 L78 70 Z', 'M20 40 L20 24 L32 24 L32 40', O(24, 80, 9), O(50, 80, 9), O(74, 80, 9), 'M58 34 L70 34 L70 48 L58 48 Z', 'M4 90 L96 90', 'M10 70 L2 84 L10 84', 'M22 24 Q18 14 26 10'] },
+      { name: 'campfire', d: ['M22 82 L78 70', 'M22 70 L78 82', 'M50 66 Q30 52 42 34 Q44 44 50 44 Q48 28 56 14 Q60 36 68 44 Q74 56 50 66 Z', 'M50 62 Q42 54 50 46 Q58 54 50 62 Z', 'M14 20 L14 28 M10 24 L18 24', 'M82 14 L82 22 M78 18 L86 18', 'M6 90 L94 90'] },
+      { name: 'submarine', d: ['M8 54 Q8 34 30 34 L70 34 Q92 34 92 54 Q92 74 70 74 L30 74 Q8 74 8 54 Z', 'M42 34 L44 20 L60 20 L62 34', 'M52 20 L52 8 L62 8', O(26, 54, 6), O(48, 54, 6), O(70, 54, 6), 'M92 46 L98 40', 'M92 62 L98 68', O(20, 88, 3), O(30, 82, 2)] },
+      { name: 'pirate ship', d: ['M10 66 L90 66 L76 86 L24 86 Z', 'M36 66 L36 16', 'M64 66 L64 24', 'M36 20 L36 54 L18 54 Q18 34 36 20 Z', 'M64 28 L64 56 L46 56 Q46 40 64 28 Z', 'M36 16 L36 6 L48 11 Z', 'M4 94 Q12 89 20 94 T36 94 T52 94 T68 94 T84 94 T100 94'] },
+      { name: 'piano keys', d: ['M6 36 L94 36 L94 86 L6 86 Z', 'M6 50 L94 50', 'M28 50 L28 86', 'M50 50 L50 86', 'M72 50 L72 86', B(14, 50, 6, 20), B(25, 50, 6, 20), B(47, 50, 6, 20), B(58, 50, 6, 20), B(69, 50, 6, 20)] },
+      { name: 'tractor', d: [O(68, 70, 20), O(68, 70, 4), O(24, 78, 12), O(24, 78, 3), 'M10 62 L10 42 L44 42 L48 24 L70 24 L72 52', 'M20 42 L20 28', 'M52 24 L52 40', 'M4 90 L96 90'] },
+      { name: 'spider web', d: ['M50 6 L50 94', 'M6 50 L94 50', 'M19 19 L81 81', 'M81 19 L19 81', 'M64 50 L59.9 59.9 L50 64 L40.1 59.9 L36 50 L40.1 40.1 L50 36 L59.9 40.1 Z', 'M78 50 L69.8 69.8 L50 78 L30.2 69.8 L22 50 L30.2 30.2 L50 22 L69.8 30.2 Z', 'M92 50 L79.7 79.7 L50 92 L20.3 79.7 L8 50 L20.3 20.3 L50 8 L79.7 20.3 Z'] },
+      { name: 'tree swing', d: ['M42 92 L44 50', 'M58 92 L56 50', 'M30 56 Q4 52 10 30 Q6 10 30 12 Q44 0 60 10 Q92 6 90 30 Q98 52 70 56 Q56 60 44 56 Z', 'M72 54 L72 76', 'M84 54 L84 76', 'M68 76 L88 76 L88 80 L68 80 Z', 'M0 92 L100 92'] },
+      { name: 'bookshelf', d: ['M14 10 L86 10 L86 92 L14 92 Z', 'M14 36 L86 36', 'M14 62 L86 62', 'M20 36 L20 18 L28 18 L28 36', 'M30 36 L30 14 L38 14 L38 36', 'M42 36 L42 20 L52 20 L52 36', 'M62 36 L62 22 L68 22 L68 36', 'M20 62 L20 42 L30 42 L30 62', 'M60 62 L60 44 L66 44 L66 62', 'M30 92 L30 70 L40 70 L40 92', 'M46 92 L46 74 L52 74 L52 92'] },
+      { name: 'Eiffel tower', d: ['M50 6 L40 40 L34 92', 'M50 6 L60 40 L66 92', 'M44 24 L56 24', 'M40 40 L60 40', 'M37 60 L63 60', 'M28 92 L72 92', 'M36 80 Q50 62 64 80', 'M40 40 L63 60', 'M60 40 L37 60'] },
+      { name: 'pyramids', d: ['M4 86 L38 30 L72 86 Z', 'M50 86 L72 48 L96 86', 'M12 72 L64 72', 'M22 58 L54 58', O(84, 18, 8), 'M0 86 L100 86'] },
+      { name: 'volcano', d: ['M10 92 L40 30 L60 30 L90 92', 'M40 30 Q50 38 60 30', 'M46 36 L44 58 L50 52 L52 78', 'M50 26 Q40 18 48 10 Q58 4 64 14', 'M30 22 L24 14', 'M72 22 L78 14', 'M4 92 L96 92'] },
+      { name: 'bus', d: ['M8 30 L84 30 L92 50 L92 72 L8 72 Z', B(14, 36, 14, 14), B(32, 36, 14, 14), B(50, 36, 14, 14), 'M68 36 L68 50 L80 50 L76 36 Z', O(26, 74, 9), O(72, 74, 9), 'M8 58 L92 58', 'M86 62 L90 62'] },
+      { name: 'sunflower', d: [O(50, 36, 12), O(72, 36, 7), O(65.6, 51.6, 7), O(50, 58, 7), O(34.4, 51.6, 7), O(28, 36, 7), O(34.4, 20.4, 7), O(50, 14, 7), O(65.6, 20.4, 7), 'M50 65 Q54 82 50 98', 'M52 80 Q68 70 78 78 Q66 90 52 80 Z'] },
+      { name: 'fish tank', d: [B(10, 24, 80, 60), 'M10 36 L90 36', 'M26 56 Q36 46 46 56 Q36 66 26 56 Z', 'M46 56 L54 48 L54 64 Z', 'M76 84 Q70 70 78 60', 'M76 84 Q84 70 80 56', O(34, 44, 2), O(40, 38, 2.5), 'M10 78 L90 78'] },
+      { name: 'pancakes', d: [E(50, 46, 28, 8), 'M22 46 L20 56 Q20 64 50 64 Q80 64 80 56 L78 46', 'M20 56 L18 66 Q18 74 50 74 Q82 74 82 66 L80 56', 'M8 76 Q8 92 50 92 Q92 92 92 76', B(42, 30, 16, 9)] },
+      { name: 'treasure chest', d: ['M12 50 L12 88 L88 88 L88 50 Z', 'M12 50 Q12 20 50 20 Q88 20 88 50', B(44, 44, 12, 14), O(50, 50, 2), 'M30 25 L30 88', 'M70 25 L70 88'] },
+      { name: 'monster', d: ['M16 90 Q10 40 50 20 Q90 40 84 90 Z', O(50, 50, 14), O(50, 50, 5), 'M34 74 L40 68 L46 76 L52 68 L58 76 L64 68 L66 74', 'M30 28 L24 12 L38 22', 'M70 28 L76 12 L62 22', 'M16 70 L4 60', 'M84 70 L96 60'] },
+      { name: 'wizard hat', d: [E(50, 78, 42, 10), 'M24 76 Q36 40 54 8 Q60 40 76 76', 'M30 66 Q50 72 70 66', 'M46 36 L46 44 M42 40 L50 40', 'M60 56 L60 62 M57 59 L63 59'] }
+    ]
+  };
+
+  // ───────── helpers ─────────
+  function $(id) { return document.getElementById(id); }
+  function dayNumber() {
+    var t = new Date();
+    var days = Math.round((Date.UTC(t.getFullYear(), t.getMonth(), t.getDate()) - EPOCH) / 864e5);
+    return Math.max(1, days + 1);
+  }
+  function pick(n, i) {
+    var k = DIFFS[i].k, pool = POOLS[k];
+    return pool[((n - 1) + OFFSET[k]) % pool.length];
+  }
+  function paths(it) {
+    if (!it.paths) it.paths = it.d.map(function (s) { return new Path2D(s); });
+    return it.paths;
+  }
+  function load() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } }
+  function save(o) { try { localStorage.setItem(KEY, JSON.stringify(o)); } catch (e) {} }
+  function sq(s) { var f = Math.round(s / 20); return '🟩'.repeat(f) + '⬜'.repeat(5 - f); }
+  function avg(a) { return Math.round(a.reduce(function (x, y) { return x + y; }, 0) / a.length); }
+  function css(v) { return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+
+  // ───────── scoring ─────────
+  var oc = document.createElement('canvas'); oc.width = oc.height = R;
+  var octx = oc.getContext('2d', { willReadFrequently: true });
+
+  function mask(draw, lw) {
+    octx.clearRect(0, 0, R, R);
+    octx.lineWidth = lw; octx.lineCap = 'round'; octx.lineJoin = 'round'; octx.strokeStyle = '#000';
+    draw(octx);
+    var d = octx.getImageData(0, 0, R, R).data, m = new Uint8Array(R * R);
+    for (var i = 0; i < m.length; i++) m[i] = d[i * 4 + 3] > 60 ? 1 : 0;
+    return m;
+  }
+  function strokeUser(c, strokes, dx, dy) {
+    strokes.forEach(function (s) {
+      if (!s.length) return;
+      c.beginPath();
+      s.forEach(function (p, i) {
+        var x = p[0] * R + dx, y = p[1] * R + dy;
+        if (i) c.lineTo(x, y); else c.moveTo(x, y);
+      });
+      if (s.length === 1) c.lineTo(s[0][0] * R + dx + 0.01, s[0][1] * R + dy);
+      c.stroke();
+    });
+  }
+  function doodleMasks(it) {
+    if (!it.thin) {
+      var dr = function (c) { paths(it).forEach(function (p) { c.stroke(p); }); };
+      it.thin = mask(dr, THIN); it.thick = mask(dr, THICK);
+      var x0 = R, x1 = 0, y0 = R, y1 = 0;
+      for (var i = 0; i < it.thin.length; i++) if (it.thin[i]) {
+        var x = i % R, y = (i / R) | 0;
+        if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y;
+      }
+      it.cx = (x0 + x1) / 2; it.cy = (y0 + y1) / 2;
+    }
+    return it;
+  }
+  function overlap(a, b) {            // share of a's pixels that land on b
+    var n = 0, h = 0;
+    for (var i = 0; i < a.length; i++) if (a[i]) { n++; if (b[i]) h++; }
+    return n ? h / n : 0;
+  }
+  function fScore(it, strokes, dx, dy) {
+    var dr = function (c) { strokeUser(c, strokes, dx, dy); };
+    var ut = mask(dr, THIN), uk = mask(dr, THICK);
+    var rec = overlap(it.thin, uk);   // how much of the doodle you covered
+    var pre = overlap(ut, it.thick);  // how much of your drawing is on the doodle
+    return rec + pre ? 2 * rec * pre / (rec + pre) : 0;
+  }
+  function scoreDrawing(it, strokes) {
+    var pts = [];
+    strokes.forEach(function (s) { s.forEach(function (p) { pts.push(p); }); });
+    if (!pts.length) return { score: 0, dx: 0, dy: 0, F: 0 };
+    doodleMasks(it);
+    var x0 = 1, x1 = 0, y0 = 1, y1 = 0;
+    pts.forEach(function (p) {
+      if (p[0] < x0) x0 = p[0]; if (p[0] > x1) x1 = p[0];
+      if (p[1] < y0) y0 = p[1]; if (p[1] > y1) y1 = p[1];
+    });
+    // try as-drawn, and re-centred on the doodle (forgives a whole drawing sitting off to one side)
+    var cands = [[0, 0], [it.cx - (x0 + x1) / 2 * R, it.cy - (y0 + y1) / 2 * R]];
+    var best = { F: -1 };
+    cands.forEach(function (c) {
+      var F = fScore(it, strokes, c[0], c[1]);
+      if (F > best.F) best = { F: F, dx: c[0], dy: c[1] };
+    });
+    var x = Math.min(1, Math.max(0, (best.F - F0) / (F1 - F0)));
+    return { score: Math.round(100 * x), dx: best.dx, dy: best.dy, F: best.F };
+  }
+
+  // ───────── state ─────────
+  // testing helpers: ?reset clears saved progress, ?day=N plays day N using separate storage
+  var qs = new URLSearchParams(location.search);
+  var testDay = parseInt(qs.get('day'), 10);
+  if (qs.has('reset')) { try { localStorage.removeItem(KEY); localStorage.removeItem(KEY + ':test'); } catch (e) {} }
+  if (testDay > 0) KEY += ':test';
+  if (qs.has('reset')) { try { history.replaceState(null, '', location.pathname + (testDay > 0 ? '?day=' + testDay : '')); } catch (e) {} }
+  var n = testDay > 0 ? testDay : dayNumber();
+  var store = load();
+  var scores = (store.day === n && Array.isArray(store.scores)) ? store.scores.slice(0, 3) : [];
+  var streak = store.streak || 0, lastDay = store.lastDay || 0;
+  var S = { phase: 'intro', it: null, strokes: [], cur: null, pid: null, t0: 0, dx: 0, dy: 0 };
+  var raf = 0, tmo = 0, tick = 0;
+
+  var wrap = $('wrap'), canvas = $('c'), ctx = canvas.getContext('2d');
+  var track = $('track'), bar = $('bar');
+  var size = 0;
+
+  function persist() { save({ day: n, scores: scores, streak: streak, lastDay: lastDay }); }
+  function stopTimers() { cancelAnimationFrame(raf); clearTimeout(tmo); clearInterval(tick); }
+
+  // ───────── canvas ─────────
+  function fit() {
+    if (wrap.hidden) return;
+    size = wrap.clientWidth;
+    var dpr = window.devicePixelRatio || 1;
+    canvas.width = Math.round(size * dpr); canvas.height = Math.round(size * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    redraw();
+  }
+  function redraw() {
+    if (wrap.hidden || !size) return;
+    ctx.clearRect(0, 0, size, size);
+    if (S.phase === 'flash') paintDoodle(css('--text'), 1);
+    else if (S.phase === 'draw') paintUser(css('--accent'), 0, 0);
+    else if (S.phase === 'reveal') { paintDoodle(css('--text'), 0.55); paintUser(css('--accent'), S.dx, S.dy); }
+  }
+  function paintDoodle(color, alpha) {
+    ctx.save(); ctx.scale(size / R, size / R);
+    ctx.globalAlpha = alpha; ctx.strokeStyle = color; ctx.lineWidth = 2.6; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    paths(S.it).forEach(function (p) { ctx.stroke(p); });
+    ctx.restore();
+  }
+  function paintUser(color, dx, dy) {
+    ctx.save(); ctx.scale(size / R, size / R);
+    ctx.strokeStyle = color; ctx.lineWidth = 3; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    strokeUser(ctx, S.strokes, dx, dy);
+    ctx.restore();
+  }
+  function setBar(frac, show) {
+    bar.style.opacity = show ? 1 : 0;
+    bar.style.transform = 'scaleX(' + Math.max(0, Math.min(1, frac)) + ')';
+  }
+
+  // ───────── ui ─────────
+  function ui(o) {
+    $('num').textContent = '#' + n;
+    $('sub').textContent = o.sub || '';
+    $('big').textContent = o.big || '';
+    $('rows').textContent = o.rows || '';
+    $('rows').hidden = !o.rows;
+    $('note').textContent = o.note || '';
+    wrap.hidden = !o.canvas;
+    track.hidden = !o.canvas;
+    var b = $('btns'); b.innerHTML = '';
+    (o.btns || []).forEach(function (x) {
+      var el = document.createElement('button');
+      el.textContent = x.label; if (x.primary) el.className = 'primary';
+      if (x.id) el.id = x.id;
+      el.addEventListener('click', function () { x.fn(el); });
+      b.appendChild(el);
+    });
+    if (o.canvas) fit();
+  }
+
+  function intro() {
+    stopTimers(); S.phase = 'intro';
+    var i = scores.length;
+    ui({
+      sub: i ? 'Round ' + (i + 1) + ' of 3 · ' + DIFFS[i].k + ' · ' + DIFFS[i].sec + ' seconds'
+             : 'Look at a doodle, then redraw it from memory.',
+      note: i ? '' : '3 rounds · 3s, 5s, 7s',
+      btns: [{ label: 'Start', primary: true, fn: startRound }]
+    });
+  }
+
+  function startRound() {
+    stopTimers();
+    var i = scores.length;
+    S.it = pick(n, i); S.strokes = []; S.cur = null; S.t0 = 0; S.phase = 'flash';
+    ui({ sub: (i + 1) + '/3 · ' + DIFFS[i].sec + 's', canvas: true });
+    setBar(1, false);
+    tmo = setTimeout(function () {
+      var t0 = performance.now(), dur = DIFFS[i].sec * 1000;
+      setBar(1, true); redraw();
+      (function step(t) {
+        var left = 1 - (t - t0) / dur;
+        if (left <= 0) return beginDraw();
+        setBar(left, true);
+        raf = requestAnimationFrame(step);
+      })(t0);
+    }, 400);
+  }
+
+  function beginDraw() {
+    cancelAnimationFrame(raf);
+    S.phase = 'draw'; S.strokes = []; S.t0 = 0;
+    ui({
+      sub: 'Draw it. 30s starts on your first stroke.', canvas: true,
+      btns: [
+        { label: 'Undo', id: 'undo', fn: function () { S.strokes.pop(); redraw(); buttons(); } },
+        { label: 'Done', id: 'done', primary: true, fn: submit }
+      ]
+    });
+    setBar(1, true); buttons();
+  }
+  function buttons() {
+    var u = $('undo'), d = $('done');
+    if (u) u.disabled = !S.strokes.length;
+    if (d) d.disabled = !S.strokes.length;
+  }
+  function drawLoop(t) {
+    var left = DRAW_MS - (t - S.t0);
+    if (left <= 0) return submit();
+    setBar(left / DRAW_MS, true);
+    raf = requestAnimationFrame(drawLoop);
+  }
+
+  function pt(e) {
+    var r = canvas.getBoundingClientRect();
+    return [Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)),
+            Math.min(1, Math.max(0, (e.clientY - r.top) / r.height))];
+  }
+  canvas.addEventListener('pointerdown', function (e) {
+    if (S.phase !== 'draw' || S.cur) return;
+    e.preventDefault();
+    try { canvas.setPointerCapture(e.pointerId); } catch (_) {}
+    S.pid = e.pointerId; S.cur = [pt(e)]; S.strokes.push(S.cur);
+    if (!S.t0) { S.t0 = performance.now(); raf = requestAnimationFrame(drawLoop); }
+    redraw(); buttons();
+  });
+  canvas.addEventListener('pointermove', function (e) {
+    if (S.phase !== 'draw' || !S.cur || e.pointerId !== S.pid) return;
+    var evs = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
+    if (!evs.length) evs = [e];
+    evs.forEach(function (ev) { S.cur.push(pt(ev)); });
+    redraw();
+  });
+  function endStroke(e) { if (e.pointerId === S.pid) S.cur = null; }
+  canvas.addEventListener('pointerup', endStroke);
+  canvas.addEventListener('pointercancel', endStroke);
+  window.addEventListener('resize', fit);
+
+  function submit() {
+    if (S.phase !== 'draw') return;
+    cancelAnimationFrame(raf); S.cur = null;
+    S.phase = 'reveal';
+    var r = scoreDrawing(S.it, S.strokes);
+    S.dx = r.dx; S.dy = r.dy;
+    var i = scores.length;
+    scores.push(r.score);
+    var last = scores.length === 3;
+    if (last) { streak = lastDay === n - 1 ? streak + 1 : 1; lastDay = n; }
+    persist();
+    ui({
+      canvas: true,
+      sub: 'That was a ' + S.it.name + '.',
+      big: r.score + '%',
+      rows: DIFFS[i].dot + ' ' + sq(r.score),
+      note: last ? '' : 'Next: ' + DIFFS[i + 1].k + ' · ' + DIFFS[i + 1].sec + 's',
+      btns: [{ label: last ? 'Results' : 'Next', primary: true, fn: last ? results : startRound }]
+    });
+    setBar(0, false);
+  }
+
+  function shareText() {
+    var lines = ['Blink #' + n + ' · ' + avg(scores) + '%'];
+    scores.forEach(function (s, i) { lines.push(DIFFS[i].dot + ' ' + sq(s) + ' ' + s); });
+    lines.push('happytatoes.com/blink');
+    return lines.join('\n');
+  }
+  function copy(btn) {
+    var t = shareText();
+    var done = function () { btn.textContent = 'Copied'; setTimeout(function () { btn.textContent = 'Copy'; }, 1500); };
+    var fallback = function () {
+      var ta = document.createElement('textarea');
+      ta.value = t; ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+      document.body.appendChild(ta); ta.focus(); ta.select();
+      try { document.execCommand('copy'); } catch (_) {}
+      ta.remove(); done();
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(done, fallback);
+    else fallback();
+  }
+  function untilMidnight() {
+    var t = new Date(), next = new Date(t.getFullYear(), t.getMonth(), t.getDate() + 1);
+    var m = Math.max(1, Math.ceil((next - t) / 60000)), h = Math.floor(m / 60);
+    return (h ? h + 'h ' : '') + (m % 60) + 'm';
+  }
+  function results() {
+    stopTimers(); S.phase = 'done';
+    var rows = scores.map(function (s, i) { return DIFFS[i].dot + ' ' + sq(s) + ' ' + ('   ' + s).slice(-3).replace(/ /g, '\u2007'); }).join('\n');
+    var note = function () { return 'Streak ' + streak + ' · next Blink in ' + untilMidnight(); };
+    ui({
+      big: avg(scores) + '%', rows: rows, note: note(),
+      btns: [{ label: 'Copy', primary: true, fn: copy }]
+    });
+    tick = setInterval(function () { $('note').textContent = note(); }, 30000);
+  }
+
+  if (scores.length >= 3) results(); else intro();
+})();
+</script>
+</body>
+</html>
